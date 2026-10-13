@@ -1,0 +1,793 @@
+import { useEffect, useRef, useState } from "react";
+import {
+  experienceTools,
+  portfolioProject,
+  profile,
+  roadmap,
+  type Project,
+} from "./content";
+
+function Arrow() {
+  return (
+    <svg
+      className="arrow-icon"
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path d="M5 19 19 5M5 5h14v14" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
+function PortfolioPreview() {
+  return (
+    <div className="portfolio-preview" aria-hidden="true">
+      <div className="preview-top">
+        <b>
+          us<span>.</span>
+        </b>
+        <span>Work &nbsp; About &nbsp; Contact</span>
+      </div>
+      <div className="preview-body">
+        <span className="preview-eyebrow">
+          A LITTLE CLARITY GOES A LONG WAY
+        </span>
+        <h3>
+          Ideas into
+          <br />
+          useful things<span>.</span>
+        </h3>
+        <p>Websites, data & everyday workflows.</p>
+        <span className="preview-cta">Explore my work ↗</span>
+      </div>
+      <div className="preview-bottom">
+        <span>SELECTED WORK</span>
+        <span>01 — 04</span>
+      </div>
+      <div className="preview-tiles">
+        <div>
+          <i className="mini-bars">
+            <i />
+            <i />
+            <i />
+            <i />
+          </i>
+        </div>
+        <div>
+          <span className="mini-sun">✳</span>
+        </div>
+        <div>
+          <i className="mini-lines">
+            <i />
+            <i />
+            <i />
+          </i>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ConceptPreview({ kind }: { kind: string }) {
+  if (kind === "survey")
+    return (
+      <div className="concept-preview survey-preview" aria-hidden="true">
+        <div className="mock-sidebar">
+          <span className="mock-logo">
+            s<span>i</span>
+          </span>
+          <i />
+          <i />
+          <i />
+          <i />
+        </div>
+        <div className="mock-main">
+          <div className="mock-heading">
+            <strong>Survey overview</strong>
+            <span>Sample data ↓</span>
+          </div>
+          <div className="mock-metrics">
+            <div>
+              <small>Responses</small>
+              <b>128</b>
+            </div>
+            <div>
+              <small>Questions</small>
+              <b>12</b>
+            </div>
+            <div>
+              <small>Completion</small>
+              <b>
+                86<small>%</small>
+              </b>
+            </div>
+          </div>
+          <div className="mock-chart">
+            <div>
+              <strong>How was your experience?</strong>
+              <small>Illustrative responses</small>
+            </div>
+            <div className="chart-bars">
+              {[38, 58, 91, 71, 49].map((height, i) => (
+                <div key={i}>
+                  <i style={{ height: `${height}%` }} />
+                  <span>{i + 1}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  if (kind === "business")
+    return (
+      <div className="concept-preview business-preview" aria-hidden="true">
+        <div className="business-nav">
+          <strong>FORM & FIELD</strong>
+          <span>Spaces &nbsp; Our approach ↗</span>
+        </div>
+        <div className="business-body">
+          <span>MAKE ROOM FOR SOMETHING GOOD</span>
+          <h3>
+            A space that
+            <br />
+            feels like you.
+          </h3>
+          <div className="business-foot">
+            <span>
+              Thoughtful spaces.
+              <br />
+              Everyday living.
+            </span>
+            <b>Explore services ↗</b>
+          </div>
+        </div>
+        <div className="room-art">
+          <div className="room-arch" />
+          <div className="room-light" />
+          <div className="room-table" />
+          <div className="room-vase" />
+          <div className="room-leaf" />
+        </div>
+      </div>
+    );
+  return (
+    <div className="concept-preview hub-preview" aria-hidden="true">
+      <div className="hub-top">
+        <strong>
+          <span>◈</span> project hub
+        </strong>
+        <span>Workspace / Projects</span>
+        <i>US</i>
+      </div>
+      <div className="hub-heading">
+        <strong>A little more organized.</strong>
+        <span>Project overview</span>
+      </div>
+      <div className="kanban">
+        {["To do", "In progress", "Done"].map((stage, i) => (
+          <div key={stage}>
+            <strong>
+              <i />
+              {stage}
+              <span>2</span>
+            </strong>
+            {[0, 1].map((j) => (
+              <div className="task-card" key={j}>
+                <small>
+                  {["WEBSITE", "OPERATIONS", "DESIGN"][(i + j) % 3]}
+                </small>
+                <b>
+                  {
+                    [
+                      ["Outline service pages", "Gather content"],
+                      ["Build quote calculator", "Review sample data"],
+                      ["Map the workflow", "Choose a palette"],
+                    ][i][j]
+                  }
+                </b>
+                <div>
+                  <span className="task-line" />
+                  <i>{["◷", "◇", "✓"][i]}</i>
+                </div>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ProjectDetails({
+  project,
+  onClose,
+}: {
+  project: Project | null;
+  onClose: () => void;
+}) {
+  const dialog = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    const element = dialog.current;
+    if (project && element && !element.open) element.showModal();
+    if (!project && element?.open) element.close();
+  }, [project]);
+  return (
+    <dialog
+      ref={dialog}
+      className="project-dialog"
+      aria-labelledby="project-detail-title"
+      onCancel={onClose}
+      onClose={onClose}
+      onKeyDown={(event) => {
+        if (event.key !== "Tab") return;
+        const controls = Array.from(
+          event.currentTarget.querySelectorAll<HTMLElement>(
+            'button, a[href], input, select, textarea, [tabindex="0"]',
+          ),
+        );
+        const first = controls[0];
+        const last = controls[controls.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last?.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first?.focus();
+        }
+      }}
+      onClick={(event) => {
+        if (event.target === event.currentTarget) {
+          const bounds = event.currentTarget.getBoundingClientRect();
+          if (
+            event.clientX < bounds.left ||
+            event.clientX > bounds.right ||
+            event.clientY < bounds.top ||
+            event.clientY > bounds.bottom
+          )
+            onClose();
+        }
+      }}
+    >
+      {project && (
+        <>
+          <div className="dialog-top">
+            <span className="eyebrow">
+              PROJECT {project.number} / {project.status.toUpperCase()}
+            </span>
+            <button
+              className="close-button"
+              onClick={onClose}
+              aria-label="Close project details"
+            >
+              ×
+            </button>
+          </div>
+          <h2 id="project-detail-title">{project.title}</h2>
+          <p className="dialog-intro">{project.description}</p>
+          <div className="detail-block">
+            <h3>The idea</h3>
+            <p>{project.problem}</p>
+            <p>
+              <strong>For:</strong> {project.audience}
+            </p>
+          </div>
+          <div className="detail-block">
+            <h3>
+              {project.status === "Planned"
+                ? "Planned features"
+                : "What’s in this version"}
+            </h3>
+            <ul>
+              {project.features.map((feature) => (
+                <li key={feature}>{feature}</li>
+              ))}
+            </ul>
+          </div>
+          <div className="detail-block">
+            <h3>My role & AI assistance</h3>
+            <p>{project.contribution}</p>
+          </div>
+          <div className="detail-block">
+            <h3>Decisions & limitations</h3>
+            <p>{project.decisions}</p>
+          </div>
+          <div className="tags">
+            {project.technology.map((tech) => (
+              <span key={tech}>{tech}</span>
+            ))}
+          </div>
+          {(project.demoUrl || project.sourceUrl) && (
+            <div className="project-links">
+              {project.demoUrl && (
+                <a href={project.demoUrl} target="_blank" rel="noreferrer">
+                  Live demo ↗
+                </a>
+              )}
+              {project.sourceUrl && (
+                <a href={project.sourceUrl} target="_blank" rel="noreferrer">
+                  Source code ↗
+                </a>
+              )}
+            </div>
+          )}
+        </>
+      )}
+    </dialog>
+  );
+}
+
+export default function App() {
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [activeFilter, setActiveFilter] = useState("All concepts");
+  const filters = [
+    "All concepts",
+    "Data exploration",
+    "Interactive website",
+    "Internal application",
+  ];
+  const visibleProjects = roadmap
+    .slice(0, 3)
+    .filter(
+      (project) =>
+        activeFilter === "All concepts" || project.category === activeFilter,
+    );
+  const hasContact = Boolean(profile.email || profile.linkedInUrl);
+
+  useEffect(() => {
+    if (!selectedProject) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [selectedProject]);
+
+  return (
+    <>
+      <a className="skip-link" href="#main">
+        Skip to content
+      </a>
+      <header className="site-header">
+        <a href="#" className="wordmark" aria-label="us. — Uthman Salama, home">
+          us<span>.</span>
+        </a>
+        <span className="header-name">
+          Uthman Salama
+          <br />
+          <small>Independent portfolio</small>
+        </span>
+        <button
+          className="menu-toggle"
+          aria-expanded={menuOpen}
+          aria-controls="site-navigation"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          {menuOpen ? "Close" : "Menu"}{" "}
+          <span aria-hidden="true">{menuOpen ? "×" : "+"}</span>
+        </button>
+        <nav
+          id="site-navigation"
+          className={menuOpen ? "nav-open" : ""}
+          aria-label="Main navigation"
+        >
+          {[
+            ["Work", "#work"],
+            ["About", "#about"],
+            ["Contact", "#contact"],
+          ].map(([label, link]) => (
+            <a key={link} href={link} onClick={() => setMenuOpen(false)}>
+              {label}
+            </a>
+          ))}
+          <a className="nav-contact" href="#contact">
+            Let’s connect <Arrow />
+          </a>
+        </nav>
+      </header>
+
+      <main id="main">
+        <section className="hero" aria-labelledby="hero-heading">
+          <div className="hero-meta">
+            <span className="eyebrow">WEBSITES & WORKFLOW AUTOMATION</span>
+            <span className="availability">
+              <i />
+              {profile.availability}
+            </span>
+          </div>
+          <div className="hero-layout">
+            <div>
+              <h1 id="hero-heading">
+                {profile.headline[0]}
+                <br />
+                {profile.headline[1]}
+                <br />
+                <span>{profile.headline[2]}</span>
+              </h1>
+              <p>{profile.introduction}</p>
+              <a className="primary-link" href="#work">
+                Explore my work{" "}
+                <span className="arrow-down">
+                  <Arrow />
+                </span>
+              </a>
+            </div>
+            <div className="hero-art" aria-hidden="true">
+              <div className="art-grid" />
+              <div className="art-note">
+                <span>THE APPROACH</span>
+                <p>
+                  A little structure.
+                  <br />A little curiosity.
+                  <br />
+                  <em>Something useful.</em>
+                </p>
+                <div>IDEA → BUILD → IMPROVE</div>
+              </div>
+              <svg className="art-symbol" viewBox="0 0 100 100" fill="none">
+                <path
+                  d="M50 8v84M8 50h84M20 20l60 60M20 80l60-60"
+                  stroke="currentColor"
+                  strokeWidth="10"
+                  strokeLinecap="round"
+                />
+              </svg>
+              <span className="art-caption">MADE WITH INTENTION, ALWAYS.</span>
+            </div>
+          </div>
+          <div className="hero-footer">
+            <span>People first. Systems second.</span>
+            <span>
+              SCROLL TO EXPLORE{" "}
+              <span className="arrow-down">
+                <Arrow />
+              </span>
+            </span>
+          </div>
+        </section>
+
+        <section
+          id="work"
+          className="section work-section"
+          aria-labelledby="work-heading"
+        >
+          <div className="section-heading">
+            <div>
+              <span className="eyebrow">01 / SELECTED WORK</span>
+              <h2 id="work-heading">
+                A place for things
+                <br />
+                that <em>work.</em>
+              </h2>
+            </div>
+            <p>
+              Starting with this website.
+              <br />
+              Building the next chapter, one useful project at a time.
+            </p>
+          </div>
+          <article className="featured-project">
+            <div className="featured-visual">
+              <span className="visual-label">
+                THE PORTFOLIO / FIRST VERSION
+              </span>
+              <PortfolioPreview />
+              <button
+                className="visual-open preview-trigger"
+                onClick={() => setSelectedProject(portfolioProject)}
+                aria-label="View details for A portfolio with a purpose"
+              >
+                <Arrow />
+              </button>
+            </div>
+            <div className="featured-copy">
+              <div className="project-meta">
+                <span>PROJECT 01</span>
+                <span className="status">
+                  <i />
+                  First version
+                </span>
+              </div>
+              <h3>{portfolioProject.title}</h3>
+              <p>{portfolioProject.description}</p>
+              <div className="tags">
+                <span>Responsive website</span>
+                <span>React & TypeScript</span>
+              </div>
+              <button
+                className="text-button"
+                onClick={() => setSelectedProject(portfolioProject)}
+              >
+                Explore the project <Arrow />
+              </button>
+              <p className="honesty-note">
+                Independent work · Built with AI coding assistance
+              </p>
+            </div>
+          </article>
+        </section>
+
+        <section
+          id="roadmap"
+          className="section roadmap-section"
+          aria-labelledby="roadmap-heading"
+        >
+          <div className="section-heading">
+            <div>
+              <span className="eyebrow">02 / ON THE DRAWING BOARD</span>
+              <h2 id="roadmap-heading">
+                What’s <em>next.</em>
+              </h2>
+            </div>
+            <p>
+              Independent demos I plan to build.
+              <br />
+              These are concept previews, not finished products.
+            </p>
+          </div>
+          <div
+            className="filters"
+            role="group"
+            aria-label="Filter planned projects"
+          >
+            {filters.map((filter) => (
+              <button
+                key={filter}
+                aria-pressed={filter === activeFilter}
+                onClick={() => setActiveFilter(filter)}
+              >
+                {filter}
+              </button>
+            ))}
+          </div>
+          <p className="sr-only" role="status">
+            {visibleProjects.length} planned{" "}
+            {visibleProjects.length === 1 ? "project" : "projects"} shown.
+          </p>
+          <div className="roadmap-grid">
+            {visibleProjects.map((project) => (
+              <article className="roadmap-card" key={project.id}>
+                <div className={`concept-button ${project.id}`}>
+                  <span className="concept-label">CONCEPT PREVIEW</span>
+                  <ConceptPreview kind={project.id} />
+                  <button
+                    className="concept-open preview-trigger"
+                    onClick={() => setSelectedProject(project)}
+                    aria-label={`Concept preview: View plan for ${project.title}`}
+                  >
+                    <Arrow />
+                  </button>
+                </div>
+                <div className="roadmap-meta">
+                  <span>{project.category}</span>
+                  <span className="planned-status">Planned</span>
+                </div>
+                <h3>
+                  <button onClick={() => setSelectedProject(project)}>
+                    {project.title} <Arrow />
+                  </button>
+                </h3>
+                <p>{project.description}</p>
+              </article>
+            ))}
+          </div>
+          <button
+            className="future-project"
+            onClick={() => setSelectedProject(roadmap[3])}
+          >
+            <span>
+              <span className="future-icon" aria-hidden="true">
+                ✧
+              </span>
+              <strong>Further ahead</strong>
+              <span>Document Q&A assistant</span>
+            </span>
+            <span className="future-detail">
+              A possible experiment in grounded AI answers <Arrow />
+            </span>
+          </button>
+        </section>
+
+        <section
+          className="section capabilities-section"
+          aria-labelledby="capabilities-heading"
+        >
+          <div className="capabilities-intro">
+            <span className="eyebrow">03 / WHAT I BRING</span>
+            <h2 id="capabilities-heading">
+              Connecting the
+              <br />
+              <em>moving parts.</em>
+            </h2>
+            <p>
+              I like turning scattered information and everyday tasks into
+              something clear, organized, and useful.
+            </p>
+            <span className="small-note">
+              Grounded in experience. Growing through practice.
+            </span>
+          </div>
+          <div className="capabilities-list">
+            {[
+              [
+                "01",
+                "Websites & digital presence",
+                "Experience managing websites with WordPress and Elementor. Now learning to build original, interactive sites through AI-assisted coding.",
+                "Experience + developing skills",
+              ],
+              [
+                "02",
+                "Automations & workflows",
+                "Experience connecting forms, databases, and administrative processes with tools like Airtable and Fillout, making everyday work easier to organize.",
+                "Established experience",
+              ],
+              [
+                "03",
+                "Reporting & useful data",
+                "Experience with spreadsheets, CRM information, and reporting. Interactive dashboards are the next step in my learning.",
+                "Experience + developing skills",
+              ],
+              [
+                "04",
+                "People & project coordination",
+                "Technology coordination, community and program operations, and keeping people, information, and tasks connected.",
+                "Established experience",
+              ],
+            ].map(([number, title, text, label]) => (
+              <div className="capability" key={number}>
+                <span>{number}</span>
+                <div>
+                  <h3>{title}</h3>
+                  <p>{text}</p>
+                  <small>{label}</small>
+                </div>
+                <Arrow />
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section
+          id="about"
+          className="section about-section"
+          aria-labelledby="about-heading"
+        >
+          <div className="about-art" aria-hidden="true">
+            <div className="about-monogram">
+              us<span>.</span>
+            </div>
+            <div className="about-sticker">
+              Curious by nature.
+              <br />
+              Practical by choice.
+              <Arrow />
+            </div>
+            <span className="about-art-caption">
+              A PERSON BEHIND THE PROJECTS.
+            </span>
+          </div>
+          <div className="about-copy">
+            <span className="eyebrow">04 / A LITTLE ABOUT ME</span>
+            <h2 id="about-heading">Hi, I’m Uthman.</h2>
+            <p className="about-lead">
+              I’m drawn to the work between people and technology.
+            </p>
+            <p>
+              For approximately five years at Tech2Peace, I worked across
+              technology coordination, community and program operations,
+              databases and CRM, reporting, website management, and
+              administrative systems.
+            </p>
+            <p>
+              Now, I’m exploring how AI-assisted coding can help me turn that
+              practical experience into original digital tools. I’m learning by
+              building, asking questions, testing, and improving.
+            </p>
+            <div
+              className="tool-list"
+              aria-label="Tools I have experience with"
+            >
+              {experienceTools.map((tool) => (
+                <span key={tool}>{tool}</span>
+              ))}
+            </div>
+            <p className="languages">English · Arabic · Spanish</p>
+            <p className="about-note">
+              All projects here are independent. Organizational systems, data,
+              and materials remain private; this portfolio does not imply an
+              endorsement.
+            </p>
+          </div>
+        </section>
+
+        <section
+          id="contact"
+          className="contact-section"
+          aria-labelledby="contact-heading"
+        >
+          <div>
+            <span className="eyebrow">05 / LET’S CONNECT</span>
+            <h2 id="contact-heading">
+              Good work starts
+              <br />
+              with a <em>conversation.</em>
+            </h2>
+            <p>
+              I’m interested in remote opportunities and freelance projects
+              <br className="desktop-break" /> where I can build, organize, and
+              keep learning.
+            </p>
+          </div>
+          <div className="contact-actions">
+            {hasContact ? (
+              <>
+                {profile.email && (
+                  <a className="contact-link" href={`mailto:${profile.email}`}>
+                    Say hello <Arrow />
+                  </a>
+                )}
+                {profile.linkedInUrl && (
+                  <a
+                    className="contact-secondary"
+                    href={profile.linkedInUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Connect on LinkedIn <Arrow />
+                  </a>
+                )}
+              </>
+            ) : (
+              <div className="contact-pending">
+                <span className="contact-mark" aria-hidden="true">
+                  <Arrow />
+                </span>
+                <strong>Contact details coming soon</strong>
+                <p>
+                  This portfolio is taking shape.
+                  <br />A direct way to reach me will be added here.
+                </p>
+              </div>
+            )}
+            {profile.githubUrl && (
+              <a
+                className="contact-secondary"
+                href={profile.githubUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                GitHub <Arrow />
+              </a>
+            )}
+            {profile.cvUrl && (
+              <a
+                className="contact-secondary"
+                href={profile.cvUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                View my CV <Arrow />
+              </a>
+            )}
+          </div>
+        </section>
+      </main>
+      <footer className="site-footer">
+        <a className="wordmark" href="#" aria-label="us. — Back to top">
+          us<span>.</span>
+        </a>
+        <span>
+          © {new Date().getFullYear()} {profile.name}
+        </span>
+        <span>Made with curiosity & AI assistance.</span>
+        <a href="#">Back to top ↑</a>
+      </footer>
+      <ProjectDetails
+        project={selectedProject}
+        onClose={() => setSelectedProject(null)}
+      />
+    </>
+  );
+}
