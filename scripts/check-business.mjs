@@ -19,6 +19,19 @@ try {
   const portfolioUrl =
     process.env.PORTFOLIO_URL || "http://127.0.0.1:5173/portfolio/";
   const businessUrl = new URL("business/", portfolioUrl).href;
+  async function assertEstimatePosition(service) {
+    await page.waitForFunction(() => {
+      const section = document.getElementById("estimate");
+      if (!section) return false;
+      const top = section.getBoundingClientRect().top;
+      return top >= 0 && top <= 30;
+    });
+    assert.equal(
+      await page.getByLabel("Choose a service", { exact: true }).inputValue(),
+      service,
+    );
+    assert.equal(new URL(page.url()).hash, "#estimate");
+  }
   await page.goto(portfolioUrl);
   await page
     .getByRole("button", { name: "Business project details", exact: true })
@@ -55,6 +68,7 @@ try {
     );
     if (slug === "styling") {
       await page.getByRole("link", { name: "Estimate this service" }).click();
+      await assertEstimatePosition(slug);
       assert.equal(
         await page.getByLabel("Choose a service", { exact: true }).inputValue(),
         "styling",
@@ -62,6 +76,39 @@ try {
       assert.match(await page.locator(".ff-total").innerText(), /\$120/);
     }
   }
+  // Cross-page anchors must scroll after React mounts, including on a cold load
+  // with delayed fonts. Check both service CTAs and preserve service selection.
+  for (const width of [1440, 375]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const slug of ["room-planning", "styling", "workspace"]) {
+      for (const name of ["Build a demo estimate", "Estimate this service"]) {
+        await page.goto(`${businessUrl}services/${slug}/`);
+        await page.getByRole("link", { name, exact: true }).click();
+        await assertEstimatePosition(slug);
+      }
+    }
+  }
+  const coldContext = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+  });
+  const coldPage = await coldContext.newPage();
+  await coldPage.route("**/*.woff2", async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    await route.continue();
+  });
+  await coldPage.goto(`${businessUrl}?service=styling#estimate`);
+  await coldPage.evaluate(() => document.fonts.ready);
+  await coldPage.waitForFunction(() => {
+    const top = document.getElementById("estimate")?.getBoundingClientRect().top;
+    return top !== undefined && top >= 0 && top <= 30;
+  });
+  await coldPage.reload();
+  await coldPage.waitForFunction(() => {
+    const top = document.getElementById("estimate")?.getBoundingClientRect().top;
+    return top !== undefined && top >= 0 && top <= 30;
+  });
+  await coldContext.close();
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(businessUrl);
   await page
     .getByLabel("Choose a service", { exact: true })
@@ -203,7 +250,7 @@ try {
   }
   assert.deepEqual(errors, []);
   console.log(
-    "PASS: business demo navigation, three service pages/direct reload, query-selected service, quote rules, validation/focus, honest preview/download, stale-preview removal, mobile menu, five widths, reduced motion, and accessibility.",
+    "PASS: business demo navigation, three service pages/direct reload, both estimate CTAs on desktop/mobile, cold-load and reload anchor positioning, query-selected service, quote rules, validation/focus, honest preview/download, stale-preview removal, mobile menu, five widths, reduced motion, and accessibility.",
   );
 } finally {
   await browser.close();

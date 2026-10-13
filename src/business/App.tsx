@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import RoomScene from "./RoomScene";
 import PortfolioBanner from "../components/PortfolioBanner";
 import {
@@ -83,6 +83,23 @@ function Process() {
 }
 
 export default function BusinessApp() {
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (!hash) return;
+    let cancelled = false;
+    // Cross-page anchors can be resolved before React creates the section.
+    // Wait for fonts too, so the final layout determines the scroll position.
+    document.fonts.ready.then(() => {
+      if (!cancelled && window.location.hash === hash)
+        document.getElementById(hash.slice(1))?.scrollIntoView({
+          behavior: "instant",
+          block: "start",
+        });
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
   const [menuOpen, setMenuOpen] = useState(false);
   const [serviceId, setServiceId] = useState<ServiceId>(initialService);
   const [rooms, setRooms] = useState(1);
