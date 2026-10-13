@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import Chart from "./survey/Chart";
+import RoomScene from "./business/RoomScene";
 import { sample, summarize } from "./survey/data";
 import {
   experienceTools,
   portfolioProject,
   surveyProject,
+  businessProject,
   profile,
   roadmap,
   type Project,
@@ -325,17 +327,15 @@ export default function App() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState("All concepts");
+  const plannedGallery = roadmap.slice(0, -1);
   const filters = [
     "All concepts",
-    "Interactive website",
-    "Internal application",
+    ...new Set(plannedGallery.map((project) => project.category)),
   ];
-  const visibleProjects = roadmap
-    .slice(0, 2)
-    .filter(
-      (project) =>
-        activeFilter === "All concepts" || project.category === activeFilter,
-    );
+  const visibleProjects = plannedGallery.filter(
+    (project) =>
+      activeFilter === "All concepts" || project.category === activeFilter,
+  );
   const hasContact = Boolean(profile.email || profile.linkedInUrl);
   const surveySummary = summarize(sample, "satisfaction");
 
@@ -557,6 +557,48 @@ export default function App() {
               </p>
             </div>
           </article>
+          <article className="featured-project business-feature">
+            <div className="business-feature-visual">
+              <span className="eyebrow">WORKING DEMO / FICTIONAL BUSINESS</span>
+              <div className="business-feature-scene" aria-hidden="true">
+                <div>
+                  <strong>FORM & FIELD</strong>
+                  <span>Thoughtful spaces. Everyday living.</span>
+                </div>
+                <RoomScene variant="nook" />
+              </div>
+              <a href="business/" className="survey-preview-action">
+                Explore the business demo <Arrow />
+              </a>
+            </div>
+            <div className="featured-copy">
+              <div className="project-meta">
+                <span>PROJECT 03</span>
+                <span className="status">
+                  <i />
+                  First version
+                </span>
+              </div>
+              <h3>{businessProject.title}</h3>
+              <p>{businessProject.description}</p>
+              <div className="tags">
+                <span>Service website</span>
+                <span>Interactive estimate</span>
+              </div>
+              <a className="text-button" href="business/">
+                Try Form & Field <Arrow />
+              </a>
+              <button
+                className="text-button survey-details-button"
+                onClick={() => setSelectedProject(businessProject)}
+              >
+                Business project details <Arrow />
+              </button>
+              <p className="honesty-note">
+                Independent demo · Fictional brand · AI-assisted build
+              </p>
+            </div>
+          </article>
         </section>
 
         <section
@@ -577,21 +619,23 @@ export default function App() {
               These are concept previews, not finished products.
             </p>
           </div>
-          <div
-            className="filters"
-            role="group"
-            aria-label="Filter planned projects"
-          >
-            {filters.map((filter) => (
-              <button
-                key={filter}
-                aria-pressed={filter === activeFilter}
-                onClick={() => setActiveFilter(filter)}
-              >
-                {filter}
-              </button>
-            ))}
-          </div>
+          {filters.length > 2 && (
+            <div
+              className="filters"
+              role="group"
+              aria-label="Filter planned projects"
+            >
+              {filters.map((filter) => (
+                <button
+                  key={filter}
+                  aria-pressed={filter === activeFilter}
+                  onClick={() => setActiveFilter(filter)}
+                >
+                  {filter}
+                </button>
+              ))}
+            </div>
+          )}
           <p className="sr-only" role="status">
             {visibleProjects.length} planned{" "}
             {visibleProjects.length === 1 ? "project" : "projects"} shown.
@@ -625,7 +669,7 @@ export default function App() {
           </div>
           <button
             className="future-project"
-            onClick={() => setSelectedProject(roadmap[2])}
+            onClick={() => setSelectedProject(roadmap[1])}
           >
             <span>
               <span className="future-icon" aria-hidden="true">

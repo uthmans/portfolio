@@ -31,17 +31,15 @@ assert.equal(
 );
 await page.evaluate(() => document.fonts.ready);
 assert.equal(await page.locator("h1").count(), 1);
-assert.equal(await page.locator(".roadmap-card").count(), 2);
-await page
-  .getByRole("button", { name: "Interactive website", exact: true })
-  .click();
 assert.equal(await page.locator(".roadmap-card").count(), 1);
 assert.match(
   await page.locator(".roadmap-card > h3").innerText(),
-  /A small business, online/,
+  /Freelancer Project Hub/,
 );
-await page.getByRole("button", { name: "All concepts", exact: true }).click();
-assert.equal(await page.locator(".roadmap-card").count(), 2);
+assert.equal(
+  await page.getByRole("link", { name: "Try Form & Field" }).count(),
+  1,
+);
 const opener = page.getByRole("button", {
   name: "Explore the project",
   exact: true,
@@ -67,7 +65,7 @@ assert.equal(
 );
 await page
   .getByRole("button", {
-    name: "Concept preview: View plan for A small business, online",
+    name: "Concept preview: View plan for Freelancer Project Hub",
   })
   .click();
 assert.match(await page.getByRole("dialog").innerText(), /Planned features/);
@@ -165,6 +163,6 @@ assert.deepEqual(resourceErrors, []);
 assert.deepEqual(violations, []);
 assert.deepEqual(mobileViolations, []);
 console.log(
-  "PASS: project dialogs, focus restoration, filters, mobile menu, five viewport widths, reduced motion, no page errors, and axe accessibility checks.",
+  "PASS: project dialogs, featured demo links, focus restoration, mobile menu, five viewport widths, reduced motion, no page errors, and axe accessibility checks.",
 );
 await browser.close();

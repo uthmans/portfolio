@@ -81,30 +81,34 @@ export const surveyProject: Project = {
   demoUrl: "survey/",
 };
 
+export const businessProject: Project = {
+  id: "business",
+  number: "03",
+  title: "A small business, online",
+  category: "Interactive website",
+  status: "First version",
+  description:
+    "Form & Field: an original fictional interiors studio with service pages, a transparent estimate calculator, and a validated enquiry preview.",
+  problem:
+    "Help visitors understand a service, compare clear pricing, and take a useful next step without misleading them about bookings or delivery.",
+  audience:
+    "Potential customers of a fictional interior-planning studio, and people evaluating website design and interaction work.",
+  features: [
+    "Original responsive brand and illustrated concept spaces",
+    "Three service pages with scope and illustrative pricing",
+    "Room-count and add-on quote calculator with explicit rules",
+    "Accessible enquiry validation and sample details",
+    "Local enquiry preview and a downloadable text summary",
+  ],
+  contribution:
+    "I chose this project to demonstrate website design and useful interactions. The fictional brand and implementation were created with AI coding assistance, including pricing, validation, and browser checks. My next step is reviewing the design and testing the journey so I can explain and maintain the work.",
+  technology: ["React", "TypeScript", "CSS", "Original SVG illustrations"],
+  decisions:
+    "Form & Field is fictional. Prices are illustrative USD amounts; this is not a real business offer. The form creates a local preview only: no enquiry, booking, or payment is sent. No client testimonials, completed client projects, or real business contact details are invented. Enquiry data resets on reload; download to keep the preview.",
+  demoUrl: "business/",
+};
+
 export const roadmap: Project[] = [
-  {
-    id: "business",
-    number: "03",
-    title: "A small business, online",
-    category: "Interactive website",
-    status: "Planned",
-    description:
-      "An original service-business website that helps visitors explore services and estimate a project.",
-    problem:
-      "A service website should help visitors make a decision, with clear information and an understandable estimate.",
-    audience: "Customers of a fictional service business.",
-    features: [
-      "Original fictional brand and responsive pages",
-      "Quote calculator with explicit rules",
-      "Validated demo enquiry flow",
-      "Potential multilingual support",
-    ],
-    contribution:
-      "Planned independent demonstration project. The brand, interface, and rules will be created from scratch with AI-assisted implementation.",
-    technology: ["Stack to be confirmed"],
-    decisions:
-      "The concept preview is not a completed website. Enquiries will be labeled as a demo unless a real delivery service is connected.",
-  },
   {
     id: "hub",
     number: "04",

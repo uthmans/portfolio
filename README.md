@@ -1,6 +1,6 @@
 # Uthman Salama’s portfolio
 
-A personal portfolio for practical websites, databases, and workflows. The portfolio and Survey Insights Studio are implemented first versions; the remaining previews are original, static concepts labeled as planned. No private organizational materials or datasets are used.
+A personal portfolio for practical websites, databases, and workflows. The portfolio, Survey Insights Studio, and Form & Field business website are implemented first versions; the remaining previews are original, static concepts labeled as planned. No private organizational materials or datasets are used.
 
 ## Run locally
 
@@ -29,7 +29,7 @@ The **Deploy portfolio to GitHub Pages** workflow builds the site and deploys on
 
 Keep `deploy-pages.yml` as the sole Pages deployment workflow, so every deployment publishes the compiled Vite output. A generic Jekyll workflow can overwrite it with unbuilt source files and produce a blank page.
 
-Each build verifies both HTML pages and their asset files, then writes `dist/deployment.json` with its Git commit and build timestamp. The published `/portfolio/deployment.json` can be compared with the successful workflow’s commit when diagnosing an outdated deployment.
+Each build verifies all six HTML pages and their asset files, then writes `dist/deployment.json` with its Git commit and build timestamp. The published `/portfolio/deployment.json` can be compared with the successful workflow’s commit when diagnosing an outdated deployment.
 
 The website address is https://uthmans.github.io/portfolio/. Changing hosting or the repository name requires updating `base` in `vite.config.ts`.
 
@@ -43,6 +43,7 @@ With the development server running, use a Playwright browser:
 npx playwright install chromium
 npm run test:browser
 npm run test:survey
+npm run test:business
 ```
 
 In this cloud environment, Chromium is already installed:
@@ -50,6 +51,7 @@ In this cloud environment, Chromium is already installed:
 ```sh
 CHROMIUM_PATH=/usr/bin/chromium npm run test:browser
 CHROMIUM_PATH=/usr/bin/chromium npm run test:survey
+CHROMIUM_PATH=/usr/bin/chromium npm run test:business
 ```
 
 Set `PORTFOLIO_URL` if testing another local port or the production preview. The script checks dialogs, focus, filtering, mobile navigation, five viewport widths, reduced motion, browser errors, and axe accessibility results. Screenshots are written to ignored `test-results/`. Automated checks do not replace manual accessibility review.
@@ -67,7 +69,7 @@ The confirmed public email is `uthmansalama@gmail.com`; other contact fields rem
 
 ## Add projects
 
-Project records in `src/content.ts` contain the problem, audience, features, contribution, technology, decisions, and optional real demo/source URLs. Update a status only when supported by working evidence. The roadmap gallery displays its first two entries, with the third shown as a later idea. To feature an additional completed project, extend the selected-work section rather than presenting it as a planned concept. The static preview components are visual illustrations, not applications.
+Project records in `src/content.ts` contain the problem, audience, features, contribution, technology, decisions, and optional real demo/source URLs. Update a status only when supported by working evidence. The roadmap gallery displays the planned Freelancer Project Hub, with Document Q&A shown as a later idea. Category filters are only shown when more than one category needs filtering. To feature an additional completed project, extend the selected-work section rather than presenting it as a planned concept. The static preview components are visual illustrations, not applications.
 
 ## Main interactions to check
 
@@ -75,7 +77,7 @@ Project records in `src/content.ts` contain the problem, audience, features, con
 2. Project previews and titles open accessible native dialog details.
 3. Escape and the close button dismiss details; focus returns to the opener.
 4. Tab stays inside an open dialog.
-5. Roadmap category buttons filter planned projects and announce the resulting count.
+5. The working survey and business demos are linked from selected work; remaining concepts retain their planned status.
 6. On mobile, Menu opens navigation, and selecting a section closes it.
 7. No horizontal overflow at small widths. Reduced-motion preferences disable smooth scrolling and transitions.
 
@@ -119,3 +121,15 @@ Use a UTF-8 comma-separated CSV of up to 2 MB and 5,000 response rows. It must h
 The page includes a format guide and a downloadable example. Every response must validate before any data is replaced. Failures preserve the current dataset and filters and show line/field errors, capped at 20. Successful loads reset filters and the question. Generated data is clearly fictional; imported data is labeled separately.
 
 All data resets to the sample on reload. Nothing is persisted or sent to a server. Download a CSV to retain imported or generated data. The table previews the first 100 filtered rows; calculations and downloads use all filtered rows. This keeps larger datasets usable on mobile.
+
+## Form & Field business demo
+
+Open `/portfolio/business/`. This is an original fictional interior-planning studio, not a real company or a client website. It includes responsive navigation, original SVG concept illustrations, three real service-detail pages, an interactive estimate, and a validated enquiry preview. All service pages are built as static HTML entries, supporting direct links and refreshes on GitHub Pages.
+
+Edit brand copy and layout in `src/business/App.tsx`, service packages and pricing in `src/business/model.ts`, original illustrations in `src/business/RoomScene.tsx`, and styling in `src/business/styles.css`. Service HTML entry files are under `business/services/`. Their paths must also be registered in `vite.config.ts` and `scripts/verify-build.mjs`.
+
+The illustrative USD rules are: room planning $180 per room, styling $120 per room, workspace refresh $220 per room, and 1–5 rooms. Optional palette ($45), shopping shortlist ($75), and feedback session ($30) are each charged once per project. The total is exactly the service rate times rooms plus selected extras. No purchases, taxes, furniture, installation, or real bookings are part of this demo.
+
+The enquiry requires a 2–80-character name, a valid email-shaped address, a 20–1,200-character brief, and acknowledgement of the demo. “Fill with sample details” supplies an explicitly fictional example. “Preview enquiry” validates and creates a local snapshot, labeled not sent. The visitor can download that snapshot as text. Editing any enquiry field or estimate clears the old preview. Reloading clears the form. No network delivery, server storage, payment, or appointment integration exists.
+
+`tests/business.test.ts` checks pricing, invalid options, validation boundaries, and the honest download text. `npm run test:business` exercises all pages, quote interactions, errors/focus, sample details, preview/download, direct refresh, mobile navigation, reduced motion, and accessibility.

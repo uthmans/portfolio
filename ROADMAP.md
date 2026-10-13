@@ -36,9 +36,21 @@
 - [x] Calculation/CSV/generation tests and real browser import/export checks
 - [ ] Uthman reviews importing, generating, filtering, and downloading
 
-## Next project: A small business, online
+## A small business, online — first version complete
 
-Create an original fictional service business, responsive service pages, a quote calculator with explicit rules, and a validated enquiry demo. Keep enquiry delivery clearly labeled until a real backend is connected. Focus on evidence for website and automation opportunities.
+- [x] Original fictional Form & Field brand and responsive service-business website
+- [x] Original illustrated spaces, clearly labeled as concept illustrations
+- [x] Three service-detail pages with working direct links and refreshes
+- [x] Room count and one-time add-on pricing with a visible formula and itemization
+- [x] Accessible enquiry validation, fictional sample details, and local preview
+- [x] Downloadable enquiry summary with explicit not-sent wording
+- [x] Pricing/validation tests and browser checks for navigation, mobile, and accessibility
+- [x] Promoted to selected work as an independent demo with honest limitations
+- [ ] Uthman reviews the design, service journey, estimate, and enquiry preview
+
+## Next focused milestone
+
+Review Form & Field before expanding it. Possible next steps: improve the copy and illustrations, add genuine translations, or connect a real enquiry backend with a clear data-handling and delivery plan if authorized. Avoid adding fake delivery confirmations or unsupported booking flows.
 
 ## Later
 

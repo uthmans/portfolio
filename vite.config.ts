@@ -7,7 +7,14 @@ export default defineConfig({
   base: "/portfolio/",
   build: {
     rollupOptions: {
-      input: { portfolio: "index.html", survey: "survey/index.html" },
+      input: {
+        portfolio: "index.html",
+        survey: "survey/index.html",
+        business: "business/index.html",
+        roomPlanning: "business/services/room-planning/index.html",
+        styling: "business/services/styling/index.html",
+        workspace: "business/services/workspace/index.html",
+      },
     },
   },
 });

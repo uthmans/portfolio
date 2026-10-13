@@ -2492,3 +2492,77 @@ p {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+.business-feature {
+  margin-top: 28px;
+}
+.business-feature-visual {
+  background: #eadfcd;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 22px;
+  min-width: 0;
+}
+.business-feature-scene {
+  background: #faf6ee;
+  border: 1px solid #c9b9a2;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.business-feature-scene > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+}
+.business-feature-scene strong {
+  font-family: Georgia, serif;
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  font-size: 21px;
+  color: #3b3029;
+}
+.business-feature-scene > div > span {
+  font-size: 13px;
+  color: #685d51;
+}
+.business-feature-scene .room-scene {
+  display: block;
+  width: 100%;
+  height: 260px;
+  background: #e4d1b4;
+}
+.business-feature-visual .survey-preview-action {
+  border-color: #bca98c;
+}
+.roadmap-card:only-child {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px 28px;
+}
+.roadmap-card:only-child > .concept-button {
+  grid-column: 1;
+  grid-row: 1 / span 3;
+  height: 260px;
+}
+.roadmap-card:only-child > .roadmap-meta,
+.roadmap-card:only-child > h3,
+.roadmap-card:only-child > p {
+  grid-column: 2;
+}
+.roadmap-card:only-child > .roadmap-meta {
+  align-self: end;
+}
+.roadmap-grid:has(> :only-child) {
+  grid-template-columns: minmax(0, 1fr);
+}
+@media (max-width: 760px) {
+  .business-feature-visual {
+    padding: 24px;
+  }
+  .roadmap-card:only-child {
+    display: block;
+  }
+}
