@@ -7,7 +7,10 @@
   -webkit-font-smoothing: antialiased;
   font-weight: 400;
   --ink: #28382f;
-  --muted: #626b62;
+  --muted: #566253;
+  --text-body: 1rem;
+  --text-small: 0.875rem;
+  --text-label: 0.8125rem;
   --line: #dcded3;
   --green: #243c31;
   --lime: #dceaaf;
@@ -102,14 +105,14 @@ p {
   color: #8b9b58;
 }
 .header-name {
-  font-size: 12px;
+  font-size: var(--text-small);
   font-weight: 600;
   line-height: 1.6;
   border-left: 1px solid #cbd0c3;
   padding-left: 21px;
 }
 .header-name small {
-  font-size: 10px;
+  font-size: 0.75rem;
   color: var(--muted);
   font-weight: 400;
 }
@@ -118,7 +121,7 @@ p {
   display: flex;
   align-items: center;
   gap: 32px;
-  font-size: 13px;
+  font-size: var(--text-small);
 }
 .site-header nav > a:not(.nav-contact):hover {
   text-decoration: underline;
@@ -139,7 +142,7 @@ p {
   display: none;
 }
 .eyebrow {
-  font-size: 10px;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 1.8px;
   line-height: 1.6;
@@ -154,7 +157,7 @@ p {
   gap: 20px;
 }
 .availability {
-  font-size: 10px;
+  font-size: var(--text-small);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -189,7 +192,7 @@ p {
 .hero-layout > div > p {
   margin-top: 26px;
   max-width: 445px;
-  font-size: 14px;
+  font-size: var(--text-body);
   color: var(--muted);
   line-height: 1.9;
 }
@@ -202,7 +205,7 @@ p {
   gap: 38px;
   padding: 16px 21px;
   border-radius: 3px;
-  font-size: 12px;
+  font-size: var(--text-small);
   transition:
     background 0.2s,
     transform 0.2s;
@@ -284,11 +287,11 @@ p {
   justify-content: space-between;
   padding: 21px 0;
   border-top: 1px solid var(--line);
-  font-size: 11px;
+  font-size: var(--text-label);
   color: var(--muted);
 }
 .hero-footer > span:last-child {
-  font-size: 8px;
+  font-size: 0.75rem;
   letter-spacing: 1.5px;
   display: flex;
   gap: 25px;
@@ -313,7 +316,7 @@ p {
 }
 .section-heading > p {
   max-width: 285px;
-  font-size: 12px;
+  font-size: var(--text-body);
   color: var(--muted);
   line-height: 1.9;
   padding-bottom: 5px;
@@ -339,7 +342,7 @@ p {
   position: absolute;
   top: 20px;
   left: 25px;
-  font-size: 8px;
+  font-size: 0.75rem;
   letter-spacing: 1.3px;
 }
 .visual-open {
@@ -489,7 +492,7 @@ p {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 8px;
+  font-size: var(--text-label);
   letter-spacing: 1px;
   margin-bottom: 32px;
 }
@@ -501,7 +504,7 @@ p {
   border: 1px solid #d4dec6;
   border-radius: 20px;
   padding: 5px 8px;
-  font-size: 8px;
+  font-size: var(--text-label);
   letter-spacing: 0;
 }
 .status i {
@@ -516,7 +519,7 @@ p {
   max-width: 300px;
 }
 .featured-copy > p {
-  font-size: 12px;
+  font-size: var(--text-body);
   color: var(--muted);
   margin-top: 17px;
   max-width: 285px;
@@ -528,7 +531,7 @@ p {
   margin-top: 22px;
 }
 .tags > span {
-  font-size: 9px;
+  font-size: var(--text-label);
   border: 1px solid #d6dacd;
   padding: 7px 9px;
   border-radius: 3px;
@@ -540,14 +543,14 @@ p {
   padding: 0 0 10px;
   border-bottom: 1px solid #b8c0ae;
   margin-top: 31px;
-  font-size: 12px;
+  font-size: var(--text-small);
   text-align: left;
 }
 .text-button:hover {
   color: #647641;
 }
 .featured-copy > .honesty-note {
-  font-size: 8px;
+  font-size: var(--text-label);
   margin-top: 13px;
 }
 .filters {
@@ -561,7 +564,7 @@ p {
   border: 1px solid #d3d8ca;
   border-radius: 22px;
   padding: 9px 15px;
-  font-size: 10px;
+  font-size: var(--text-small);
   transition: background 0.2s;
 }
 .filters button[aria-pressed="true"] {
@@ -603,7 +606,7 @@ p {
   top: 14px;
   left: 17px;
   right: 17px;
-  font-size: 7px;
+  font-size: 0.75rem;
   letter-spacing: 1px;
   display: flex;
   justify-content: space-between;
@@ -1016,14 +1019,14 @@ p {
   justify-content: space-between;
   align-items: center;
   margin-top: 18px;
-  font-size: 9px;
+  font-size: var(--text-label);
   color: var(--muted);
 }
 .planned-status {
   border: 1px solid #d3d7cc;
   border-radius: 20px;
   padding: 3px 8px;
-  font-size: 8px;
+  font-size: var(--text-label);
   color: #5d6657;
 }
 .roadmap-card h3 {
@@ -1051,7 +1054,7 @@ p {
   color: #677b49;
 }
 .roadmap-card > p {
-  font-size: 11px;
+  font-size: var(--text-body);
   color: var(--muted);
   margin-top: 10px;
   line-height: 1.85;
@@ -1068,7 +1071,7 @@ p {
   align-items: center;
   text-align: left;
   gap: 20px;
-  font-size: 10px;
+  font-size: var(--text-small);
 }
 .future-project > span:first-child {
   display: flex;
@@ -1085,7 +1088,7 @@ p {
   font-size: 23px;
 }
 .future-detail {
-  font-size: 9px;
+  font-size: var(--text-label);
   color: var(--muted);
   display: flex;
   gap: 25px;
@@ -1109,13 +1112,13 @@ p {
   margin: 16px 0 21px;
 }
 .capabilities-intro > p {
-  font-size: 12px;
+  font-size: var(--text-body);
   max-width: 280px;
   color: var(--muted);
 }
 .small-note {
   display: block;
-  font-size: 9px;
+  font-size: var(--text-small);
   color: #60694f;
   margin-top: 25px;
 }
@@ -1129,7 +1132,7 @@ p {
   border-bottom: 1px solid var(--line);
 }
 .capability > span:first-child {
-  font-size: 8px;
+  font-size: var(--text-label);
   color: #61704f;
   padding-top: 5px;
 }
@@ -1142,19 +1145,19 @@ p {
   flex: 1;
 }
 .capability h3 {
-  font-size: 16px;
+  font-size: 1.125rem;
   letter-spacing: -0.4px;
   font-weight: 600;
 }
 .capability p {
-  font-size: 11px;
+  font-size: var(--text-body);
   color: var(--muted);
   line-height: 1.8;
   margin-top: 8px;
 }
 .capability small {
   display: block;
-  font-size: 8px;
+  font-size: var(--text-small);
   color: #597343;
   margin-top: 9px;
 }
@@ -1238,7 +1241,7 @@ p {
   margin-top: 22px;
 }
 .about-copy > p {
-  font-size: 12px;
+  font-size: var(--text-body);
   line-height: 1.9;
   color: var(--muted);
   margin-top: 17px;
@@ -1250,19 +1253,19 @@ p {
   margin-top: 23px;
 }
 .tool-list span {
-  font-size: 8px;
+  font-size: var(--text-label);
   background: #e9ecdf;
   border: 1px solid #dbe0ce;
   border-radius: 3px;
   padding: 6px 8px;
 }
 .about-copy .languages {
-  font-size: 10px;
+  font-size: var(--text-small);
   color: var(--ink);
   margin-top: 20px;
 }
 .about-copy .about-note {
-  font-size: 8px;
+  font-size: var(--text-small);
   margin-top: 17px;
   max-width: 350px;
 }
@@ -1290,7 +1293,7 @@ p {
   color: var(--lime);
 }
 .contact-section p {
-  font-size: 11px;
+  font-size: var(--text-body);
   color: #cad3c4;
   margin-top: 19px;
   line-height: 1.9;
@@ -1312,11 +1315,11 @@ p {
   line-height: 1;
 }
 .contact-pending strong {
-  font-size: 12px;
+  font-size: var(--text-small);
   font-weight: 500;
 }
 .contact-pending p {
-  font-size: 10px;
+  font-size: var(--text-small);
   margin-top: 9px;
   color: #c9d1c1;
 }
@@ -1336,7 +1339,7 @@ p {
   display: flex;
   justify-content: space-between;
   padding: 14px 0;
-  font-size: 12px;
+  font-size: var(--text-small);
   border-bottom: 1px solid #76846f;
 }
 .contact-secondary:hover {
@@ -1348,7 +1351,7 @@ p {
   gap: 24px;
   padding-top: 34px;
   padding-bottom: 34px;
-  font-size: 9px;
+  font-size: var(--text-label);
   color: var(--muted);
 }
 .site-footer .wordmark {
@@ -1407,7 +1410,7 @@ p {
   letter-spacing: -1.2px;
 }
 .dialog-intro {
-  font-size: 14px;
+  font-size: var(--text-body);
   margin-top: 16px;
   color: var(--muted);
 }
@@ -1417,12 +1420,12 @@ p {
   border-top: 1px solid var(--line);
 }
 .detail-block h3 {
-  font-size: 14px;
+  font-size: var(--text-body);
   letter-spacing: -0.3px;
 }
 .detail-block p,
 .detail-block li {
-  font-size: 12px;
+  font-size: var(--text-body);
   line-height: 1.85;
   color: var(--muted);
   margin-top: 8px;
@@ -1438,7 +1441,7 @@ p {
   display: flex;
   gap: 25px;
   margin-top: 25px;
-  font-size: 12px;
+  font-size: var(--text-small);
 }
 .project-links a {
   text-decoration: underline;
@@ -1612,11 +1615,11 @@ p {
     font-size: 35px;
   }
   .header-name {
-    font-size: 11px;
+    font-size: var(--text-small);
     padding-left: 16px;
   }
   .header-name small {
-    font-size: 9px;
+    font-size: 0.75rem;
   }
   .menu-toggle {
     display: flex;
@@ -1625,7 +1628,7 @@ p {
     background: none;
     padding: 10px 0;
     margin-left: auto;
-    font-size: 12px;
+    font-size: var(--text-small);
   }
   .menu-toggle span {
     font-size: 20px;
@@ -1659,11 +1662,11 @@ p {
     gap: 14px;
   }
   .eyebrow {
-    font-size: 9px;
+    font-size: 0.75rem;
     letter-spacing: 1.4px;
   }
   .availability {
-    font-size: 9px;
+    font-size: var(--text-small);
   }
   .hero-layout {
     grid-template-columns: 1fr;
@@ -1679,7 +1682,7 @@ p {
     letter-spacing: -2px;
   }
   .hero-layout > div > p {
-    font-size: 13px;
+    font-size: var(--text-body);
     max-width: 450px;
     margin-top: 23px;
   }
@@ -1710,11 +1713,11 @@ p {
     right: 25px;
   }
   .hero-footer {
-    font-size: 9px;
+    font-size: var(--text-label);
     padding: 17px 0;
   }
   .hero-footer > span:last-child {
-    font-size: 6px;
+    font-size: 0.75rem;
     gap: 12px;
   }
   .hero-footer > span:last-child > span {
@@ -1734,7 +1737,7 @@ p {
     margin-bottom: 28px;
   }
   .section-heading > p {
-    font-size: 11px;
+    font-size: var(--text-body);
     max-width: 350px;
   }
   .section-heading > p br {
@@ -1758,7 +1761,7 @@ p {
   }
   .project-meta {
     margin-bottom: 21px;
-    font-size: 9px;
+    font-size: var(--text-label);
   }
   .featured-copy h3 {
     font-size: 27px;
@@ -1771,7 +1774,7 @@ p {
     margin-top: 24px;
   }
   .featured-copy > .honesty-note {
-    font-size: 9px;
+    font-size: var(--text-label);
   }
   .roadmap-grid {
     grid-template-columns: 1fr;
@@ -1952,21 +1955,21 @@ p {
     font-size: 7px;
   }
   .roadmap-meta {
-    font-size: 10px;
+    font-size: var(--text-label);
   }
   .roadmap-card h3 {
     font-size: 20px;
     margin-top: 12px;
   }
   .roadmap-card > p {
-    font-size: 12px;
+    font-size: var(--text-body);
   }
   .filters {
     gap: 7px;
     margin-bottom: 22px;
   }
   .filters button {
-    font-size: 9px;
+    font-size: var(--text-small);
     padding: 8px 12px;
   }
   .future-project {
@@ -1977,12 +1980,12 @@ p {
   }
   .future-project > span:first-child {
     gap: 12px;
-    font-size: 9px;
+    font-size: var(--text-small);
   }
   .future-detail {
     max-width: none;
     margin-left: 34px;
-    font-size: 9px;
+    font-size: var(--text-label);
     gap: 15px;
   }
   .capabilities-section {
@@ -1997,13 +2000,13 @@ p {
     margin-top: 15px;
   }
   .capability h3 {
-    font-size: 17px;
+    font-size: 1.125rem;
   }
   .capability p {
-    font-size: 12px;
+    font-size: var(--text-body);
   }
   .capability small {
-    font-size: 9px;
+    font-size: var(--text-small);
   }
   .about-section {
     grid-template-columns: 1fr;
@@ -2035,14 +2038,14 @@ p {
     font-size: 36px;
   }
   .about-copy > p {
-    font-size: 13px;
+    font-size: var(--text-body);
   }
   .about-copy .about-note {
-    font-size: 9px;
+    font-size: var(--text-small);
     max-width: none;
   }
   .tool-list span {
-    font-size: 9px;
+    font-size: var(--text-label);
   }
   .contact-section {
     margin: 0 24px;
@@ -2056,7 +2059,7 @@ p {
     letter-spacing: -1.8px;
   }
   .contact-section p {
-    font-size: 12px;
+    font-size: var(--text-body);
   }
   .contact-actions {
     max-width: none;
@@ -2074,10 +2077,10 @@ p {
     font-size: 28px;
   }
   .contact-pending strong {
-    font-size: 12px;
+    font-size: var(--text-small);
   }
   .contact-pending p {
-    font-size: 10px;
+    font-size: var(--text-small);
     margin-top: 5px;
   }
   .desktop-break {
@@ -2088,7 +2091,7 @@ p {
     gap: 17px;
     padding-top: 27px;
     padding-bottom: 27px;
-    font-size: 8px;
+    font-size: var(--text-label);
   }
   .site-footer > span:nth-of-type(2) {
     margin-left: 0;
@@ -2106,14 +2109,14 @@ p {
     font-size: 27px;
   }
   .dialog-top .eyebrow {
-    font-size: 8px;
+    font-size: 0.75rem;
   }
   .dialog-intro {
-    font-size: 13px;
+    font-size: var(--text-body);
   }
   .detail-block p,
   .detail-block li {
-    font-size: 12px;
+    font-size: var(--text-body);
   }
 }
 @media (max-width: 370px) {
@@ -2128,10 +2131,10 @@ p {
     font-size: 47px;
   }
   .header-name {
-    font-size: 10px;
+    font-size: var(--text-small);
   }
   .header-name small {
-    font-size: 8px;
+    font-size: 0.75rem;
   }
   .featured-visual {
     padding-left: 28px;
@@ -2255,46 +2258,156 @@ p {
 
 /* Reading sizes for the main content; interface illustrations stay miniature. */
 .hero-layout > div > p {
-  font-size: 15px;
+  font-size: var(--text-body);
 }
 .section-heading > p {
-  font-size: 13px;
+  font-size: var(--text-body);
 }
 .featured-copy > p {
-  font-size: 14px;
+  font-size: var(--text-body);
 }
 .featured-copy > .honesty-note {
-  font-size: 10px;
+  font-size: var(--text-label);
 }
 .roadmap-card > p,
 .capability p {
-  font-size: 13px;
+  font-size: var(--text-body);
 }
 .capabilities-intro > p,
 .about-copy > p {
-  font-size: 14px;
+  font-size: var(--text-body);
 }
 .about-copy .about-note {
-  font-size: 10px;
+  font-size: var(--text-small);
 }
 .contact-section p {
-  font-size: 13px;
+  font-size: var(--text-body);
 }
 .contact-pending p {
-  font-size: 11px;
+  font-size: var(--text-small);
 }
 .detail-block p,
 .detail-block li {
-  font-size: 14px;
+  font-size: var(--text-body);
 }
 .site-footer {
-  font-size: 10px;
+  font-size: var(--text-label);
 }
 @media (max-width: 760px) {
   .hero-layout > div > p {
-    font-size: 14px;
+    font-size: var(--text-body);
   }
   .site-footer {
-    font-size: 9px;
+    font-size: var(--text-label);
+  }
+}
+
+/* Give supporting text the same care as headlines. */
+.header-name {
+  min-width: 0;
+}
+.wordmark,
+.menu-toggle {
+  flex-shrink: 0;
+}
+.availability {
+  line-height: 1.5;
+  font-weight: 500;
+}
+.small-note {
+  line-height: 1.7;
+}
+.capability {
+  padding-top: 26px;
+  padding-bottom: 26px;
+}
+.capability small {
+  display: inline-block;
+  max-width: 100%;
+  padding: 5px 10px;
+  border: 1px solid #cdd6be;
+  border-radius: 6px;
+  background: #e8eddf;
+  color: #405735;
+  line-height: 1.5;
+}
+.about-copy .about-note {
+  max-width: 42ch;
+  line-height: 1.75;
+}
+.tags > span,
+.tool-list span {
+  line-height: 1.5;
+}
+.status,
+.planned-status {
+  line-height: 1.4;
+  padding: 5px 10px;
+}
+.filters button {
+  min-height: 44px;
+  padding: 10px 17px;
+}
+.text-button {
+  min-height: 44px;
+  align-items: center;
+}
+.roadmap-card h3 > button {
+  min-height: 44px;
+  line-height: 1.5;
+}
+.contact-secondary {
+  min-height: 44px;
+  align-items: center;
+}
+.concept-label {
+  align-items: center;
+  padding-right: 25px;
+}
+.featured-project {
+  transition: box-shadow 0.2s;
+}
+.featured-project:hover {
+  box-shadow: 0 10px 28px #28382f0a;
+}
+.future-project {
+  transition: background 0.2s;
+}
+.future-project:hover {
+  background: #e9ecdf;
+}
+.future-project > span:first-child {
+  flex-wrap: wrap;
+  row-gap: 8px;
+}
+.site-footer {
+  line-height: 1.6;
+  flex-wrap: wrap;
+  row-gap: 14px;
+}
+.site-footer > a:last-child {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+@media (max-width: 760px) {
+  .header-name {
+    line-height: 1.4;
+  }
+  .hero-footer {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .nav-contact {
+    margin-left: 0;
+  }
+  .site-header nav {
+    align-items: center;
+  }
+  .site-header nav > a:not(.nav-contact) {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+  .about-copy .about-note {
+    max-width: none;
   }
 }
