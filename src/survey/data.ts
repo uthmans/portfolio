@@ -152,7 +152,14 @@ export function toCsv(rows: ResponseRow[]) {
           row.format,
           row.satisfaction ?? "",
           row.confidence ?? "",
-        ].join(","),
+        ]
+          .map((value) => {
+            const cell = String(value);
+            return /[",\r\n]/.test(cell)
+              ? `"${cell.replaceAll('"', '""')}"`
+              : cell;
+          })
+          .join(","),
       ),
     ].join("\r\n") + "\r\n"
   );

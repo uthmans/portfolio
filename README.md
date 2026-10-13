@@ -14,7 +14,7 @@ npm run dev
 Vite prints the local development address (normally port 5173). The development server listens on all interfaces for cloud development. It is not a production server.
 
 ```sh
-npm test          # four survey calculation/export checks
+npm test          # survey calculations, CSV validation, and generation checks
 npm run build     # strict TypeScript checks, then production build
 npm run preview   # serve the production build for local inspection
 ```
@@ -82,7 +82,7 @@ Project records in `src/content.ts` contain the problem, audience, features, con
 ## Current limitations
 
 - The CV download is held until an updated document is provided; the attached photo still needs a downloadable file.
-- Survey Insights Studio currently uses its built-in fictional sample only; CSV import is next. No AI API, login, server database, analytics, or working enquiry form.
+- Survey CSV import requires the documented five-column schema (up to 5,000 rows and 2 MB). Ratings are limited to two 1–5 questions. No AI API, login, server database, analytics, or working enquiry form.
 - English only. Content is centralized for future translations; Spanish and Arabic navigation should be added only with real translations, and Arabic will need RTL verification.
 - The first implementation was created with AI coding assistance from Uthman’s requirements. His review, testing, and learning are ongoing; no technical seniority or completed client work is implied.
 
@@ -94,14 +94,28 @@ Publishing the cloud environment snapshots the development workspace and tools. 
 
 ## Survey Insights Studio
 
-Open `/portfolio/survey/`. This is a separate built page with direct-refresh support on GitHub Pages. It offers two rating questions, combined learning-track and session-format filters, response counts, a rating distribution, a mean, an explicit missing-answer state, a source-row table, and a filtered CSV download. It uses 12 original fictional responses, with no real organizational data or API connection.
+Open `/portfolio/survey/`. This is a separate built page with direct-refresh support on GitHub Pages. It offers two rating questions, combined learning-track and session-format filters, response counts, a rating distribution, a mean, an explicit missing-answer state, a source-row table, and a filtered CSV download. It starts with 12 original fictional responses. Visitors can import a validated CSV or generate 10–1,000 random fictional responses, then filter, calculate, and download them. No data is uploaded and there is no API connection.
 
 - `src/survey/data.ts`: original sample, question definitions, filtering, calculations, and CSV export.
+- `src/survey/csv.ts`: CSV parsing and whole-file validation with physical line numbers.
+- `src/survey/generate.ts`: seeded random fictional-data generation.
 - `src/survey/App.tsx`: the interactive application.
 - `src/survey/Chart.tsx`: shared chart used by the demo and the accurate portfolio preview.
 - `src/survey/styles.css`: application styling.
 - `tests/survey-data.test.ts`: hand-checked counts, combined filters, missing/empty states, and export checks.
+- `tests/survey-csv.test.ts`: CSV edge cases, boundaries, whole-file rejection, and generator round-trips.
 
 Blank ratings are excluded from the mean and percentages, while total rows and missing counts remain visible. Percentages use the answered count for the selected question. CSV columns are `id,track,format,satisfaction,confidence`; ratings are 1–5 and blanks mean missing. The download contains the currently filtered rows and both question columns.
 
-The sample resets on reload. No data is persisted or sent to a server. The next milestone is CSV import with validation and an explicit browser-local data policy.
+### Import format and behavior
+
+Use a UTF-8 comma-separated CSV of up to 2 MB and 5,000 response rows. It must have exactly `id,track,format,satisfaction,confidence` as headers, in any order. Header names and category values are case-sensitive. CRLF/LF, BOM, quoted fields, escaped quotes, and empty physical lines are supported.
+
+- `id`: unique, 1–64 ASCII letters, numbers, hyphens, or underscores; start with a letter or number.
+- `track`: `Websites`, `Automations`, or `Data`.
+- `format`: `Online` or `In person`.
+- Ratings: one of `1`, `2`, `3`, `4`, `5`, or blank. Text, zero, decimal notation, and out-of-range values are rejected.
+
+The page includes a format guide and a downloadable example. Every response must validate before any data is replaced. Failures preserve the current dataset and filters and show line/field errors, capped at 20. Successful loads reset filters and the question. Generated data is clearly fictional; imported data is labeled separately.
+
+All data resets to the sample on reload. Nothing is persisted or sent to a server. Download a CSV to retain imported or generated data. The table previews the first 100 filtered rows; calculations and downloads use all filtered rows. This keeps larger datasets usable on mobile.

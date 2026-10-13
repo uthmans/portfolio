@@ -25,14 +25,20 @@
 - [x] Working demo linked from featured work with accurate limitations
 - [ ] Uthman reviews the demo and explains one filtered calculation
 
-## Next milestone: CSV import
+## CSV import & fictional-data generation — complete
 
-1. Support the documented CSV schema with clear validation for headers, IDs, ratings, categories, and quoted fields.
-2. Reject invalid files without discarding the current usable dataset; show errors with row and field context.
-3. Keep imported data in the browser with no server upload, no API, and a clear reset-to-sample action.
-4. Test valid and invalid imports, missing values, exports, and calculations with hand-checked fixtures.
+- [x] Documented CSV schema, visible format guide, and downloadable valid example
+- [x] UTF-8 parsing, quoted fields, unique IDs, category/rating validation, row/file limits
+- [x] Whole-file rejection with line errors that preserves the current dataset and filters
+- [x] Generate 10–1,000 random fictional responses; download and reimport them
+- [x] Clear data-source labels, browser-only data handling, reset to sample
+- [x] First-100 table preview with calculations/exports across every filtered row
+- [x] Calculation/CSV/generation tests and real browser import/export checks
+- [ ] Uthman reviews importing, generating, filtering, and downloading
 
-Later: more question types and a useful summary export. Do not add AI summaries until a real integration and evaluation plan exist.
+## Next project: A small business, online
+
+Create an original fictional service business, responsive service pages, a quote calculator with explicit rules, and a validated enquiry demo. Keep enquiry delivery clearly labeled until a real backend is connected. Focus on evidence for website and automation opportunities.
 
 ## Later
 

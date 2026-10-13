@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, type ChangeEvent } from "react";
+import { MAX_FILE_BYTES, MAX_ROWS, parseCsv } from "./csv";
+import { generateResponses } from "./generate";
 import Chart from "./Chart";
 import {
   filterResponses,
@@ -7,27 +9,125 @@ import {
   summarize,
   toCsv,
   type Question,
+  type ResponseRow,
 } from "./data";
+
+type Dataset = {
+  rows: ResponseRow[];
+  kind: "sample" | "generated" | "imported";
+  name: string;
+  seed?: number;
+};
 
 export default function SurveyApp() {
   const [question, setQuestion] = useState<Question>("satisfaction");
   const [track, setTrack] = useState("All");
   const [format, setFormat] = useState("All");
   const [notice, setNotice] = useState("");
-  const rows = filterResponses(sample, track, format);
+  const [dataset, setDataset] = useState<Dataset>({
+    rows: sample,
+    kind: "sample",
+    name: "Built-in fictional sample",
+  });
+  const [generationCount, setGenerationCount] = useState("100");
+  const [dataErrors, setDataErrors] = useState<string[]>([]);
+  const [datasetNotice, setDatasetNotice] = useState("");
+  const [reading, setReading] = useState(false);
+  const rows = filterResponses(dataset.rows, track, format);
+  const visibleRows = rows.slice(0, 100);
+  const fictional = dataset.kind !== "imported";
   const summary = summarize(rows, question);
   const filtered = track !== "All" || format !== "All";
 
-  function download() {
+  function loadDataset(next: Dataset, message: string) {
+    setDataset(next);
+    setTrack("All");
+    setFormat("All");
+    setQuestion("satisfaction");
+    setDataErrors([]);
+    setNotice("");
+    setDatasetNotice(message);
+  }
+
+  function saveCsv(data: ResponseRow[], filename: string) {
     const url = URL.createObjectURL(
-      new Blob([toCsv(rows)], { type: "text/csv;charset=utf-8" }),
+      new Blob([toCsv(data)], { type: "text/csv;charset=utf-8" }),
     );
     const anchor = document.createElement("a");
     anchor.href = url;
-    anchor.download = "fictional-survey-responses.csv";
+    anchor.download = filename;
     anchor.click();
     window.setTimeout(() => URL.revokeObjectURL(url), 1000);
-    setNotice(`CSV download requested for ${rows.length} fictional responses.`);
+  }
+
+  function download() {
+    saveCsv(
+      rows,
+      fictional
+        ? "fictional-survey-responses.csv"
+        : "imported-survey-responses.csv",
+    );
+    setNotice(
+      `CSV download requested for ${rows.length} ${fictional ? "fictional " : ""}responses.`,
+    );
+  }
+
+  async function importFile(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.currentTarget.files?.[0];
+    event.currentTarget.value = "";
+    if (!file) return;
+    setDataErrors([]);
+    setDatasetNotice("");
+    if (file.size > MAX_FILE_BYTES) {
+      setDataErrors([
+        "The file is too large. Use a UTF-8 CSV of 2 MB or less.",
+      ]);
+      return;
+    }
+    setReading(true);
+    try {
+      const text = new TextDecoder("utf-8", { fatal: true }).decode(
+        await file.arrayBuffer(),
+      );
+      const result = parseCsv(text);
+      if (result.ok)
+        loadDataset(
+          { rows: result.rows, kind: "imported", name: file.name },
+          `Imported ${result.rows.length} responses from ${file.name}. Filters reset.`,
+        );
+      else setDataErrors(result.errors);
+    } catch {
+      setDataErrors([
+        "The file could not be read as UTF-8 text. Save it as CSV UTF-8 and try again.",
+      ]);
+    } finally {
+      setReading(false);
+    }
+  }
+
+  function generate() {
+    setDatasetNotice("");
+    try {
+      if (!/^\d+$/.test(generationCount))
+        throw new Error("Choose a whole number from 10 to 1,000 responses.");
+      const seed = crypto.getRandomValues(new Uint32Array(1))[0];
+      const generated = generateResponses(Number(generationCount), seed);
+      loadDataset(
+        {
+          rows: generated,
+          kind: "generated",
+          name: "Generated fictional data",
+          seed,
+        },
+        `Generated ${generated.length} fictional responses. Filters reset. Download the CSV to keep them.`,
+      );
+    } catch (error) {
+      setDataErrors([
+        error instanceof Error
+          ? error.message
+          : "Could not generate the dataset.",
+      ]);
+    }
   }
 
   return (
@@ -49,18 +149,187 @@ export default function SurveyApp() {
             <p>Explore feedback. See the counts. Understand the calculation.</p>
           </div>
           <span className="sample-badge">
-            Fictional sample · {sample.length} responses
+            {dataset.kind === "imported"
+              ? "Imported CSV"
+              : dataset.kind === "generated"
+                ? "Generated fictional"
+                : "Fictional sample"}{" "}
+            · {dataset.rows.length} responses
           </span>
         </div>
         <aside className="dataset-note">
-          <strong>Meet the sample</strong>
+          <strong>{dataset.name}</strong>
           <p>
-            Feedback from an imaginary community learning series on websites,
-            automations, and data. Every response is made up. This first version
-            uses only the built-in sample; CSV import is the next milestone.
-            There is no AI integration or server storage.
+            {dataset.kind === "sample"
+              ? "The built-in sample is feedback from an imaginary community learning series. Every response is made up."
+              : dataset.kind === "generated"
+                ? `These randomly generated responses are entirely fictional. Ratings are chosen from 1–5, with about 10% of answers intentionally left blank.`
+                : "Your imported CSV is now used for the charts and calculations. Its responses are not labeled as fictional."}{" "}
+            Imported and generated data stay in this tab and reset on reload.
+            Download a CSV to keep them. Nothing is uploaded to a server; there
+            is no AI integration.
           </p>
         </aside>
+
+        <section
+          className="dataset-panel"
+          aria-labelledby="dataset-title"
+          aria-busy={reading}
+        >
+          <div className="dataset-heading">
+            <div>
+              <span className="eyebrow">CHOOSE YOUR DATA</span>
+              <h2 id="dataset-title">
+                Bring a CSV, or make a fictional dataset.
+              </h2>
+            </div>
+            <button
+              className="reset-filters"
+              disabled={reading}
+              onClick={() =>
+                loadDataset(
+                  {
+                    rows: sample,
+                    kind: "sample",
+                    name: "Built-in fictional sample",
+                  },
+                  "Reset to the 12-response fictional sample. Filters reset.",
+                )
+              }
+            >
+              Reset to sample
+            </button>
+          </div>
+          <div className="dataset-options">
+            <div>
+              <h3>Import your CSV</h3>
+              <p>
+                Use the format below. Invalid files leave your current dataset
+                and filters unchanged.
+              </p>
+              <label className="file-label" htmlFor="survey-csv">
+                Choose CSV file
+              </label>
+              <input
+                id="survey-csv"
+                type="file"
+                accept=".csv,text/csv"
+                disabled={reading}
+                onChange={importFile}
+                aria-describedby="csv-limits"
+              />
+              <small id="csv-limits">
+                UTF-8, comma-separated · Up to 2 MB and{" "}
+                {MAX_ROWS.toLocaleString("en-US")} rows
+              </small>
+            </div>
+            <div>
+              <h3>No file? Try random fictional data.</h3>
+              <p>
+                Generate a fresh dataset, explore its results, and download it
+                as a valid CSV.
+              </p>
+              <div className="generator-controls">
+                <label htmlFor="generation-count">
+                  Number of responses
+                  <input
+                    id="generation-count"
+                    type="number"
+                    min="10"
+                    max="1000"
+                    step="1"
+                    value={generationCount}
+                    disabled={reading}
+                    onChange={(event) => setGenerationCount(event.target.value)}
+                  />
+                </label>
+                <button disabled={reading} onClick={generate}>
+                  Generate fictional dataset
+                </button>
+              </div>
+              <small>
+                10–1,000 responses · A new random dataset on each click
+              </small>
+            </div>
+          </div>
+          <details className="csv-guide">
+            <summary>Required CSV format & example</summary>
+            <p>
+              One response per row. Include exactly these five headers, in any
+              order. Header names and category values are case-sensitive. Quoted
+              fields are supported. Save as{" "}
+              <strong>CSV UTF-8 (comma-separated)</strong> from your
+              spreadsheet.
+            </p>
+            <div className="csv-format-table">
+              <dl>
+                <div>
+                  <dt>id</dt>
+                  <dd>
+                    Unique, 1–64 letters, numbers, hyphens, or underscores;
+                    start with a letter or number. Use anonymous IDs, such as
+                    R01.
+                  </dd>
+                </div>
+                <div>
+                  <dt>track</dt>
+                  <dd>Websites, Automations, or Data</dd>
+                </div>
+                <div>
+                  <dt>format</dt>
+                  <dd>Online or In person</dd>
+                </div>
+                <div>
+                  <dt>satisfaction</dt>
+                  <dd>Whole number 1–5, or blank for a missing answer</dd>
+                </div>
+                <div>
+                  <dt>confidence</dt>
+                  <dd>Whole number 1–5, or blank for a missing answer</dd>
+                </div>
+              </dl>
+            </div>
+            <pre>
+              id,track,format,satisfaction,confidence{"\n"}
+              R01,Websites,Online,5,4{"\n"}R02,Data,In person,,3
+            </pre>
+            <p>
+              Blank ratings are excluded from calculations, never treated as
+              zero. Do not use 0, N/A, or text for a missing rating. All rows
+              must pass validation before any data is replaced.
+            </p>
+            <button
+              className="reset-filters"
+              onClick={() => {
+                saveCsv(sample, "survey-example.csv");
+                setDatasetNotice(
+                  "Example CSV download requested. Your active dataset is unchanged.",
+                );
+              }}
+            >
+              Download example CSV
+            </button>
+          </details>
+          {reading && (
+            <p role="status" className="data-change-notice">
+              Reading and validating your CSV…
+            </p>
+          )}
+          {dataErrors.length > 0 && (
+            <div role="alert" className="dataset-errors">
+              <h3>Dataset unchanged</h3>
+              <p>Fix these issues and try again:</p>
+              <ul>
+                {dataErrors.map((error, index) => (
+                  <li key={index}>{error}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          <p role="status" className="data-change-notice">
+            {datasetNotice}
+          </p>
+        </section>
 
         <section className="studio-controls" aria-labelledby="controls-title">
           <div className="controls-heading">
@@ -121,14 +390,14 @@ export default function SurveyApp() {
         </section>
 
         <p className="results-status" role="status">
-          Showing {rows.length} of {sample.length} responses ·{" "}
+          Showing {rows.length} of {dataset.rows.length} responses ·{" "}
           {summary.answered} answered this question · {summary.missing} missing
         </p>
         <div className="summary-grid">
           <div>
             <span>Filtered responses</span>
             <strong>{summary.total}</strong>
-            <small>Of {sample.length} in the dataset</small>
+            <small>Of {dataset.rows.length} in the dataset</small>
           </div>
           <div>
             <span>Answered this question</span>
@@ -181,26 +450,19 @@ export default function SurveyApp() {
               must match both the track and the format.
             </p>
             <p>
-              These small fictional samples illustrate the tool’s behavior; they
-              are not evidence about real people or programs.
+              {fictional
+                ? "This fictional dataset illustrates the tool’s behavior; it is not evidence about real people or programs."
+                : "These calculations describe the imported responses only. A small or filtered sample does not establish broader findings."}
             </p>
-            <details>
-              <summary>CSV format & next steps</summary>
-              <p>
-                The download includes{" "}
-                <code>id,track,format,satisfaction,confidence</code>. Ratings
-                are whole numbers from 1 to 5; a blank means missing. Next,
-                we’ll add CSV import with validation and support for your own
-                browser-local data.
-              </p>
-            </details>
           </section>
           <section className="export-panel" aria-labelledby="export-title">
             <span className="eyebrow">TAKE A CLOSER LOOK</span>
             <h2 id="export-title">Check the source rows.</h2>
             <p>
-              Download the {rows.length} filtered fictional responses and
-              compare them with the chart. Both question columns are included.
+              Download the {rows.length} filtered{" "}
+              {fictional ? "fictional " : ""}responses and compare them with the
+              chart. Both question columns are included, and all filtered rows
+              are exported even when the table preview is limited.
             </p>
             <button onClick={download} disabled={!rows.length}>
               Download filtered CSV ↓
@@ -221,7 +483,10 @@ export default function SurveyApp() {
           >
             <table>
               <caption>
-                {rows.length} fictional responses; a dash means no answer.
+                {fictional ? "Fictional responses" : "Imported responses"};
+                showing {Math.min(rows.length, 100)} of {rows.length} filtered
+                rows. A dash means no answer. Calculations use all filtered
+                rows.
               </caption>
               <thead>
                 <tr>
@@ -233,7 +498,7 @@ export default function SurveyApp() {
                 </tr>
               </thead>
               <tbody>
-                {rows.map((row) => (
+                {visibleRows.map((row) => (
                   <tr key={row.id}>
                     <th scope="row">{row.id}</th>
                     <td>{row.track}</td>
@@ -248,7 +513,9 @@ export default function SurveyApp() {
         </section>
       </main>
       <footer className="studio-footer">
-        <span>Built with AI coding assistance · Original fictional data</span>
+        <span>
+          Built with AI coding assistance · CSV processing stays in your browser
+        </span>
         <a href="../#work">Back to the portfolio ↑</a>
       </footer>
     </>

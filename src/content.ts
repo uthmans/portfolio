@@ -60,13 +60,14 @@ export const surveyProject: Project = {
   category: "Data exploration",
   status: "First version",
   description:
-    "A working survey explorer with fictional responses, filters, rating charts, and calculations you can check.",
+    "Explore sample, generated, or imported survey responses with filters, rating charts, and calculations you can check.",
   problem:
     "Make a small survey easier to explore without hiding response counts or the effect of missing values.",
   audience:
     "People exploring feedback and learning to interpret survey results.",
   features: [
-    "12 original fictional sample responses",
+    "12 original fictional sample responses and a random fictional-data generator",
+    "Validated CSV import with a format guide and downloadable example",
     "Two rating questions with track and format filters",
     "Response counts, distributions, and means",
     "Explicit missing-value rules and an unanswered state",
@@ -76,7 +77,7 @@ export const surveyProject: Project = {
     "I set the project goals and scope. This first version was implemented with AI coding assistance, including calculation and browser checks. I’m reviewing the result and learning to explain and maintain it.",
   technology: ["React", "TypeScript", "CSS"],
   decisions:
-    "The first version uses a built-in fictional sample only. CSV import is not implemented yet. There is no AI integration, login, server storage, or real participant data. Missing answers are excluded from averages and percentages, and shown separately.",
+    "CSVs must follow the documented five-column schema. Imported and generated data stay in the current tab and reset on reload; download to keep them. Invalid files preserve the current dataset. There is no AI integration, login, or server storage. Missing answers are excluded from averages and percentages, and shown separately.",
   demoUrl: "survey/",
 };
 
