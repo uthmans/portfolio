@@ -26,6 +26,8 @@ In the repository’s **Settings → Pages → Build and deployment**, set **Sou
 
 The **Deploy portfolio to GitHub Pages** workflow builds the site and deploys only `dist/`. It runs on pushes to `main`; you can also run it manually from the **Actions** tab. After enabling the Actions source, wait for a successful workflow, or select **Run workflow** to retry it.
 
+Keep `deploy-pages.yml` as the sole Pages deployment workflow, so every deployment publishes the compiled Vite output. A generic Jekyll workflow can overwrite it with unbuilt source files and produce a blank page.
+
 The website address is https://uthmans.github.io/portfolio/. Changing hosting or the repository name requires updating `base` in `vite.config.ts`.
 
 Fonts are bundled locally, and the site does not require API credentials or external services.
