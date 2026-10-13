@@ -31,10 +31,11 @@ assert.equal(
 );
 await page.evaluate(() => document.fonts.ready);
 assert.equal(await page.locator("h1").count(), 1);
-assert.equal(await page.locator(".roadmap-card").count(), 1);
-assert.match(
-  await page.locator(".roadmap-card > h3").innerText(),
-  /Freelancer Project Hub/,
+assert.equal(await page.locator(".featured-project").count(), 4);
+assert.equal(await page.locator("#roadmap").count(), 0);
+assert.equal(
+  await page.getByRole("link", { name: "Try the Project Hub" }).count(),
+  1,
 );
 assert.equal(
   await page.getByRole("link", { name: "Try Form & Field" }).count(),
@@ -64,17 +65,18 @@ assert.equal(
   true,
 );
 await page
-  .getByRole("button", {
-    name: "Concept preview: View plan for Freelancer Project Hub",
-  })
+  .getByRole("button", { name: "Hub project details", exact: true })
   .click();
-assert.match(await page.getByRole("dialog").innerText(), /Planned features/);
-assert.equal(await page.getByRole("dialog").getByRole("link").count(), 0);
-await page.getByRole("button", { name: "Close project details" }).click();
-await page.getByRole("button", { name: /Further ahead/ }).click();
 assert.match(
   await page.getByRole("dialog").innerText(),
-  /No chatbot or AI connection exists yet/,
+  /Browser-local saving/,
+);
+assert.equal(
+  await page
+    .getByRole("dialog")
+    .getByRole("link", { name: "Live demo" })
+    .getAttribute("href"),
+  "hub/",
 );
 await page.keyboard.press("Escape");
 assert.equal(await page.locator('a[href=""], a[href="mailto:"]').count(), 0);
@@ -125,7 +127,7 @@ assert.equal(await page.locator("#site-navigation").isVisible(), false);
 assert.equal(new URL(page.url()).hash, "#about");
 await page
   .getByRole("button", {
-    name: "Concept preview: View plan for Freelancer Project Hub",
+    name: "Hub project details",
   })
   .click();
 assert.equal(await page.getByRole("dialog").isVisible(), true);

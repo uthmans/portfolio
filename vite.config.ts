@@ -14,6 +14,7 @@ export default defineConfig({
         roomPlanning: "business/services/room-planning/index.html",
         styling: "business/services/styling/index.html",
         workspace: "business/services/workspace/index.html",
+        hub: "hub/index.html",
       },
     },
   },

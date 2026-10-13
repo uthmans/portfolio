@@ -29,7 +29,7 @@ The **Deploy portfolio to GitHub Pages** workflow builds the site and deploys on
 
 Keep `deploy-pages.yml` as the sole Pages deployment workflow, so every deployment publishes the compiled Vite output. A generic Jekyll workflow can overwrite it with unbuilt source files and produce a blank page.
 
-Each build verifies all six HTML pages and their asset files, then writes `dist/deployment.json` with its Git commit and build timestamp. The published `/portfolio/deployment.json` can be compared with the successful workflow’s commit when diagnosing an outdated deployment.
+Each build verifies all seven HTML pages and their asset files, then writes `dist/deployment.json` with its Git commit and build timestamp. The published `/portfolio/deployment.json` can be compared with the successful workflow’s commit when diagnosing an outdated deployment.
 
 The website address is https://uthmans.github.io/portfolio/. Changing hosting or the repository name requires updating `base` in `vite.config.ts`.
 
@@ -70,7 +70,7 @@ The confirmed public email is `uthmansalama@gmail.com`; other contact fields rem
 
 ## Add projects
 
-Project records in `src/content.ts` contain the problem, audience, features, contribution, technology, decisions, and optional real demo/source URLs. Update a status only when supported by working evidence. The roadmap gallery displays the planned Freelancer Project Hub, with Document Q&A shown as a later idea. Category filters are only shown when more than one category needs filtering. To feature an additional completed project, extend the selected-work section rather than presenting it as a planned concept. The static preview components are visual illustrations, not applications.
+Project records in `src/content.ts` contain the problem, audience, features, contribution, technology, decisions, and optional real demo/source URLs. Update a status only when supported by working evidence. Selected work features all four working projects: the portfolio, Survey Insights Studio, Form & Field, and Freelancer Project Hub. The home page contains no planned-project gallery or promised AI integration. Preview panels illustrate the real demonstrations; open a live demo to interact with it.
 
 ## Main interactions to check
 
@@ -78,18 +78,18 @@ Project records in `src/content.ts` contain the problem, audience, features, con
 2. Project previews and titles open accessible native dialog details.
 3. Escape and the close button dismiss details; focus returns to the opener.
 4. Tab stays inside an open dialog.
-5. The working survey and business demos are linked from selected work; remaining concepts retain their planned status.
+5. All three standalone demos — survey, business and freelancer hub — are linked from selected work.
 6. On mobile, Menu opens navigation, and selecting a section closes it.
 7. No horizontal overflow at small widths. Reduced-motion preferences disable smooth scrolling and transitions.
 
 ## Current limitations
 
 - The CV download is held until an updated document is provided; the attached photo still needs a downloadable file.
-- Survey CSV import requires the documented five-column schema (up to 5,000 rows and 2 MB). Ratings are limited to two 1–5 questions. No AI API, login, server database, analytics, or working enquiry form.
+- Survey CSV import requires the documented five-column schema (up to 5,000 rows and 2 MB). Ratings are limited to two 1–5 questions. No AI API, login, server database or analytics. Business enquiries are working local previews, with no external delivery.
 - English only. Content is centralized for future translations; Spanish and Arabic navigation should be added only with real translations, and Arabic will need RTL verification.
 - The first implementation was created with AI coding assistance from Uthman’s requirements. His review, testing, and learning are ongoing; no technical seniority or completed client work is implied.
 
-See `ROADMAP.md` for the next small milestone.
+See `ROADMAP.md` for completed milestones and internal future ideas.
 
 ## Saving code and publishing
 
@@ -134,3 +134,14 @@ The illustrative USD rules are: room planning $180 per room, styling $120 per ro
 The enquiry requires a 2–80-character name, a valid email-shaped address, a 20–1,200-character brief, and acknowledgement of the demo. “Fill with sample details” supplies an explicitly fictional example. “Preview enquiry” validates and creates a local snapshot, labeled not sent. The visitor can download that snapshot as text. Editing any enquiry field or estimate clears the old preview. Reloading clears the form. No network delivery, server storage, payment, or appointment integration exists.
 
 `tests/business.test.ts` checks pricing, invalid options, validation boundaries, and the honest download text. `npm run test:business` exercises all pages, quote interactions, errors/focus, sample details, preview/download, direct refresh, mobile navigation, reduced motion, and accessibility.
+
+
+### Freelancer Project Hub
+
+Open `/portfolio/hub/`. This independent application starts with three original fictional projects and clients. Create and edit projects, track USD budgets and spending, add/remove/check tasks, change stages, and filter by client/project text, stage, or overdue status. Summary figures apply to the visible projects; completed projects are excluded from overdue counts. Stages and task completion are independent.
+
+Data is saved under `uthman-freelancer-hub-v1` in this browser’s localStorage when a change is made. There is no backend, account, synchronization, invoice, or payment flow. Browser storage may be cleared or unavailable; save errors are visible and the current tab remains usable. Corrupt saved data is not overwritten on load. Use **Download backup** to retain a versioned JSON copy; **Restore a backup** validates it before asking to replace the workspace. Delete, reset, and restore require explicit confirmation. Invalid imports leave existing projects unchanged.
+
+Budgets and spending are integer cents, with a maximum USD 1,000,000 per amount and at most two entered decimal places. The demo supports 50 projects, 100 tasks per project, 80-character project/client names, 120-character tasks, and 1,000-character notes. Backup files are limited to 5 MB. Sample deadlines are generated relative to the visitor’s local date; completed tasks and project stages remain independently editable. Over-budget spending is allowed and clearly shown.
+
+`npm test` includes Hub money, calendar, summary, filtering and backup-validation checks. `npm run test:hub` checks actual creation/editing/tasks/stages, filter totals, reload persistence, backup download/restore, invalid files, delete/reset confirmation, storage failures, modal keyboard focus, five viewport widths and axe accessibility. Set `CHROMIUM_PATH` and `PORTFOLIO_URL` as with the existing browser scripts.

@@ -1,0 +1,107 @@
+.hub-feature-visual {
+  background: #e8edde;
+  padding: 36px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 22px;
+}
+.hub-feature-screen {
+  background: #f9faf4;
+  border: 1px solid #cbd4bf;
+  border-radius: 8px;
+  padding: 22px;
+  color: #243c31;
+}
+.hub-feature-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+.hub-feature-heading strong {
+  font-size: 19px;
+}
+.hub-feature-heading > span {
+  font-size: 13px;
+  color: #4e5f44;
+}
+.hub-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.hub-feature-grid > div {
+  background: #fffef9;
+  border: 1px solid #d7decd;
+  padding: 14px 10px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  min-width: 0;
+}
+.hub-feature-stage {
+  font-size: 12px;
+  color: #43543a;
+  background: #e8edde;
+  padding: 4px 6px;
+  align-self: start;
+  border-radius: 4px;
+}
+.hub-feature-grid strong {
+  font-size: 14px;
+  line-height: 1.4;
+}
+.hub-feature-grid > div > span:not(:first-child) {
+  font-size: 12px;
+  color: #4e5f44;
+}
+.hub-feature-budget {
+  font-size: 12px;
+  border-top: 1px solid #d7decd;
+  padding-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.hub-feature-grid p {
+  font-size: 12px;
+  display: flex;
+  gap: 6px;
+  line-height: 1.5;
+}
+.hub-feature-grid small {
+  font-size: 12px;
+  color: #4e5f44;
+  margin-top: auto;
+  padding-top: 10px;
+}
+.hub-feature {
+  margin-top: 40px;
+}
+@media (max-width: 650px) {
+  .hub-feature-visual {
+    padding: 20px;
+  }
+  .hub-feature-screen {
+    padding: 16px;
+  }
+  .hub-feature-grid {
+    grid-template-columns: 1fr;
+  }
+  .hub-feature-grid > div:not(:first-child) {
+    display: none;
+  }
+  .hub-feature-grid strong {
+    font-size: 17px;
+  }
+  .hub-feature-grid p,
+  .hub-feature-grid small {
+    font-size: 14px;
+  }
+}
+.hub-feature .survey-details-button {
+  color: #536441;
+}

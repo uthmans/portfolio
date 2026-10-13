@@ -10,7 +10,8 @@
     "test:browser": "node scripts/check-browser.mjs",
     "test": "node --test tests/*.test.ts",
     "test:survey": "node scripts/check-survey.mjs",
-    "test:business": "node scripts/check-business.mjs"
+    "test:business": "node scripts/check-business.mjs",
+    "test:hub": "node scripts/check-hub.mjs"
   },
   "dependencies": {
     "@fontsource-variable/dm-sans": "^5.2.8",

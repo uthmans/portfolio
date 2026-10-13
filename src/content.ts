@@ -17,7 +17,7 @@ export type Project = {
   number: string;
   title: string;
   category: string;
-  status: "First version" | "Planned";
+  status: "First version";
   description: string;
   problem: string;
   audience: string;
@@ -41,16 +41,16 @@ export const portfolioProject: Project = {
     "Make it easy for hiring managers and potential clients to understand my background and explore honest evidence of my work.",
   audience: "Hiring managers, collaborators, and potential freelance clients.",
   features: [
-    "Responsive project gallery and roadmap",
+    "Responsive gallery of four working projects",
     "Keyboard-accessible project details",
     "Editable content and contact configuration",
     "Reduced-motion support",
   ],
   contribution:
-    "I defined the goals and content requirements. This first implementation was built with AI coding assistance. My next steps are reviewing the design, testing it, and learning to maintain and improve it.",
+    "I defined the goals and content requirements. This first implementation was built with AI coding assistance. I’m reviewing the design, testing it, and learning to maintain and improve it.",
   technology: ["React", "TypeScript", "Vite", "CSS"],
   decisions:
-    "Keep the portfolio fast and straightforward: no login, database, paid services, or unnecessary tracking. Separate working projects from future concepts and show contact links only when confirmed.",
+    "Keep the portfolio fast and straightforward: no login, database, paid services, or unnecessary tracking. Feature working independent projects and show contact links only when confirmed.",
 };
 
 export const surveyProject: Project = {
@@ -108,53 +108,32 @@ export const businessProject: Project = {
   demoUrl: "business/",
 };
 
-export const roadmap: Project[] = [
-  {
-    id: "hub",
-    number: "04",
-    title: "Freelancer Project Hub",
-    category: "Internal application",
-    status: "Planned",
-    description:
-      "A calmer place to organize clients, tasks, project stages, and budgets.",
-    problem:
-      "Scattered project information makes it difficult to see what needs attention. A simple hub could bring it together.",
-    audience: "Independent freelancers managing a small set of projects.",
-    features: [
-      "Fictional clients and projects",
-      "Editing and filtering",
-      "Clear project overview",
-      "Browser-local saved state to begin",
-    ],
-    contribution:
-      "Possible later independent demo. Scope and implementation will follow the survey and business website projects.",
-    technology: ["Stack to be confirmed"],
-    decisions:
-      "Start simple. Authentication and shared server storage will only be added if needed. The preview is a static concept, with no task management or saving behind it.",
-  },
-  {
-    id: "documents",
-    number: "05",
-    title: "Document Q&A assistant",
-    category: "AI integration",
-    status: "Planned",
-    description:
-      "A possible later experiment in answers grounded in a public or fictional handbook.",
-    problem:
-      "Help readers locate information while showing the passages that support an answer.",
-    audience: "Readers of a public or original fictional handbook.",
-    features: [
-      "Supporting source passages",
-      "Clear handling of unanswered questions",
-      "Quality evaluation before release",
-    ],
-    contribution:
-      "Possible later project, contingent on a real integration and a plan for testing response quality.",
-    technology: ["Not selected"],
-    decisions:
-      "No chatbot or AI connection exists yet. A real API would require server-side secrets, usage limits, and clear data handling.",
-  },
-];
+export const hubProject: Project = {
+  id: "hub",
+  number: "04",
+  title: "Freelancer Project Hub",
+  category: "Internal application",
+  status: "First version",
+  description:
+    "A browser-local workspace for projects, clients, tasks, stages, and budgets, with validated backups you can download and restore.",
+  problem:
+    "Bring scattered project details and next steps into one view, while keeping budget and task calculations clear.",
+  audience: "Independent freelancers organising a small set of projects.",
+  features: [
+    "Three original fictional projects to explore",
+    "Create, edit and delete projects with validated USD amounts",
+    "Task checklists, project stages and due dates",
+    "Search, stage and overdue filters with matching summary totals",
+    "Browser-local saving, JSON backup and validated restore",
+    "Empty states and explicit confirmation before replacing a workspace",
+  ],
+  contribution:
+    "I set the goals and chose a freelancer workspace to demonstrate useful application workflows. The first version was implemented with AI coding assistance, including calculation, persistence, and browser checks. I’m learning to explain and maintain the work.",
+  technology: ["React", "TypeScript", "CSS", "Browser localStorage"],
+  decisions:
+    "The starting projects and clients are fictional. Changes are saved in this browser only: no account, server storage, multi-device sync, invoices or payments. Browser storage can be cleared; download a backup to keep a copy. Invalid backups preserve the current workspace. Project stages and task completion are independent.",
+  demoUrl: "hub/",
+};
 
 export const experienceTools = [
   "Airtable",

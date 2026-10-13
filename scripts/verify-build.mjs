@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile, access, writeFile } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
-import { surveyProject, businessProject } from "../src/content.ts";
+import { surveyProject, businessProject, hubProject } from "../src/content.ts";
 
 const base = "/portfolio/";
 for (const route of [
@@ -11,6 +11,7 @@ for (const route of [
   "business/services/room-planning/index.html",
   "business/services/styling/index.html",
   "business/services/workspace/index.html",
+  "hub/index.html",
 ]) {
   const html = await readFile(`dist/${route}`, "utf8");
   assert.ok(!html.includes("/src/"), `${route} must contain compiled code`);
@@ -30,6 +31,8 @@ assert.equal(surveyProject.status, "First version");
 assert.equal(surveyProject.demoUrl, "survey/");
 assert.equal(businessProject.status, "First version");
 assert.equal(businessProject.demoUrl, "business/");
+assert.equal(hubProject.status, "First version");
+assert.equal(hubProject.demoUrl, "hub/");
 const commit =
   process.env.GITHUB_SHA ||
   execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
@@ -40,17 +43,19 @@ const deployment = {
     base,
     `${base}survey/`,
     `${base}business/`,
+    `${base}hub/`,
     ...["room-planning", "styling", "workspace"].map(
       (slug) => `${base}business/services/${slug}/`,
     ),
   ],
   surveyStatus: surveyProject.status,
   businessStatus: businessProject.status,
+  hubStatus: hubProject.status,
 };
 await writeFile(
   "dist/deployment.json",
   `${JSON.stringify(deployment, null, 2)}\n`,
 );
 console.log(
-  `Verified all six production pages and their assets. Deployment revision: ${commit}`,
+  `Verified all seven production pages and their assets. Deployment revision: ${commit}`,
 );

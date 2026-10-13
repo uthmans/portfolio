@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Chart from "./survey/Chart";
 import PortfolioBanner from "./components/PortfolioBanner";
 import RoomScene from "./business/RoomScene";
+import HubPreview from "./hub/Preview";
 import { sample, summarize } from "./survey/data";
 import {
   experienceTools,
@@ -9,7 +10,7 @@ import {
   surveyProject,
   businessProject,
   profile,
-  roadmap,
+  hubProject,
   type Project,
 } from "./content";
 
@@ -70,137 +71,6 @@ function PortfolioPreview() {
             <i />
           </i>
         </div>
-      </div>
-    </div>
-  );
-}
-
-function ConceptPreview({ kind }: { kind: string }) {
-  if (kind === "survey")
-    return (
-      <div className="concept-preview survey-preview" aria-hidden="true">
-        <div className="mock-sidebar">
-          <span className="mock-logo">
-            s<span>i</span>
-          </span>
-          <i />
-          <i />
-          <i />
-          <i />
-        </div>
-        <div className="mock-main">
-          <div className="mock-heading">
-            <strong>Survey overview</strong>
-            <span>Sample data ↓</span>
-          </div>
-          <div className="mock-metrics">
-            <div>
-              <small>Responses</small>
-              <b>128</b>
-            </div>
-            <div>
-              <small>Questions</small>
-              <b>12</b>
-            </div>
-            <div>
-              <small>Completion</small>
-              <b>
-                86<small>%</small>
-              </b>
-            </div>
-          </div>
-          <div className="mock-chart">
-            <div>
-              <strong>How was your experience?</strong>
-              <small>Illustrative responses</small>
-            </div>
-            <div className="chart-bars">
-              {[38, 58, 91, 71, 49].map((height, i) => (
-                <div key={i}>
-                  <i style={{ height: `${height}%` }} />
-                  <span>{i + 1}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  if (kind === "business")
-    return (
-      <div className="concept-preview business-preview" aria-hidden="true">
-        <div className="business-nav">
-          <strong>FORM & FIELD</strong>
-          <span>Spaces &nbsp; Our approach ↗</span>
-        </div>
-        <div className="business-body">
-          <span>MAKE ROOM FOR SOMETHING GOOD</span>
-          <h3>
-            A space that
-            <br />
-            feels like you.
-          </h3>
-          <div className="business-foot">
-            <span>
-              Thoughtful spaces.
-              <br />
-              Everyday living.
-            </span>
-            <b>Explore services ↗</b>
-          </div>
-        </div>
-        <div className="room-art">
-          <div className="room-arch" />
-          <div className="room-light" />
-          <div className="room-table" />
-          <div className="room-vase" />
-          <div className="room-leaf" />
-        </div>
-      </div>
-    );
-  return (
-    <div className="concept-preview hub-preview" aria-hidden="true">
-      <div className="hub-top">
-        <strong>
-          <span>◈</span> project hub
-        </strong>
-        <span>Workspace / Projects</span>
-        <i>US</i>
-      </div>
-      <div className="hub-heading">
-        <strong>A little more organized.</strong>
-        <span>Project overview</span>
-      </div>
-      <div className="kanban">
-        {["To do", "In progress", "Done"].map((stage, i) => (
-          <div key={stage}>
-            <strong>
-              <i />
-              {stage}
-              <span>2</span>
-            </strong>
-            {[0, 1].map((j) => (
-              <div className="task-card" key={j}>
-                <small>
-                  {["WEBSITE", "OPERATIONS", "DESIGN"][(i + j) % 3]}
-                </small>
-                <b>
-                  {
-                    [
-                      ["Outline service pages", "Gather content"],
-                      ["Build quote calculator", "Review sample data"],
-                      ["Map the workflow", "Choose a palette"],
-                    ][i][j]
-                  }
-                </b>
-                <div>
-                  <span className="task-line" />
-                  <i>{["◷", "◇", "✓"][i]}</i>
-                </div>
-              </div>
-            ))}
-          </div>
-        ))}
       </div>
     </div>
   );
@@ -280,11 +150,7 @@ function ProjectDetails({
             </p>
           </div>
           <div className="detail-block">
-            <h3>
-              {project.status === "Planned"
-                ? "Planned features"
-                : "What’s in this version"}
-            </h3>
+            <h3>What’s in this version</h3>
             <ul>
               {project.features.map((feature) => (
                 <li key={feature}>{feature}</li>
@@ -327,16 +193,6 @@ function ProjectDetails({
 export default function App() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeFilter, setActiveFilter] = useState("All concepts");
-  const plannedGallery = roadmap.slice(0, -1);
-  const filters = [
-    "All concepts",
-    ...new Set(plannedGallery.map((project) => project.category)),
-  ];
-  const visibleProjects = plannedGallery.filter(
-    (project) =>
-      activeFilter === "All concepts" || project.category === activeFilter,
-  );
   const hasContact = Boolean(profile.email || profile.linkedInUrl);
   const surveySummary = summarize(sample, "satisfaction");
 
@@ -601,89 +457,44 @@ export default function App() {
               </p>
             </div>
           </article>
-        </section>
-
-        <section
-          id="roadmap"
-          className="section roadmap-section"
-          aria-labelledby="roadmap-heading"
-        >
-          <div className="section-heading">
-            <div>
-              <span className="eyebrow">02 / ON THE DRAWING BOARD</span>
-              <h2 id="roadmap-heading">
-                What’s <em>next.</em>
-              </h2>
-            </div>
-            <p>
-              Independent demos I plan to build.
-              <br />
-              These are concept previews, not finished products.
-            </p>
-          </div>
-          {filters.length > 2 && (
-            <div
-              className="filters"
-              role="group"
-              aria-label="Filter planned projects"
-            >
-              {filters.map((filter) => (
-                <button
-                  key={filter}
-                  aria-pressed={filter === activeFilter}
-                  onClick={() => setActiveFilter(filter)}
-                >
-                  {filter}
-                </button>
-              ))}
-            </div>
-          )}
-          <p className="sr-only" role="status">
-            {visibleProjects.length} planned{" "}
-            {visibleProjects.length === 1 ? "project" : "projects"} shown.
-          </p>
-          <div className="roadmap-grid">
-            {visibleProjects.map((project) => (
-              <article className="roadmap-card" key={project.id}>
-                <div className={`concept-button ${project.id}`}>
-                  <span className="concept-label">CONCEPT PREVIEW</span>
-                  <ConceptPreview kind={project.id} />
-                  <button
-                    className="concept-open preview-trigger"
-                    onClick={() => setSelectedProject(project)}
-                    aria-label={`Concept preview: View plan for ${project.title}`}
-                  >
-                    <Arrow />
-                  </button>
-                </div>
-                <div className="roadmap-meta">
-                  <span>{project.category}</span>
-                  <span className="planned-status">Planned</span>
-                </div>
-                <h3>
-                  <button onClick={() => setSelectedProject(project)}>
-                    {project.title} <Arrow />
-                  </button>
-                </h3>
-                <p>{project.description}</p>
-              </article>
-            ))}
-          </div>
-          <button
-            className="future-project"
-            onClick={() => setSelectedProject(roadmap[1])}
-          >
-            <span>
-              <span className="future-icon" aria-hidden="true">
-                ✧
+          <article className="featured-project hub-feature">
+            <div className="hub-feature-visual">
+              <span className="eyebrow">
+                WORKING DEMO / FICTIONAL WORKSPACE
               </span>
-              <strong>Further ahead</strong>
-              <span>Document Q&A assistant</span>
-            </span>
-            <span className="future-detail">
-              A possible experiment in grounded AI answers <Arrow />
-            </span>
-          </button>
+              <HubPreview />
+              <a href="hub/" className="survey-preview-action">
+                Open the project workspace <Arrow />
+              </a>
+            </div>
+            <div className="featured-copy">
+              <div className="project-meta">
+                <span>PROJECT 04</span>
+                <span className="status">
+                  <i />
+                  First version
+                </span>
+              </div>
+              <h3>{hubProject.title}</h3>
+              <p>{hubProject.description}</p>
+              <div className="tags">
+                <span>Project & task tracking</span>
+                <span>Browser-local saving</span>
+              </div>
+              <a className="text-button" href="hub/">
+                Try the Project Hub <Arrow />
+              </a>
+              <button
+                className="text-button survey-details-button"
+                onClick={() => setSelectedProject(hubProject)}
+              >
+                Hub project details <Arrow />
+              </button>
+              <p className="honesty-note">
+                Independent demo · Fictional sample · AI-assisted build
+              </p>
+            </div>
+          </article>
         </section>
 
         <section
@@ -691,7 +502,7 @@ export default function App() {
           aria-labelledby="capabilities-heading"
         >
           <div className="capabilities-intro">
-            <span className="eyebrow">03 / WHAT I BRING</span>
+            <span className="eyebrow">02 / WHAT I BRING</span>
             <h2 id="capabilities-heading">
               Connecting the
               <br />
@@ -722,7 +533,7 @@ export default function App() {
               [
                 "03",
                 "Reporting & useful data",
-                "Experience with spreadsheets, CRM information, and reporting. Interactive dashboards are the next step in my learning.",
+                "Experience with spreadsheets, CRM information, and reporting. I’m now building interactive dashboards with clear calculations and data validation.",
                 "Experience + developing skills",
               ],
               [
@@ -765,7 +576,7 @@ export default function App() {
             </span>
           </div>
           <div className="about-copy">
-            <span className="eyebrow">04 / A LITTLE ABOUT ME</span>
+            <span className="eyebrow">03 / A LITTLE ABOUT ME</span>
             <h2 id="about-heading">Hi, I’m Uthman.</h2>
             <p className="about-lead">
               I’m drawn to the work between people and technology.
@@ -804,7 +615,7 @@ export default function App() {
           aria-labelledby="contact-heading"
         >
           <div>
-            <span className="eyebrow">05 / LET’S CONNECT</span>
+            <span className="eyebrow">04 / LET’S CONNECT</span>
             <h2 id="contact-heading">
               Good work starts
               <br />

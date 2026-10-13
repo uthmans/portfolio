@@ -4,8 +4,8 @@
 
 - [x] Responsive portfolio shell and original visual direction
 - [x] Portfolio project details with honest contribution wording
-- [x] Separate planned-project gallery with static concept previews
-- [x] Roadmap filters, mobile navigation, keyboard-accessible dialogs
+- [x] Gallery updated to feature all four working projects
+- [x] Mobile navigation and keyboard-accessible project dialogs
 - [x] Established experience separated from developing skills
 - [x] Editable contact settings without placeholder links
 - [ ] Uthman reviews headline, content, and design
@@ -48,16 +48,23 @@
 - [x] Promoted to selected work as an independent demo with honest limitations
 - [ ] Uthman reviews the design, service journey, estimate, and enquiry preview
 
-## Next focused milestone
+## Freelancer Project Hub — first version complete
 
-Review Form & Field before expanding it. Possible next steps: improve the copy and illustrations, add genuine translations, or connect a real enquiry backend with a clear data-handling and delivery plan if authorized. Avoid adding fake delivery confirmations or unsupported booking flows.
+- [x] Original fictional clients/projects and consistent portfolio banner
+- [x] Validated project creation, editing and confirmed deletion
+- [x] Task checklists, independent stages, due dates and overdue filters
+- [x] Explicit integer-cent budgets/spending and view-specific summaries
+- [x] Browser-local saving with visible storage failures
+- [x] Versioned JSON download and validated, confirmed restore
+- [x] Accessible empty states, keyboard dialogs and responsive layouts
+- [x] Featured as project 04; outdated “What’s next” section removed
+- [ ] Uthman reviews creating a project, reloading, and restoring a backup
 
-## Later
+## Core portfolio projects complete
 
-- Fictional business website with explicit quote-calculation rules
-- Freelancer Project Hub with browser-local state
-- Document Q&A only when a real integration, cost limits, server-side secrets, and evaluation plan exist
-- Spanish and Arabic content with proper RTL support
+The portfolio, Survey Insights Studio, Form & Field and Freelancer Project Hub have working first versions. Focus on presenting and improving this work rather than showing unfinished concepts on the public home page.
+
+Possible future improvements remain internal ideas: genuine translations, a real enquiry backend if authorised, or Document Q&A only with a real integration, server-side secrets, cost limits and evaluation. No AI assistant is currently promised or represented as completed.
 
 ## Working agreement
 
