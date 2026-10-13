@@ -18,7 +18,15 @@ npm run build     # strict TypeScript checks, then production build
 npm run preview   # serve the production build for local inspection
 ```
 
-`dist/` is the generated static site. Public deployment is a separate step; nothing is automatically published.
+`dist/` is the generated static site. Vite uses `/portfolio/` as the base path for GitHub project Pages. Open the development or preview server at that path.
+
+### GitHub Pages deployment
+
+In the repository’s **Settings → Pages → Build and deployment**, set **Source** to **GitHub Actions**, rather than deploying `main` directly. The source `index.html` references TypeScript that browsers cannot run without a build.
+
+The **Deploy portfolio to GitHub Pages** workflow builds the site and deploys only `dist/`. It runs on pushes to `main`; you can also run it manually from the **Actions** tab. After enabling the Actions source, wait for a successful workflow, or select **Run workflow** to retry it.
+
+The website address is https://uthmans.github.io/portfolio/. Changing hosting or the repository name requires updating `base` in `vite.config.ts`.
 
 Fonts are bundled locally, and the site does not require API credentials or external services.
 
@@ -48,7 +56,7 @@ The Rollup override pins its official npm tarball because the registry’s full 
 - `src/styles.css`: colors, typography, layout, and responsive styling.
 - `index.html`: page title, description, and document language.
 
-The confirmed public email is `uthmansalama@gmail.com`; other contact fields remain empty. Set `profile.email`, `linkedInUrl`, `githubUrl`, or `cvUrl` only to confirmed public details. Empty fields never become fake links. For a CV, place a public PDF in `public/` and set `cvUrl` to its path, such as `/uthman-salama-cv.pdf`. A direct email link opens the visitor’s email application; no form or delivery service is connected.
+The confirmed public email is `uthmansalama@gmail.com`; other contact fields remain empty. Set `profile.email`, `linkedInUrl`, `githubUrl`, or `cvUrl` only to confirmed public details. Empty fields never become fake links. For a CV, place a public PDF in `public/` and set `cvUrl` to a relative path such as `uthman-salama-cv.pdf`, so the link works below `/portfolio/`. A direct email link opens the visitor’s email application; no form or delivery service is connected.
 
 ## Add projects
 

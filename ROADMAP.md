@@ -11,7 +11,9 @@
 - [ ] Uthman reviews headline, content, and design
 - [x] Add confirmed public email and focus on websites and automations
 - [ ] Add an updated public CV and downloadable portrait
-- [ ] Choose hosting and authorize public deployment
+- [x] GitHub Pages chosen and publishing authorized
+- [x] Build-and-deploy workflow and `/portfolio/` asset paths
+- [ ] Switch Pages Source to GitHub Actions and confirm the live deployment
 
 ## Next milestone: Survey Insights Studio
 

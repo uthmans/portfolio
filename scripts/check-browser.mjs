@@ -8,9 +8,27 @@ const browser = await chromium.launch({
 });
 const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
 const errors = [];
+const resourceErrors = [];
 page.on("pageerror", (error) => errors.push(error.message));
-const base = process.env.PORTFOLIO_URL || "http://127.0.0.1:5173";
+const base = process.env.PORTFOLIO_URL || "http://127.0.0.1:5173/portfolio/";
+page.on("response", (response) => {
+  if (
+    response.status() >= 400 &&
+    new URL(response.url()).origin === new URL(base).origin
+  ) {
+    resourceErrors.push(`${response.status()} ${response.url()}`);
+  }
+});
 await page.goto(base);
+const favicon = await page.locator('link[rel="icon"]').getAttribute("href");
+assert.ok(
+  favicon?.startsWith("/portfolio/"),
+  "Favicon uses the Pages base path",
+);
+assert.equal(
+  (await page.request.get(new URL(favicon, base).href)).status(),
+  200,
+);
 await page.evaluate(() => document.fonts.ready);
 assert.equal(await page.locator("h1").count(), 1);
 assert.equal(await page.locator(".roadmap-card").count(), 3);
@@ -143,6 +161,7 @@ const mobileViolations = await page.evaluate(async () =>
 );
 console.log("Mobile accessibility:", JSON.stringify(mobileViolations));
 assert.deepEqual(errors, []);
+assert.deepEqual(resourceErrors, []);
 assert.deepEqual(violations, []);
 assert.deepEqual(mobileViolations, []);
 console.log(
