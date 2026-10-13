@@ -39,8 +39,10 @@ try {
   assert.equal(page.url(), businessUrl);
   assert.match(await page.locator("h1").innerText(), /Make room/);
   assert.match(
-    await page.locator(".ff-demo-bar").innerText(),
-    /FICTIONAL BUSINESS/,
+    await page
+      .getByRole("navigation", { name: "Portfolio navigation" })
+      .innerText(),
+    /Fictional business demo/,
   );
   assert.match(await page.locator(".ff-total").innerText(), /\$180/);
   for (const slug of ["room-planning", "styling", "workspace"]) {
@@ -151,12 +153,22 @@ try {
   }
   await page.setViewportSize({ width: 375, height: 812 });
   await page.getByRole("button", { name: "Menu", exact: true }).click();
-  assert.equal(await page.getByRole("navigation").isVisible(), true);
+  assert.equal(
+    await page
+      .getByRole("navigation", { name: "Business navigation" })
+      .isVisible(),
+    true,
+  );
   await page
-    .getByRole("navigation")
+    .getByRole("navigation", { name: "Business navigation" })
     .getByRole("link", { name: "Services", exact: true })
     .click();
-  assert.equal(await page.getByRole("navigation").isVisible(), false);
+  assert.equal(
+    await page
+      .getByRole("navigation", { name: "Business navigation" })
+      .isVisible(),
+    false,
+  );
   await page.emulateMedia({ reducedMotion: "reduce" });
   assert.equal(
     await page.evaluate(

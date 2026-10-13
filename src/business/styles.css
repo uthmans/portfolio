@@ -57,24 +57,6 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 24px;
 }
-.ff-demo-bar {
-  background: #414c39;
-  color: #f7f4ea;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  padding: 13px max(24px, calc((100vw - 1152px) / 2));
-  font-size: 12px;
-  line-height: 1.5;
-}
-.ff-demo-bar > span {
-  letter-spacing: 1px;
-}
-.ff-demo-bar a {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
 .ff-header,
 .ff-hero,
 .ff-section,
@@ -875,13 +857,6 @@ html {
   .ff-service-next {
     padding-left: 24px;
     padding-right: 24px;
-  }
-  .ff-demo-bar {
-    flex-direction: column;
-    align-items: start;
-    gap: 5px;
-    padding: 12px 24px;
-    font-size: 11px;
   }
   .ff-header {
     min-height: 100px;

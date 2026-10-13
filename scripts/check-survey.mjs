@@ -262,7 +262,10 @@ try {
       });
     }
   }
-  await page.getByRole("link", { name: "Uthman’s portfolio" }).click();
+  await page
+    .getByRole("navigation", { name: "Portfolio navigation" })
+    .getByRole("link", { name: "Back to portfolio", exact: true })
+    .click();
   assert.equal(page.url(), portfolioUrl);
   assert.deepEqual(errors, []);
   console.log(

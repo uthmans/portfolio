@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Chart from "./survey/Chart";
+import PortfolioBanner from "./components/PortfolioBanner";
 import RoomScene from "./business/RoomScene";
 import { sample, summarize } from "./survey/data";
 import {
@@ -353,6 +354,7 @@ export default function App() {
       <a className="skip-link" href="#main">
         Skip to content
       </a>
+      <PortfolioBanner title="Websites & automations" home />
       <header className="site-header">
         <a href="#" className="wordmark" aria-label="us. — Uthman Salama, home">
           us<span>.</span>

@@ -2,6 +2,7 @@ import { useState, type ChangeEvent } from "react";
 import { MAX_FILE_BYTES, MAX_ROWS, parseCsv } from "./csv";
 import { generateResponses } from "./generate";
 import Chart from "./Chart";
+import PortfolioBanner from "../components/PortfolioBanner";
 import {
   filterResponses,
   questions,
@@ -135,10 +136,10 @@ export default function SurveyApp() {
       <a className="skip-link" href="#survey-main">
         Skip to results
       </a>
-      <header className="studio-header">
-        <a href="../">← Uthman’s portfolio</a>
-        <span>INDEPENDENT DEMO / FIRST VERSION</span>
-      </header>
+      <PortfolioBanner
+        title="Survey Insights Studio"
+        context="Independent demo"
+      />
       <main id="survey-main" className="studio-main">
         <div className="studio-title">
           <div>

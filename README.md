@@ -63,6 +63,7 @@ The Rollup override pins its official npm tarball because the registry’s full 
 - `src/content.ts`: name, headline, introduction, availability, tool experience, project details, and contact links.
 - `src/App.tsx`: section structure and original interface concept previews.
 - `src/styles.css`: colors, typography, layout, and responsive styling.
+- `src/components/PortfolioBanner.tsx` and `portfolio-banner.css`: the shared thin green banner used on the portfolio, demos, and service pages. New project pages should reuse it, with a back-to-portfolio link on the left and the page title/context on the right.
 - `index.html`: page title, description, and document language.
 
 The confirmed public email is `uthmansalama@gmail.com`; other contact fields remain empty. Set `profile.email`, `linkedInUrl`, `githubUrl`, or `cvUrl` only to confirmed public details. Empty fields never become fake links. For a CV, place a public PDF in `public/` and set `cvUrl` to a relative path such as `uthman-salama-cv.pdf`, so the link works below `/portfolio/`. A direct email link opens the visitor’s email application; no form or delivery service is connected.

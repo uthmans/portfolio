@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from "react";
 import RoomScene from "./RoomScene";
+import PortfolioBanner from "../components/PortfolioBanner";
 import {
   calculateQuote,
   enquiryText,
@@ -147,15 +148,14 @@ export default function BusinessApp() {
       <a className="ff-skip" href="#ff-main">
         Skip to content
       </a>
-      <aside
-        className="ff-demo-bar"
-        aria-label="Fictional business demo notice"
-      >
-        <span>FICTIONAL BUSINESS · PORTFOLIO DEMO</span>
-        <a href={`${import.meta.env.BASE_URL}#work`}>
-          Back to Uthman’s portfolio <Arrow />
-        </a>
-      </aside>
+      <PortfolioBanner
+        title={
+          currentService
+            ? `Form & Field / ${currentService.name}`
+            : "Form & Field"
+        }
+        context="Fictional business demo"
+      />
       <header className="ff-header">
         <a href={homeUrl} className="ff-brand">
           FORM <span>&</span> FIELD<small>Spaces for everyday living</small>

@@ -1,28 +1,9 @@
-.studio-header,
 .studio-main,
 .studio-footer {
   max-width: 1200px;
   margin: auto;
   padding-left: 40px;
   padding-right: 40px;
-}
-.studio-header {
-  padding-top: 26px;
-  padding-bottom: 26px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  border-bottom: 1px solid var(--line);
-}
-.studio-header a {
-  font-size: 14px;
-  padding: 10px 0;
-}
-.studio-header > span {
-  font-size: 12px;
-  letter-spacing: 1px;
-  color: var(--muted);
 }
 .studio-title {
   display: flex;
@@ -335,21 +316,10 @@
 }
 
 @media (max-width: 760px) {
-  .studio-header,
   .studio-main,
   .studio-footer {
     padding-left: 24px;
     padding-right: 24px;
-  }
-  .studio-header {
-    align-items: start;
-    flex-direction: column;
-    gap: 6px;
-    padding-top: 14px;
-    padding-bottom: 18px;
-  }
-  .studio-header > span {
-    font-size: 11px;
   }
   .studio-title {
     flex-direction: column;

@@ -118,7 +118,7 @@ const menu = page.getByRole("button", { name: /Menu/ });
 await menu.click();
 assert.equal(await page.locator("#site-navigation").isVisible(), true);
 await page
-  .getByRole("navigation")
+  .getByRole("navigation", { name: "Main navigation" })
   .getByRole("link", { name: "About", exact: true })
   .click();
 assert.equal(await page.locator("#site-navigation").isVisible(), false);

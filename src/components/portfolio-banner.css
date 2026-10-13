@@ -1,0 +1,81 @@
+.portfolio-banner {
+  background: #243c31;
+  color: #f4f3ed;
+  font-family: "DM Sans Variable", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  width: 100%;
+}
+.portfolio-banner-inner {
+  max-width: 1280px;
+  min-height: 48px;
+  margin: 0 auto;
+  padding: 2px 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px 24px;
+}
+.portfolio-banner-back {
+  color: inherit;
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  min-height: 44px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: #a6ba9b;
+  flex-shrink: 0;
+}
+.portfolio-banner-back:hover {
+  color: #dceaaf;
+  text-decoration-color: currentColor;
+}
+.portfolio-banner-back:focus-visible {
+  outline: 2px solid #dceaaf;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+.portfolio-banner-back svg {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}
+.portfolio-banner-home {
+  padding: 10px 0;
+  font-weight: 500;
+}
+.portfolio-banner-page {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin-left: auto;
+  text-align: right;
+  max-width: 100%;
+}
+.portfolio-banner-page > span:first-child {
+  font-weight: 500;
+}
+.portfolio-banner-context {
+  color: #d5dfcf;
+  font-size: 13px;
+}
+@media (max-width: 1050px) {
+  .portfolio-banner-inner {
+    padding-left: 38px;
+    padding-right: 38px;
+  }
+}
+@media (max-width: 760px) {
+  .portfolio-banner-inner {
+    padding: 4px 24px;
+    flex-wrap: wrap;
+    gap: 0 16px;
+  }
+  .portfolio-banner-page {
+    padding: 5px 0;
+    gap: 2px 12px;
+  }
+}
