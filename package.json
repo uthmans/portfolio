@@ -7,7 +7,9 @@
     "dev": "vite --host 0.0.0.0",
     "build": "tsc -b && vite build",
     "preview": "vite preview --host 0.0.0.0",
-    "test:browser": "node scripts/check-browser.mjs"
+    "test:browser": "node scripts/check-browser.mjs",
+    "test": "node --test tests/*.test.ts",
+    "test:survey": "node scripts/check-survey.mjs"
   },
   "dependencies": {
     "@fontsource-variable/dm-sans": "^5.2.8",

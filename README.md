@@ -1,10 +1,10 @@
 # Uthman Salama’s portfolio
 
-A personal portfolio for practical websites, databases, and workflows. The portfolio itself is the first implemented project; all other previews are original, static concepts labeled as planned. No private organizational materials or datasets are used.
+A personal portfolio for practical websites, databases, and workflows. The portfolio and Survey Insights Studio are implemented first versions; the remaining previews are original, static concepts labeled as planned. No private organizational materials or datasets are used.
 
 ## Run locally
 
-Use Node.js 22.12+ or 24 LTS and npm. This environment was verified with Node.js 24.
+Use Node.js 24 LTS and npm (the calculation tests use its built-in TypeScript support). This environment was verified with Node.js 24.
 
 ```sh
 npm ci
@@ -14,6 +14,7 @@ npm run dev
 Vite prints the local development address (normally port 5173). The development server listens on all interfaces for cloud development. It is not a production server.
 
 ```sh
+npm test          # four survey calculation/export checks
 npm run build     # strict TypeScript checks, then production build
 npm run preview   # serve the production build for local inspection
 ```
@@ -39,12 +40,14 @@ With the development server running, use a Playwright browser:
 ```sh
 npx playwright install chromium
 npm run test:browser
+npm run test:survey
 ```
 
 In this cloud environment, Chromium is already installed:
 
 ```sh
 CHROMIUM_PATH=/usr/bin/chromium npm run test:browser
+CHROMIUM_PATH=/usr/bin/chromium npm run test:survey
 ```
 
 Set `PORTFOLIO_URL` if testing another local port or the production preview. The script checks dialogs, focus, filtering, mobile navigation, five viewport widths, reduced motion, browser errors, and axe accessibility results. Screenshots are written to ignored `test-results/`. Automated checks do not replace manual accessibility review.
@@ -62,7 +65,7 @@ The confirmed public email is `uthmansalama@gmail.com`; other contact fields rem
 
 ## Add projects
 
-Project records in `src/content.ts` contain the problem, audience, features, contribution, technology, decisions, and optional real demo/source URLs. Update a status only when supported by working evidence. The roadmap gallery currently displays its first three entries, with the fourth shown as a later idea. To feature an additional completed project, extend the selected-work section rather than presenting it as a planned concept. The static preview components are visual illustrations, not applications.
+Project records in `src/content.ts` contain the problem, audience, features, contribution, technology, decisions, and optional real demo/source URLs. Update a status only when supported by working evidence. The roadmap gallery displays its first two entries, with the third shown as a later idea. To feature an additional completed project, extend the selected-work section rather than presenting it as a planned concept. The static preview components are visual illustrations, not applications.
 
 ## Main interactions to check
 
@@ -77,7 +80,7 @@ Project records in `src/content.ts` contain the problem, audience, features, con
 ## Current limitations
 
 - The CV download is held until an updated document is provided; the attached photo still needs a downloadable file.
-- No standalone demo apps, AI API, login, database, analytics, or working enquiry form.
+- Survey Insights Studio currently uses its built-in fictional sample only; CSV import is next. No AI API, login, server database, analytics, or working enquiry form.
 - English only. Content is centralized for future translations; Spanish and Arabic navigation should be added only with real translations, and Arabic will need RTL verification.
 - The first implementation was created with AI coding assistance from Uthman’s requirements. His review, testing, and learning are ongoing; no technical seniority or completed client work is implied.
 
@@ -86,3 +89,17 @@ See `ROADMAP.md` for the next small milestone.
 ## Saving code and publishing
 
 Publishing the cloud environment snapshots the development workspace and tools. It does not commit or push code to GitHub, and it does not deploy a public website. Git commits record code changes; pushing sends those commits to the repository. Hosting the built site is a separate step requiring authorization.
+
+## Survey Insights Studio
+
+Open `/portfolio/survey/`. This is a separate built page with direct-refresh support on GitHub Pages. It offers two rating questions, combined learning-track and session-format filters, response counts, a rating distribution, a mean, an explicit missing-answer state, a source-row table, and a filtered CSV download. It uses 12 original fictional responses, with no real organizational data or API connection.
+
+- `src/survey/data.ts`: original sample, question definitions, filtering, calculations, and CSV export.
+- `src/survey/App.tsx`: the interactive application.
+- `src/survey/Chart.tsx`: shared chart used by the demo and the accurate portfolio preview.
+- `src/survey/styles.css`: application styling.
+- `tests/survey-data.test.ts`: hand-checked counts, combined filters, missing/empty states, and export checks.
+
+Blank ratings are excluded from the mean and percentages, while total rows and missing counts remain visible. Percentages use the answered count for the selected question. CSV columns are `id,track,format,satisfaction,confidence`; ratings are 1–5 and blanks mean missing. The download contains the currently filtered rows and both question columns.
+
+The sample resets on reload. No data is persisted or sent to a server. The next milestone is CSV import with validation and an explicit browser-local data policy.

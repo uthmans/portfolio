@@ -1,0 +1,31 @@
+.rating-chart {
+  display: grid;
+  gap: 18px;
+  margin: 32px 0;
+}
+.rating-row {
+  display: grid;
+  grid-template-columns: 80px minmax(0, 1fr) 100px;
+  align-items: center;
+  gap: 18px;
+  font-size: 15px;
+}
+.rating-row > span:last-child {
+  text-align: right;
+}
+.rating-row small {
+  font-size: 13px;
+  color: var(--muted);
+}
+.rating-track {
+  background: #e5eadb;
+  height: 26px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.rating-track > div {
+  height: 100%;
+  background: #648344;
+  border-radius: 4px;
+  min-width: 0;
+}

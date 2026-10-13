@@ -2411,3 +2411,84 @@ p {
     max-width: none;
   }
 }
+
+.survey-feature {
+  margin-top: 28px;
+}
+.survey-feature-visual {
+  padding: 32px;
+  background: #e3e8db;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 22px;
+  min-width: 0;
+}
+.survey-feature-screen {
+  padding: 24px;
+  border: 1px solid #ccd6bf;
+  border-radius: 5px;
+  background: #fafbf7;
+}
+.survey-preview-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.survey-preview-heading strong {
+  font-family: "Manrope Variable", sans-serif;
+  font-size: 20px;
+  letter-spacing: -0.5px;
+}
+.survey-preview-heading span,
+.survey-feature-screen > span {
+  font-size: 13px;
+  color: var(--muted);
+}
+.survey-feature-screen > p {
+  margin-top: 20px;
+  font-size: 14px;
+}
+.survey-feature-screen .rating-chart {
+  margin-top: 18px;
+  margin-bottom: 22px;
+}
+.survey-feature-screen .rating-row {
+  grid-template-columns: 68px minmax(0, 1fr) 90px;
+  gap: 9px;
+  font-size: 13px;
+}
+.survey-preview-action {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  border-bottom: 1px solid #aabb98;
+  padding-bottom: 8px;
+}
+.survey-preview-action:hover {
+  color: #4b6436;
+}
+.survey-details-button {
+  margin-top: 10px;
+}
+.roadmap-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (max-width: 760px) {
+  .survey-feature-visual {
+    padding: 24px;
+  }
+  .survey-feature-screen {
+    padding: 18px;
+  }
+  .survey-feature-screen .rating-row {
+    grid-template-columns: 56px minmax(0, 1fr) 67px;
+    gap: 6px;
+    font-size: 12px;
+  }
+  .roadmap-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

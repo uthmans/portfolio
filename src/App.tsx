@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from "react";
+import Chart from "./survey/Chart";
+import { sample, summarize } from "./survey/data";
 import {
   experienceTools,
   portfolioProject,
+  surveyProject,
   profile,
   roadmap,
   type Project,
@@ -324,17 +327,17 @@ export default function App() {
   const [activeFilter, setActiveFilter] = useState("All concepts");
   const filters = [
     "All concepts",
-    "Data exploration",
     "Interactive website",
     "Internal application",
   ];
   const visibleProjects = roadmap
-    .slice(0, 3)
+    .slice(0, 2)
     .filter(
       (project) =>
         activeFilter === "All concepts" || project.category === activeFilter,
     );
   const hasContact = Boolean(profile.email || profile.linkedInUrl);
+  const surveySummary = summarize(sample, "satisfaction");
 
   useEffect(() => {
     if (!selectedProject) return;
@@ -463,9 +466,9 @@ export default function App() {
               </h2>
             </div>
             <p>
-              Starting with this website.
+              Independent projects, built step by step.
               <br />
-              Building the next chapter, one useful project at a time.
+              Explore the work and try a live demonstration.
             </p>
           </div>
           <article className="featured-project">
@@ -504,6 +507,53 @@ export default function App() {
               </button>
               <p className="honesty-note">
                 Independent work · Built with AI coding assistance
+              </p>
+            </div>
+          </article>
+          <article className="featured-project survey-feature">
+            <div className="survey-feature-visual">
+              <span className="eyebrow">WORKING DEMO / FICTIONAL SAMPLE</span>
+              <div className="survey-feature-screen" aria-hidden="true">
+                <div className="survey-preview-heading">
+                  <strong>Survey Insights Studio</strong>
+                  <span>{sample.length} fictional responses</span>
+                </div>
+                <p>Session satisfaction</p>
+                <Chart summary={surveySummary} />
+                <span>
+                  {surveySummary.answered} answered · {surveySummary.missing}{" "}
+                  missing · Mean {surveySummary.mean?.toFixed(2) ?? "—"} / 5
+                </span>
+              </div>
+              <a href="survey/" className="survey-preview-action">
+                Open the live demo <Arrow />
+              </a>
+            </div>
+            <div className="featured-copy">
+              <div className="project-meta">
+                <span>PROJECT 02</span>
+                <span className="status">
+                  <i />
+                  First version
+                </span>
+              </div>
+              <h3>{surveyProject.title}</h3>
+              <p>{surveyProject.description}</p>
+              <div className="tags">
+                <span>Interactive application</span>
+                <span>Original fictional data</span>
+              </div>
+              <a className="text-button" href="survey/">
+                Try the live demo <Arrow />
+              </a>
+              <button
+                className="text-button survey-details-button"
+                onClick={() => setSelectedProject(surveyProject)}
+              >
+                Project details <Arrow />
+              </button>
+              <p className="honesty-note">
+                Independent demo · Built with AI coding assistance
               </p>
             </div>
           </article>
@@ -575,7 +625,7 @@ export default function App() {
           </div>
           <button
             className="future-project"
-            onClick={() => setSelectedProject(roadmap[3])}
+            onClick={() => setSelectedProject(roadmap[2])}
           >
             <span>
               <span className="future-icon" aria-hidden="true">

@@ -53,30 +53,34 @@ export const portfolioProject: Project = {
     "Keep the portfolio fast and straightforward: no login, database, paid services, or unnecessary tracking. Separate working projects from future concepts and show contact links only when confirmed.",
 };
 
+export const surveyProject: Project = {
+  id: "survey",
+  number: "02",
+  title: "Survey Insights Studio",
+  category: "Data exploration",
+  status: "First version",
+  description:
+    "A working survey explorer with fictional responses, filters, rating charts, and calculations you can check.",
+  problem:
+    "Make a small survey easier to explore without hiding response counts or the effect of missing values.",
+  audience:
+    "People exploring feedback and learning to interpret survey results.",
+  features: [
+    "12 original fictional sample responses",
+    "Two rating questions with track and format filters",
+    "Response counts, distributions, and means",
+    "Explicit missing-value rules and an unanswered state",
+    "Filtered CSV download and a source-row table",
+  ],
+  contribution:
+    "I set the project goals and scope. This first version was implemented with AI coding assistance, including calculation and browser checks. I’m reviewing the result and learning to explain and maintain it.",
+  technology: ["React", "TypeScript", "CSS"],
+  decisions:
+    "The first version uses a built-in fictional sample only. CSV import is not implemented yet. There is no AI integration, login, server storage, or real participant data. Missing answers are excluded from averages and percentages, and shown separately.",
+  demoUrl: "survey/",
+};
+
 export const roadmap: Project[] = [
-  {
-    id: "survey",
-    number: "02",
-    title: "Survey Insights Studio",
-    category: "Data exploration",
-    status: "Planned",
-    description:
-      "Turn survey responses into a clearer picture, with filters, charts, and useful exports.",
-    problem:
-      "Survey data can be hard to explore in a spreadsheet. This independent demo will make patterns easier to inspect and explain.",
-    audience: "People working with feedback and survey results.",
-    features: [
-      "Original fictional sample data",
-      "CSV import with clear validation",
-      "Question filters, charts, and response counts",
-      "Documented calculations and exports",
-    ],
-    contribution:
-      "Planned independent demonstration project. I will define the requirements, review calculations, test the experience, and develop the application with AI assistance.",
-    technology: ["Stack to be confirmed"],
-    decisions:
-      "Start with data kept in the browser and no sign-in. The preview uses illustrative values only. No survey app or AI summary integration has been built yet.",
-  },
   {
     id: "business",
     number: "03",

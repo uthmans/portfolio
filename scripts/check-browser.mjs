@@ -31,17 +31,17 @@ assert.equal(
 );
 await page.evaluate(() => document.fonts.ready);
 assert.equal(await page.locator("h1").count(), 1);
-assert.equal(await page.locator(".roadmap-card").count(), 3);
+assert.equal(await page.locator(".roadmap-card").count(), 2);
 await page
-  .getByRole("button", { name: "Data exploration", exact: true })
+  .getByRole("button", { name: "Interactive website", exact: true })
   .click();
 assert.equal(await page.locator(".roadmap-card").count(), 1);
 assert.match(
-  await page.locator(".roadmap-card h3").innerText(),
-  /Survey Insights Studio/,
+  await page.locator(".roadmap-card > h3").innerText(),
+  /A small business, online/,
 );
 await page.getByRole("button", { name: "All concepts", exact: true }).click();
-assert.equal(await page.locator(".roadmap-card").count(), 3);
+assert.equal(await page.locator(".roadmap-card").count(), 2);
 const opener = page.getByRole("button", {
   name: "Explore the project",
   exact: true,
@@ -67,7 +67,7 @@ assert.equal(
 );
 await page
   .getByRole("button", {
-    name: "Concept preview: View plan for Survey Insights Studio",
+    name: "Concept preview: View plan for A small business, online",
   })
   .click();
 assert.match(await page.getByRole("dialog").innerText(), /Planned features/);

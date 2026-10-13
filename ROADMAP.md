@@ -13,18 +13,26 @@
 - [ ] Add an updated public CV and downloadable portrait
 - [x] GitHub Pages chosen and publishing authorized
 - [x] Build-and-deploy workflow and `/portfolio/` asset paths
-- [ ] Switch Pages Source to GitHub Actions and confirm the live deployment
+- [x] Switch Pages Source to GitHub Actions and confirm the live deployment (confirmed by Uthman)
 
-## Next milestone: Survey Insights Studio
+## Survey Insights Studio — first version complete
 
-Start with a small working slice, not the full roadmap:
+- [x] Original fictional survey with 12 rows and two rating questions
+- [x] Immediate sample loading, combined filters, chart, counts, and means
+- [x] Explicit missing-value rules and a no-answer state
+- [x] Filtered CSV export and source-row table
+- [x] Hand-checked calculation tests and keyboard/mobile/browser checks
+- [x] Working demo linked from featured work with accurate limitations
+- [ ] Uthman reviews the demo and explains one filtered calculation
 
-1. Define an original fictional survey and documented CSV columns.
-2. Load that sample immediately without signing in.
-3. Implement one question chart and one filter, with response counts and explicit missing-value rules.
-4. Test calculations against a few hand-checked rows and verify keyboard/mobile use.
+## Next milestone: CSV import
 
-Next: CSV import with useful validation, additional charts, and processed-data export. Keep uploaded data in the browser for this version. Promote the project into selected work only when a real application works.
+1. Support the documented CSV schema with clear validation for headers, IDs, ratings, categories, and quoted fields.
+2. Reject invalid files without discarding the current usable dataset; show errors with row and field context.
+3. Keep imported data in the browser with no server upload, no API, and a clear reset-to-sample action.
+4. Test valid and invalid imports, missing values, exports, and calculations with hand-checked fixtures.
+
+Later: more question types and a useful summary export. Do not add AI summaries until a real integration and evaluation plan exist.
 
 ## Later
 
