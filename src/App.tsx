@@ -582,11 +582,21 @@ export default function App() {
               I’m drawn to the work between people and technology.
             </p>
             <p>
-              For approximately five years at Tech2Peace, I worked across
+              From May 2021 to September 2026, I worked at Tech2Peace across
               technology coordination, community and program operations,
               databases and CRM, reporting, website management, and
               administrative systems.
             </p>
+            <div className="experience-summary">
+              <span className="eyebrow">TECH2PEACE / 2021–2026</span>
+              <h3>Operations, Systems &amp; Resource Development Lead</h3>
+              <p>
+                Built and administered Airtable-based CRM and operations
+                systems covering more than 10,000 records, and created tools
+                for recruitment, events, contracts, fundraising, and feedback
+                analysis.
+              </p>
+            </div>
             <p>
               Now, I’m exploring how AI-assisted coding can help me turn that
               practical experience into original digital tools. I’m learning by
@@ -672,10 +682,9 @@ export default function App() {
               <a
                 className="contact-secondary"
                 href={profile.cvUrl}
-                target="_blank"
-                rel="noreferrer"
+                download
               >
-                View my CV <Arrow />
+                Download my CV <Arrow />
               </a>
             )}
           </div>
