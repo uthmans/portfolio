@@ -79,7 +79,7 @@ export const surveyProject: Project = {
     "I set the project goals and scope. This first version was implemented with AI coding assistance, including calculation and browser checks. I’m reviewing the result and learning to explain and maintain it.",
   technology: ["React", "TypeScript", "CSS"],
   decisions:
-    "A single CSV uses five required rating columns plus an optional feedback column. Charts and written feedback share the same dataset and filters. Data stays in the tab and resets on reload; download to keep it. Invalid files preserve the current dataset. Missing ratings are excluded from averages and percentages. The hand-written feedback example is fictional, not AI-generated. Live AI requires a separately configured backend and consent to send anonymised feedback; it is not connected on the public demo. AI requests support at most 100 selected comments. Source-ID validation does not guarantee accurate interpretations. There is no login or server storage.",
+    "A single CSV uses five required rating columns plus an optional feedback column. Charts and written feedback share the same dataset and filters. Data stays in the tab and resets on reload; download to keep it. Invalid files preserve the current dataset. Missing ratings are excluded from averages and percentages. The hand-written feedback example is fictional, not AI-generated. An AI request sends selected anonymised comments to OpenAI through a Cloudflare backend after consent. Requests support at most 100 comments, with public-demo usage limits. Source-ID validation does not guarantee accurate interpretations. The application does not persist feedback on its server; provider processing terms apply. There is no login.",
   demoUrl: "survey/",
 };
 

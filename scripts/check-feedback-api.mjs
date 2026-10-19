@@ -7,7 +7,7 @@ try {
   const page = await browser.newPage();
   let status = 200; let output = { ...exampleAnalysis, findings: exampleAnalysis.findings.map(f => ({ ...f, responseIds: f.responseIds.map(id => id.replace('F', 'R')) })) }; let calls = 0;
   await page.route('**/mock-feedback', async route => { calls++; assert.equal(route.request().postDataJSON().responses.length, 6); await route.fulfill({ status, json: output }); });
-  await page.goto('http://127.0.0.1:5173/portfolio/survey/');
+  await page.goto(new URL('survey/', process.env.PORTFOLIO_URL || 'http://127.0.0.1:5173/portfolio/').href);
   const area = page.locator('#written-feedback');
   const button = area.getByRole('button', { name: 'Analyse feedback' });
   assert.equal(await button.isDisabled(), true); assert.equal(calls, 0);
@@ -17,7 +17,7 @@ try {
   output = { ...exampleAnalysis, findings: [{ ...exampleAnalysis.findings[0], responseIds: ['invented'] }] };
   await button.click(); await area.getByRole('status').filter({ hasText: 'invalid source references' }).waitFor();
   assert.equal(await area.locator('.feedback-finding').count(), 3);
-  status = 429; await button.click(); await area.getByRole('status').filter({ hasText: 'limit has been reached' }).waitFor();
+  status = 429; await button.click(); await area.getByRole('status').filter({ hasText: 'usage limit has been reached' }).waitFor();
   assert.equal(calls, 3);
   await page.getByLabel('Learning track').selectOption('Automations');
   assert.equal(await area.getByRole('checkbox').isChecked(), false);

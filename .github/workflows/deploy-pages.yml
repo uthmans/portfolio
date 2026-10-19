@@ -29,7 +29,15 @@ jobs:
         run: npm ci
       - name: Check project calculations and validation
         run: npm test
+      - name: Verify Cloudflare Worker bundle
+        env:
+          WRANGLER_SEND_METRICS: "false"
+        run: |
+          npm run worker:check
+          npm run worker:test
       - name: Type-check and build
+        env:
+          VITE_FEEDBACK_API_URL: https://portfolio.uthmansalama.workers.dev/api/feedback
         run: npm run build
       - name: Report deployment revision
         run: |

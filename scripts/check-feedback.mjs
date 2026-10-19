@@ -9,7 +9,7 @@ try {
   await page.goto(new URL('survey/', url).href);
   const section = page.locator('#written-feedback');
   assert.equal(await page.locator('input[type=file]').count(), 1);
-  assert.equal(await section.getByRole('button').count(), 1);
+  assert.equal(await section.getByRole('button').count(), await section.locator('.feedback-controls').count() ? 2 : 1);
   const finding = section.locator('.feedback-finding').first();
   await finding.locator('summary').click();
   assert.equal(await finding.locator('li').count(), 5);
