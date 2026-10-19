@@ -125,7 +125,7 @@ Use a UTF-8 comma-separated CSV of up to 2 MB and 5,000 response rows. Required 
 - `format`: `Online` or `In person`.
 - Ratings: one of `1`, `2`, `3`, `4`, `5`, or blank. Text, zero, decimal notation, and out-of-range values are rejected.
 
-The page includes a format guide and a downloadable example. Every response must validate before any data is replaced. Failures preserve the current dataset and filters and show line/field errors, capped at 20. Successful loads reset filters and the question. Generated data is clearly fictional; imported data is labeled separately.
+The page includes a format guide and a downloadable example. Every response must validate before any data is replaced. Failures preserve the current dataset and filters and show line/field errors, capped at 20. Successful loads reset filters and the question. Generated data is clearly fictional; imported data is labeled separately. The generator includes a nonblank feedback comment on every row, chosen from fictional templates and matched to satisfaction where present. These comments are not real feedback or model-generated. They are exported with ratings in the same CSV. Choose 10–100 generated rows to analyse the whole dataset within the AI request limit; larger datasets require a selection of at most 100 comments.
 
 All data resets to the sample on reload. Nothing is persisted or sent to a server. Download a CSV to retain imported or generated data. The table previews the first 100 filtered rows; calculations and downloads use all filtered rows. This keeps larger datasets usable on mobile.
 

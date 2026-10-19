@@ -168,7 +168,7 @@ export default function SurveyApp() {
             {dataset.kind === "sample"
               ? "The built-in sample is feedback from an imaginary community learning series. Every response is made up."
               : dataset.kind === "generated"
-                ? `These randomly generated responses are entirely fictional. Ratings are chosen from 1–5, with about 10% of answers intentionally left blank.`
+                ? `These responses are entirely fictional. Ratings are chosen from 1–5, with about 10% left blank. Every row includes a written comment chosen from fictional templates, matched to its satisfaction rating where present. Comments are not real feedback or AI-generated.`
                 : "Your imported CSV is now used for the charts and calculations. Its responses are not labeled as fictional."}{" "}
             Imported and generated data stay in this tab and reset on reload.
             Download a CSV to keep them. Rating data is processed in your browser.
@@ -231,8 +231,8 @@ export default function SurveyApp() {
             <div>
               <h3>No file? Try random fictional data.</h3>
               <p>
-                Generate a fresh dataset, explore its results, and download it
-                as a valid CSV.
+                Generate fictional ratings and written comments together. Explore
+                the charts, try AI feedback analysis, or download everything as one CSV.
               </p>
               <div className="generator-controls">
                 <label htmlFor="generation-count">
@@ -253,7 +253,7 @@ export default function SurveyApp() {
                 </button>
               </div>
               <small>
-                10–1,000 responses · A new random dataset on each click
+                10–1,000 responses · Choose 10–100 to analyse all comments with AI
               </small>
             </div>
           </div>

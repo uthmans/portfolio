@@ -23,6 +23,14 @@ try {
   assert.equal(await section.locator('.feedback-finding').first().locator('li').count(), 3);
   await page.getByLabel('Learning track').selectOption('All');
   const input = page.getByLabel('Choose CSV file', { exact: true });
+  await page.getByLabel('Number of responses', { exact: true }).fill('15');
+  await page.getByRole('button', { name: 'Generate fictional dataset', exact: true }).click();
+  await section.getByText(/15 of 15 selected responses include a written comment/).waitFor();
+  assert.equal(await section.locator('.feedback-finding').count(), 0);
+  await section.locator('.feedback-originals summary').click();
+  assert.equal(await section.locator('.feedback-originals li').count(), 15);
+  if (await section.locator('.feedback-controls').count()) assert.equal(await section.getByRole('checkbox').isVisible(), true);
+  await page.getByRole('button', { name: 'Reset to sample', exact: true }).click();
   await input.setInputFiles({ name: 'bad.csv', mimeType: 'text/csv', buffer: Buffer.from('id,feedback\nx,test\n') });
   await page.getByRole('alert').waitFor();
   assert.equal(await section.locator('.feedback-finding').count(), 3);

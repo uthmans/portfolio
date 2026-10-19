@@ -6,6 +6,14 @@ import { sample, summarize, toCsv } from "../src/survey/data.ts";
 
 const header = "id,track,format,satisfaction,confidence\n";
 
+test("a generated 15-response dataset includes analysable comments and exports them in the same CSV", () => {
+  const rows = generateResponses(15, 42);
+  assert.equal(rows.length, 15);
+  assert.ok(rows.every(row => typeof row.feedback === "string" && row.feedback.trim().length > 0 && row.feedback.length <= 1000));
+  assert.match(toCsv(rows), /^id,track,format,satisfaction,confidence,feedback\r\n/);
+  assert.deepEqual(parseCsv(toCsv(rows)), { ok: true, rows });
+});
+
 test("optional feedback shares the ratings CSV and survives quoting, filtering and export", () => {
   const parsed = parseCsv('id,track,format,satisfaction,confidence,feedback\r\nA,Data,Online,5,4,"Useful, but please add ""notes"".\nMore practice too."\r\nB,Websites,Online,3,2,\r\n');
   assert.equal(parsed.ok, true);
