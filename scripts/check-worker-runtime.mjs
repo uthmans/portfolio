@@ -2,16 +2,16 @@
 import { Miniflare, convertV4MiniflareOptions } from 'miniflare';
 import assert from 'node:assert/strict';
 import { exampleAnalysis, feedbackSample } from '../src/survey/feedback.ts';
-let calls = 0;
 const mf = new Miniflare(convertV4MiniflareOptions({
   workers: [{ name: 'portfolio',
   modules: true, modulesRoot: '/tmp/portfolio-worker-bundle', scriptPath: '/tmp/portfolio-worker-bundle/index.js', compatibilityDate: '2026-10-19',
   durableObjects: { FEEDBACK_QUOTA: { className: 'FeedbackQuota', useSQLite: true } },
-  bindings: { SURVEY_ALLOWED_ORIGIN: 'https://uthmans.github.io', SURVEY_AI_KEY: 'local-test-only' },
-  outboundService: async request => {
-    assert.equal(new URL(request.url).hostname, 'api.openai.com'); calls++;
-    return Response.json({ choices: [{ message: { content: JSON.stringify(exampleAnalysis) } }] });
-  },
+  bindings: { SURVEY_ALLOWED_ORIGIN: 'https://uthmans.github.io' },
+  serviceBindings: { AI: 'ai-mock' },
+  outboundService: async () => { throw Error('External network calls are forbidden in this test'); },
+  }, {
+    name: 'ai-mock', modules: true, compatibilityDate: '2026-10-19',
+    script: `import { WorkerEntrypoint } from 'cloudflare:workers'; let calls = 0; export default class extends WorkerEntrypoint { async run(model, inputs) { if (model !== '@cf/meta/llama-3.1-8b-instruct-fp8-fast' || inputs.response_format.type !== 'json_schema') throw Error('Wrong model or format'); calls++; return { response: ${JSON.stringify(exampleAnalysis)} }; } async fetch() { return Response.json({calls}); } }`,
   }],
 }));
 try {
@@ -22,6 +22,7 @@ try {
     assert.equal(response.status, i < 3 ? 200 : 429);
     if (i < 3) assert.deepEqual(await response.json(), exampleAnalysis);
   }
-  assert.equal(calls, 3);
+  const mock = await mf.getWorker('ai-mock');
+  assert.equal((await (await mock.fetch('https://mock/count')).json()).calls, 3);
   console.log('Cloudflare runtime passed: Worker entry, native Durable Object storage, mocked provider round trip, and quota rejection before provider call.');
 } finally { await mf.dispose(); }

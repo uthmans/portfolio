@@ -4,15 +4,10 @@ export type Analysis = { summary: string; findings: Finding[] };
 export function analysisErrorMessage(code: unknown): string | undefined {
   if (typeof code !== "string") return undefined;
   const messages: Record<string, string> = {
-    provider_billing: "AI analysis is unavailable because the service’s OpenAI API credits or spending limit need attention. The portfolio owner needs to check OpenAI API billing. A ChatGPT subscription does not cover API usage.",
-    provider_authentication: "OpenAI rejected the service’s API key. The portfolio owner needs to check the Cloudflare runtime secret. Your responses were kept.",
-    provider_permission: "The service’s API key does not have permission for this request. The portfolio owner needs to check OpenAI project permissions.",
-    provider_model: "The configured AI model is unavailable to this service. The portfolio owner needs to check its model access.",
-    provider_rate_limit: "OpenAI is temporarily limiting requests. Please wait before trying again.",
-    provider_request: "OpenAI rejected the analysis request settings. The service configuration needs attention.",
-    provider_unavailable: "OpenAI is temporarily unavailable. Please try again later.",
+    ai_binding_missing: "Cloudflare Workers AI is not connected to this deployment yet. The portfolio owner needs to check the AI binding.",
+    workers_ai_limit: "Cloudflare’s free AI allowance or request limit has been reached. Please try again later; no paid fallback is used.",
+    workers_ai_unavailable: "Cloudflare Workers AI could not complete this request. Please try again later. If it persists, the portfolio owner should check Workers AI activation and model availability.",
     provider_timeout: "The AI request took too long. Your responses were kept. Please try again later.",
-    provider_connection: "The service could not reach OpenAI. Your responses were kept. Please try again later.",
     invalid_analysis: "The AI returned an incomplete analysis or invalid source references. No new report was accepted. Your responses were kept.",
     quota_unavailable: "The service could not check its usage limits. No AI request was sent. Please try again later.",
   };

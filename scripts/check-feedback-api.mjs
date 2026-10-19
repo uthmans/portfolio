@@ -19,8 +19,8 @@ try {
   assert.equal(await area.locator('.feedback-finding').count(), 3);
   status = 429; await button.click(); await area.getByRole('status').filter({ hasText: 'usage limit has been reached' }).waitFor();
   assert.equal(calls, 3);
-  status = 502; output = { code: 'provider_billing', error: 'untrusted text should not be displayed' };
-  await button.click(); await area.getByRole('status').filter({ hasText: 'OpenAI API credits' }).waitFor();
+  status = 502; output = { code: 'workers_ai_limit', error: 'untrusted text should not be displayed' };
+  await button.click(); await area.getByRole('status').filter({ hasText: 'free AI allowance' }).waitFor();
   assert.equal(await area.getByRole('status').innerText().then(text => text.includes('untrusted text')), false);
   await page.getByLabel('Learning track').selectOption('Automations');
   assert.equal(await area.getByRole('checkbox').isChecked(), false);

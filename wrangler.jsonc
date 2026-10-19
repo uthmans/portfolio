@@ -5,9 +5,9 @@
   "compatibility_date": "2026-10-19",
   "workers_dev": true,
   "vars": {
-    "SURVEY_ALLOWED_ORIGIN": "https://uthmans.github.io",
-    "SURVEY_AI_MODEL": "gpt-4.1-mini"
+    "SURVEY_ALLOWED_ORIGIN": "https://uthmans.github.io"
   },
+  "ai": { "binding": "AI" },
   "durable_objects": {
     "bindings": [{ "name": "FEEDBACK_QUOTA", "class_name": "FeedbackQuota" }]
   },
