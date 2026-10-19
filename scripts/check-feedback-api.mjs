@@ -12,7 +12,10 @@ try {
   const button = area.getByRole('button', { name: 'Analyse feedback' });
   assert.equal(await button.isDisabled(), true); assert.equal(calls, 0);
   await area.getByRole('checkbox').check(); await button.click();
-  await area.getByRole('status').filter({ hasText: 'Analysis ready.' }).waitFor();
+  await area.getByRole('status').filter({ hasText: 'Analysis complete.' }).waitFor();
+  await area.getByRole('heading', { name: 'Analysis complete', exact: true }).waitFor();
+  assert.match(await area.locator('.feedback-complete').innerText(), /6 comments analysed · 3 themes found/);
+  assert.equal(await page.evaluate(() => document.activeElement?.textContent?.includes('Analysis complete')), true);
   assert.match(await area.locator('.feedback-context').innerText(), /AI-generated/);
   output = { ...exampleAnalysis, findings: [{ ...exampleAnalysis.findings[0], responseIds: ['invented'] }] };
   await button.click(); await area.getByRole('status').filter({ hasText: 'invalid source references' }).waitFor();
