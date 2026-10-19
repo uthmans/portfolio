@@ -61,6 +61,7 @@ export async function handleRequest(request, env, fetchProvider = fetch) {
     for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.length; }
     rows = validateFeedback(JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes)).responses);
   } catch { return json({ error: 'Use 1–100 valid anonymous feedback responses, up to 1,000 characters each.' }, 400, cors); }
+  let stage = 'quota';
   try {
     // Cloudflare supplies this header; raw IP addresses are not stored.
     const address = request.headers.get('CF-Connecting-IP') || 'unknown';
@@ -70,14 +71,29 @@ export async function handleRequest(request, env, fetchProvider = fetch) {
     const reservation = await quota.fetch('https://quota.internal/reserve', { method: 'POST', body: JSON.stringify({ client }) });
     if (reservation.status === 429) return json({ error: 'Demo usage limit reached. Try again later.' }, 429, { ...cors, 'Retry-After': '3600' });
     if (!reservation.ok) return json({ error: 'Usage controls unavailable. Please try later.' }, 503, cors);
+    stage = 'provider';
     const provider = await fetchProvider('https://api.openai.com/v1/chat/completions', {
       method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${env.SURVEY_AI_KEY}` }, signal: AbortSignal.timeout(35000),
       body: JSON.stringify({ model: env.SURVEY_AI_MODEL || 'gpt-4.1-mini', temperature: 0.2, max_completion_tokens: 2500, response_format: { type: 'json_object' }, messages: [{ role: 'system', content: instructions }, { role: 'user', content: JSON.stringify({ responses: rows }) }] }),
     });
-    if (!provider.ok) return json({ error: provider.status === 429 ? 'The AI provider has reached its usage or billing limit.' : 'The AI provider could not complete this request.' }, 502, cors);
+    if (!provider.ok) {
+      const details = await provider.json().catch(() => null);
+      const providerCode = details?.error?.code;
+      const code = provider.status === 401 ? 'provider_authentication'
+        : provider.status === 403 ? 'provider_permission'
+        : provider.status === 404 ? 'provider_model'
+        : provider.status === 429 ? (providerCode === 'insufficient_quota' || providerCode === 'billing_hard_limit_reached' ? 'provider_billing' : 'provider_rate_limit')
+        : provider.status === 400 ? 'provider_request'
+        : 'provider_unavailable';
+      return json({ error: 'The AI provider could not complete this request.', code }, 502, cors);
+    }
+    stage = 'output';
     const body = await provider.json();
     return json(validateAnalysis(JSON.parse(body.choices?.[0]?.message?.content), rows), 200, cors);
-  } catch { return json({ error: 'Analysis timed out or returned an invalid result. Please try again later.' }, 502, cors); }
+  } catch (error) {
+    const code = stage === 'quota' ? 'quota_unavailable' : error?.name === 'TimeoutError' || error?.name === 'AbortError' ? 'provider_timeout' : stage === 'output' ? 'invalid_analysis' : 'provider_connection';
+    return json({ error: 'Analysis could not be completed.', code }, stage === 'quota' ? 503 : 502, cors);
+  }
 }
 
 export default { fetch(request, env) { return handleRequest(request, env); } };

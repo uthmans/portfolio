@@ -64,3 +64,16 @@ test('persistent global quota permits only 20 reservations across concurrent cli
   const env = { ...environment(), FEEDBACK_QUOTA: { idFromName: () => 'x', get: () => ({ fetch: async () => new Response('', { status: 500 }) }) } };
   assert.equal((await handleRequest(request(), env, () => { throw Error('Must not call'); })).status, 503);
 });
+
+test('provider failures return safe diagnostic codes without exposing provider details', async () => {
+  for (const [status, providerCode, expected] of [[401, 'invalid_api_key', 'provider_authentication'], [403, '', 'provider_permission'], [404, 'model_not_found', 'provider_model'], [429, 'insufficient_quota', 'provider_billing'], [429, 'rate_limit_exceeded', 'provider_rate_limit'], [400, '', 'provider_request'], [500, '', 'provider_unavailable']]) {
+    const response = await handleRequest(request(), environment(), async () => Response.json({ error: { code: providerCode, message: 'private-provider-detail-test-only' } }, { status }));
+    const body = await response.json();
+    assert.equal(response.status, 502); assert.equal(body.code, expected);
+    assert.ok(!JSON.stringify(body).includes('private-provider-detail'));
+  }
+  const invalid = await handleRequest(request(), environment(), async () => Response.json({ choices: [{ message: { content: 'not json' } }] }));
+  assert.equal((await invalid.json()).code, 'invalid_analysis');
+  const timeout = await handleRequest(request(), environment(), async () => { throw new DOMException('private', 'TimeoutError'); });
+  assert.equal((await timeout.json()).code, 'provider_timeout');
+});

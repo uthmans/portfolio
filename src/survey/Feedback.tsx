@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { analysisReport, exampleAnalysis, validateAnalysis, type Analysis, type Feedback } from "./feedback";
+import { analysisErrorMessage, analysisReport, exampleAnalysis, validateAnalysis, type Analysis, type Feedback } from "./feedback";
 import type { ResponseRow } from "./data";
 import "./feedback.css";
 
@@ -26,6 +26,9 @@ export default function FeedbackStudio({ responses, isSample }: { responses: Res
     try {
       const response = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ responses: rows }), signal: AbortSignal.timeout(45000) });
       if (!response.ok) {
+        const details = await response.json().catch(() => null);
+        const explanation = analysisErrorMessage(details?.code);
+        if (explanation) throw new Error(explanation);
         if (response.status === 429) throw new Error("The demo usage limit has been reached (3 requests per visitor per hour, 20 total per day). Please try again later.");
         if (response.status === 503) throw new Error("The AI service is not ready yet. Please try again after backend setup is complete.");
         throw new Error("The AI service could not complete the analysis. Please try again later.");

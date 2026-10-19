@@ -1,6 +1,13 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { validateFeedback, validateAnalysis, exampleAnalysis, feedbackSample, analysisReport } from '../src/survey/feedback.ts';
+import { analysisErrorMessage, validateFeedback, validateAnalysis, exampleAnalysis, feedbackSample, analysisReport } from '../src/survey/feedback.ts';
+
+test('only known diagnostic codes become user-facing error messages', () => {
+  assert.match(analysisErrorMessage('provider_billing')!, /OpenAI API credits/);
+  assert.equal(analysisErrorMessage('untrusted-provider-text'), undefined);
+  assert.equal(analysisErrorMessage('constructor'), undefined);
+  assert.equal(analysisErrorMessage(null), undefined);
+});
 
 test('feedback bounds, anonymous IDs and whole-file validation', () => {
   assert.deepEqual(validateFeedback(feedbackSample), feedbackSample);
