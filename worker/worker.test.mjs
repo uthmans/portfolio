@@ -17,8 +17,16 @@ test('worker root and health respond without revealing secrets; runtime context 
   const env = environment();
   const health = await worker.fetch(new Request('https://worker.example/'), env, {});
   const data = await health.json(); assert.equal(data.ready, true);
+  assert.deepEqual(data.checks, { apiKeyConfigured: true, quotaBindingConfigured: true });
+  assert.equal(data.version, 'health-check-2');
   assert.equal(JSON.stringify(data).includes('test-only'), false);
   assert.equal((await (await worker.fetch(new Request('https://worker.example/api/health'), {})).json()).ready, false);
+  for (const [missing, expected] of [['SURVEY_AI_KEY', { apiKeyConfigured: false, quotaBindingConfigured: true }], ['FEEDBACK_QUOTA', { apiKeyConfigured: true, quotaBindingConfigured: false }]]) {
+    const response = await worker.fetch(new Request('https://worker.example/api/health'), { ...env, [missing]: undefined });
+    const diagnostics = await response.json();
+    assert.equal(diagnostics.ready, false);
+    assert.deepEqual(diagnostics.checks, expected);
+  }
 });
 test('worker CORS, preflight, input and missing prerequisites fail before provider calls', async () => {
   const env = environment(); let calls = 0;

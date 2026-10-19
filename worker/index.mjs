@@ -37,7 +37,8 @@ export async function handleRequest(request, env, fetchProvider = fetch) {
   const origin = request.headers.get('Origin');
   const cors = origin === env.SURVEY_ALLOWED_ORIGIN ? { 'Access-Control-Allow-Origin': origin, 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type', 'Vary': 'Origin' } : { 'Vary': 'Origin' };
   if ((path === '/' || path === '/api/health') && request.method === 'GET') {
-    return json({ service: 'Survey Insights AI helper', ready: !!env.SURVEY_AI_KEY && !!env.FEEDBACK_QUOTA, portfolio: 'https://uthmans.github.io/portfolio/', analysisEndpoint: '/api/feedback' }, 200, cors);
+    const checks = { apiKeyConfigured: !!env.SURVEY_AI_KEY, quotaBindingConfigured: !!env.FEEDBACK_QUOTA };
+    return json({ service: 'Survey Insights AI helper', version: 'health-check-2', ready: checks.apiKeyConfigured && checks.quotaBindingConfigured, checks, portfolio: 'https://uthmans.github.io/portfolio/', analysisEndpoint: '/api/feedback' }, 200, cors);
   }
   if (path !== '/api/feedback') return json({ error: 'Not found' }, 404, cors);
   if (!origin || origin !== env.SURVEY_ALLOWED_ORIGIN) return json({ error: 'Origin not allowed' }, 403);
