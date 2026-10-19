@@ -5,6 +5,15 @@ import { generateResponses } from "../src/survey/generate.ts";
 import { sample, summarize, toCsv } from "../src/survey/data.ts";
 
 const header = "id,track,format,satisfaction,confidence\n";
+
+test("optional feedback shares the ratings CSV and survives quoting, filtering and export", () => {
+  const parsed = parseCsv('id,track,format,satisfaction,confidence,feedback\r\nA,Data,Online,5,4,"Useful, but please add ""notes"".\nMore practice too."\r\nB,Websites,Online,3,2,\r\n');
+  assert.equal(parsed.ok, true);
+  if (!parsed.ok) return;
+  assert.equal(parsed.rows[0].feedback, 'Useful, but please add "notes".\nMore practice too.');
+  assert.deepEqual(parseCsv(toCsv(parsed.rows)), parsed);
+  assert.equal(parseCsv('id,track,format,satisfaction,confidence,feedback\nA,Data,Online,5,4,' + 'x'.repeat(1001)).ok, false);
+});
 function errors(text: string) {
   const result = parseCsv(text);
   assert.equal(result.ok, false);

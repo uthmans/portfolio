@@ -23,6 +23,7 @@ type Dataset = {
 
 export default function SurveyApp() {
   const [question, setQuestion] = useState<Question>("satisfaction");
+  const [datasetVersion, setDatasetVersion] = useState(0);
   const [track, setTrack] = useState("All");
   const [format, setFormat] = useState("All");
   const [notice, setNotice] = useState("");
@@ -42,6 +43,7 @@ export default function SurveyApp() {
   const filtered = track !== "All" || format !== "All";
 
   function loadDataset(next: Dataset, message: string) {
+    setDatasetVersion(version => version + 1);
     setDataset(next);
     setTrack("All");
     setFormat("All");
@@ -170,7 +172,7 @@ export default function SurveyApp() {
                 : "Your imported CSV is now used for the charts and calculations. Its responses are not labeled as fictional."}{" "}
             Imported and generated data stay in this tab and reset on reload.
             Download a CSV to keep them. Rating data is processed in your browser.
-            The separate written-feedback workspace below explains its AI options.
+            Include a feedback column in the same CSV to explore written responses below.
           </p>
         </aside>
 
@@ -258,7 +260,7 @@ export default function SurveyApp() {
           <details className="csv-guide">
             <summary>Required CSV format & example</summary>
             <p>
-              One response per row. Include exactly these five headers, in any
+              One response per row. Include these five required headers, in any
               order. Header names and category values are case-sensitive. Quoted
               fields are supported. Save as{" "}
               <strong>CSV UTF-8 (comma-separated)</strong> from your
@@ -290,11 +292,15 @@ export default function SurveyApp() {
                   <dt>confidence</dt>
                   <dd>Whole number 1–5, or blank for a missing answer</dd>
                 </div>
+                <div>
+                  <dt>feedback (optional)</dt>
+                  <dd>Written comment, up to 1,000 characters, or blank. Used for feedback analysis from this same file. Remove identifying or sensitive details before importing.</dd>
+                </div>
               </dl>
             </div>
             <pre>
-              id,track,format,satisfaction,confidence{"\n"}
-              R01,Websites,Online,5,4{"\n"}R02,Data,In person,,3
+              id,track,format,satisfaction,confidence,feedback{"\n"}
+              R01,Websites,Online,5,4,"Clear examples, more practice please."{"\n"}R02,Data,In person,,3,
             </pre>
             <p>
               Blank ratings are excluded from calculations, never treated as
@@ -514,7 +520,7 @@ export default function SurveyApp() {
             </table>
           </div>
         </section>
-        <FeedbackStudio />
+        <FeedbackStudio key={`${datasetVersion}-${track}-${format}`} responses={rows} isSample={dataset.kind === "sample"} />
       </main>
       <footer className="studio-footer">
         <span>

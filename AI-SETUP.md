@@ -1,6 +1,6 @@
 # Survey Insights Studio: feedback analysis
 
-The public GitHub Pages site can run the hand-written fictional example without credentials. It never presents that example as an AI result and never uses it to analyse imported feedback. Ratings and written feedback use separate CSV formats. Importing either stays in the tab; feedback is sent only after the visitor consents and requests live analysis.
+The public GitHub Pages site can run the hand-written fictional example without credentials. It never presents that example as an AI result and never uses it to analyse imported feedback. Ratings and written feedback share one CSV: add the optional `feedback` column to the five required rating columns. Both sections use the same filters. Importing stays in the tab; only nonblank selected comments are sent after consent and an explicit AI request. At most 100 comments may be analysed per request; larger selections require filters rather than silent truncation. Changing data or filters clears stale results and consent. Theme dropdowns show the finding and original responses together.
 
 ## Local AI setup (Node.js 24)
 

@@ -85,7 +85,7 @@ Project records in `src/content.ts` contain the problem, audience, features, con
 ## Current limitations
 
 - The approved updated CV is downloadable from the contact section; the attached photo still needs a downloadable file.
-- Survey ratings use the documented five-column schema (up to 5,000 rows and 2 MB). Written feedback uses a separate two-column CSV. Live AI requires backend configuration; the public example is hand-written. No login, server database or analytics. Business enquiries are local previews with no external delivery.
+- Survey uses one CSV with five required rating columns and an optional feedback column (up to 5,000 rows and 2 MB). Live AI requires backend configuration and at most 100 selected comments; the public example is hand-written. No login, server database or analytics. Business enquiries are local previews with no external delivery.
 - English only. Content is centralized for future translations; Spanish and Arabic navigation should be added only with real translations, and Arabic will need RTL verification.
 - The first implementation was created with AI coding assistance from Uthman’s requirements. His review, testing, and learning are ongoing; no technical seniority or completed client work is implied.
 
@@ -99,7 +99,7 @@ Publishing the cloud environment snapshots the development workspace and tools. 
 
 ### Written feedback and AI-ready version 2
 
-The separate written-feedback workspace accepts UTF-8 CSVs with exactly `id,feedback`, up to 256 KB, 100 responses, and 1,000 characters per response. Anonymous IDs must be unique. It previews source text, links example findings to supporting responses, and exports a report. Invalid imports preserve the workspace; successful imports clear stale analysis. The fixed example is hand-written for six fictional responses and is disabled for imported feedback. The original rating features remain independent.
+The written-feedback section uses the same uploaded CSV and filters as the rating charts. Add an optional `feedback` column, up to 1,000 characters per comment; blanks are allowed. Expand a theme to see its interpretation, suggested action and supporting responses together. Sample findings appear automatically for the selected fictional comments and are never applied to imported data. A single report-download button replaces the former multi-step controls. Invalid imports preserve the workspace; successful imports or filter changes clear stale AI analysis and consent. Live requests allow 1–100 nonblank comments; larger selections must be filtered explicitly, never silently truncated. Older five-column files continue to work.
 
 See [AI-SETUP.md](AI-SETUP.md) for local setup, secure backend hosting requirements, privacy considerations, and the implementation case study. No provider key or paid backend is required for the example. Run `npm run test:feedback` against a production preview; `npm test` also runs mocked backend integration tests. Actual model quality and paid-provider access remain unverified until configured.
 
@@ -118,7 +118,7 @@ Blank ratings are excluded from the mean and percentages, while total rows and m
 
 ### Import format and behavior
 
-Use a UTF-8 comma-separated CSV of up to 2 MB and 5,000 response rows. It must have exactly `id,track,format,satisfaction,confidence` as headers, in any order. Header names and category values are case-sensitive. CRLF/LF, BOM, quoted fields, escaped quotes, and empty physical lines are supported.
+Use a UTF-8 comma-separated CSV of up to 2 MB and 5,000 response rows. Required headers are `id,track,format,satisfaction,confidence`, with an optional `feedback` column, in any order. Header names and category values are case-sensitive. CRLF/LF, BOM, quoted fields, escaped quotes, and empty physical lines are supported. Comments may be blank or up to 1,000 characters; quotes and line breaks round-trip through export.
 
 - `id`: unique, 1–64 ASCII letters, numbers, hyphens, or underscores; start with a letter or number.
 - `track`: `Websites`, `Automations`, or `Data`.

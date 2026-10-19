@@ -1,9 +1,12 @@
+import { feedbackSample } from "./feedback.ts";
+
 export type ResponseRow = {
   id: string;
   track: "Websites" | "Automations" | "Data";
   format: "Online" | "In person";
   satisfaction: number | null;
   confidence: number | null;
+  feedback?: string;
 };
 
 export type Question = "satisfaction" | "confidence";
@@ -20,7 +23,7 @@ export const questions: Record<Question, { label: string; prompt: string }> = {
 
 // Original fictional feedback for a made-up community learning series.
 // No names, real participants, or organizational data.
-export const sample: ResponseRow[] = [
+const ratingSample: ResponseRow[] = [
   {
     id: "R01",
     track: "Websites",
@@ -107,6 +110,10 @@ export const sample: ResponseRow[] = [
   },
 ];
 
+export const sample: ResponseRow[] = ratingSample.map((row, index) =>
+  index < feedbackSample.length ? { ...row, feedback: feedbackSample[index].feedback } : row,
+);
+
 export function summarize(rows: ResponseRow[], question: Question) {
   const values = rows
     .map((row) => row[question])
@@ -142,9 +149,10 @@ export function filterResponses(
 }
 
 export function toCsv(rows: ResponseRow[]) {
+  const hasFeedback = rows.some(row => row.feedback !== undefined);
   return (
     [
-      "id,track,format,satisfaction,confidence",
+      "id,track,format,satisfaction,confidence" + (hasFeedback ? ",feedback" : ""),
       ...rows.map((row) =>
         [
           row.id,
@@ -152,6 +160,7 @@ export function toCsv(rows: ResponseRow[]) {
           row.format,
           row.satisfaction ?? "",
           row.confidence ?? "",
+          ...(hasFeedback ? [row.feedback ?? ""] : []),
         ]
           .map((value) => {
             const cell = String(value);

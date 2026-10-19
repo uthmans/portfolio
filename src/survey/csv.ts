@@ -114,14 +114,15 @@ export function parseCsv(text: string): CsvResult {
     };
   const header = records[0].cells.map((cell) => cell.trim());
   if (
-    header.length !== CSV_COLUMNS.length ||
+    (header.length !== CSV_COLUMNS.length && header.length !== CSV_COLUMNS.length + 1) ||
     new Set(header).size !== header.length ||
-    CSV_COLUMNS.some((column) => !header.includes(column))
+    CSV_COLUMNS.some((column) => !header.includes(column)) ||
+    header.some(column => ![...CSV_COLUMNS, "feedback"].includes(column))
   )
     return {
       ok: false,
       errors: [
-        `Use exactly these five headers (any order): ${CSV_COLUMNS.join(",")}. Header names are case-sensitive.`,
+        `Use these five headers (any order): ${CSV_COLUMNS.join(",")}. You may also include feedback for written comments. Header names are case-sensitive.`,
       ],
     };
   if (records.length === 1)
@@ -143,7 +144,7 @@ export function parseCsv(text: string): CsvResult {
       errors.push(`Line ${record.line}: ${message}`);
     if (record.cells.length !== header.length)
       report(
-        `expected 5 fields, found ${record.cells.length}. Check commas and quotes.`,
+        `expected ${header.length} fields, found ${record.cells.length}. Check commas and quotes.`,
       );
     else {
       const get = (column: (typeof CSV_COLUMNS)[number]) =>
@@ -175,6 +176,9 @@ export function parseCsv(text: string): CsvResult {
       };
       const satisfaction = rating("satisfaction"),
         confidence = rating("confidence");
+      const feedback = header.includes("feedback") ? record.cells[header.indexOf("feedback")].trim() : undefined;
+      if (feedback !== undefined && (feedback.length > 1000 || /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(feedback)))
+        report("feedback must be at most 1,000 characters of text, or blank.");
       if (errors.length === before)
         rows.push({
           id,
@@ -182,6 +186,7 @@ export function parseCsv(text: string): CsvResult {
           format: format as ResponseRow["format"],
           satisfaction,
           confidence,
+          ...(feedback ? { feedback } : {}),
         });
     }
     if (errors.length >= MAX_ERRORS)
