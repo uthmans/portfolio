@@ -392,7 +392,7 @@ export default function App() {
                 <span>PROJECT 02</span>
                 <span className="status">
                   <i />
-                  First version
+                  {surveyProject.status}
                 </span>
               </div>
               <h3>{surveyProject.title}</h3>

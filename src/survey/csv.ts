@@ -15,7 +15,7 @@ export type CsvResult =
 
 // Small CSV reader for this documented schema: UTF-8, commas, CRLF/LF,
 // quoted fields, doubled quotes, and quoted line breaks. No delimiter guessing.
-function readRecords(text: string): { cells: string[]; line: number }[] {
+export function readRecords(text: string): { cells: string[]; line: number }[] {
   const records: { cells: string[]; line: number }[] = [];
   let cells: string[] = [];
   let field = "";

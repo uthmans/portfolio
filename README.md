@@ -1,6 +1,6 @@
 # Uthman Salama’s portfolio
 
-A personal portfolio for practical websites, databases, and workflows. The portfolio, Survey Insights Studio, and Form & Field business website are implemented first versions; the remaining previews are original, static concepts labeled as planned. No private organizational materials or datasets are used.
+A personal portfolio for practical websites, databases, and workflows. All four core projects are implemented. Survey Insights Studio includes a written-feedback workspace with a hand-written example and a prepared AI backend integration. No private organizational materials or datasets are used.
 
 ## Run locally
 
@@ -84,8 +84,8 @@ Project records in `src/content.ts` contain the problem, audience, features, con
 
 ## Current limitations
 
-- The CV download is held until an updated document is provided; the attached photo still needs a downloadable file.
-- Survey CSV import requires the documented five-column schema (up to 5,000 rows and 2 MB). Ratings are limited to two 1–5 questions. No AI API, login, server database or analytics. Business enquiries are working local previews, with no external delivery.
+- The approved updated CV is downloadable from the contact section; the attached photo still needs a downloadable file.
+- Survey ratings use the documented five-column schema (up to 5,000 rows and 2 MB). Written feedback uses a separate two-column CSV. Live AI requires backend configuration; the public example is hand-written. No login, server database or analytics. Business enquiries are local previews with no external delivery.
 - English only. Content is centralized for future translations; Spanish and Arabic navigation should be added only with real translations, and Arabic will need RTL verification.
 - The first implementation was created with AI coding assistance from Uthman’s requirements. His review, testing, and learning are ongoing; no technical seniority or completed client work is implied.
 
@@ -97,7 +97,13 @@ Publishing the cloud environment snapshots the development workspace and tools. 
 
 ## Survey Insights Studio
 
-Open `/portfolio/survey/`. This is a separate built page with direct-refresh support on GitHub Pages. It offers two rating questions, combined learning-track and session-format filters, response counts, a rating distribution, a mean, an explicit missing-answer state, a source-row table, and a filtered CSV download. It starts with 12 original fictional responses. Visitors can import a validated CSV or generate 10–1,000 random fictional responses, then filter, calculate, and download them. No data is uploaded and there is no API connection.
+### Written feedback and AI-ready version 2
+
+The separate written-feedback workspace accepts UTF-8 CSVs with exactly `id,feedback`, up to 256 KB, 100 responses, and 1,000 characters per response. Anonymous IDs must be unique. It previews source text, links example findings to supporting responses, and exports a report. Invalid imports preserve the workspace; successful imports clear stale analysis. The fixed example is hand-written for six fictional responses and is disabled for imported feedback. The original rating features remain independent.
+
+See [AI-SETUP.md](AI-SETUP.md) for local setup, secure backend hosting requirements, privacy considerations, and the implementation case study. No provider key or paid backend is required for the example. Run `npm run test:feedback` against a production preview; `npm test` also runs mocked backend integration tests. Actual model quality and paid-provider access remain unverified until configured.
+
+Open `/portfolio/survey/`. This is a separate built page with direct-refresh support on GitHub Pages. It offers two rating questions, combined learning-track and session-format filters, response counts, a rating distribution, a mean, an explicit missing-answer state, a source-row table, and a filtered CSV download. It starts with 12 original fictional responses. Visitors can import a validated CSV or generate 10–1,000 random fictional responses, then filter, calculate, and download them. Rating data is processed locally. The separate feedback workspace sends text only when a backend is configured and the visitor consents and requests AI analysis.
 
 - `src/survey/data.ts`: original sample, question definitions, filtering, calculations, and CSV export.
 - `src/survey/csv.ts`: CSV parsing and whole-file validation with physical line numbers.

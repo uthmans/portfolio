@@ -2,6 +2,7 @@ import { useState, type ChangeEvent } from "react";
 import { MAX_FILE_BYTES, MAX_ROWS, parseCsv } from "./csv";
 import { generateResponses } from "./generate";
 import Chart from "./Chart";
+import FeedbackStudio from "./Feedback";
 import PortfolioBanner from "../components/PortfolioBanner";
 import {
   filterResponses,
@@ -148,6 +149,7 @@ export default function SurveyApp() {
               Survey Insights <em>Studio.</em>
             </h1>
             <p>Explore feedback. See the counts. Understand the calculation.</p>
+            <p><a href="#written-feedback">Explore written-feedback analysis ↓</a></p>
           </div>
           <span className="sample-badge">
             {dataset.kind === "imported"
@@ -167,8 +169,8 @@ export default function SurveyApp() {
                 ? `These randomly generated responses are entirely fictional. Ratings are chosen from 1–5, with about 10% of answers intentionally left blank.`
                 : "Your imported CSV is now used for the charts and calculations. Its responses are not labeled as fictional."}{" "}
             Imported and generated data stay in this tab and reset on reload.
-            Download a CSV to keep them. Nothing is uploaded to a server; there
-            is no AI integration.
+            Download a CSV to keep them. Rating data is processed in your browser.
+            The separate written-feedback workspace below explains its AI options.
           </p>
         </aside>
 
@@ -512,6 +514,7 @@ export default function SurveyApp() {
             </table>
           </div>
         </section>
+        <FeedbackStudio />
       </main>
       <footer className="studio-footer">
         <span>

@@ -27,7 +27,7 @@ for (const route of [
     await access(`dist/${url.slice(base.length)}`);
   }
 }
-assert.equal(surveyProject.status, "First version");
+assert.equal(surveyProject.status, "Version 2 · AI-ready");
 assert.equal(surveyProject.demoUrl, "survey/");
 assert.equal(businessProject.status, "First version");
 assert.equal(businessProject.demoUrl, "business/");

@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build && node scripts/verify-build.mjs",
     "preview": "vite preview --host 0.0.0.0",
     "test:browser": "node scripts/check-browser.mjs",
-    "test": "node --test tests/*.test.ts",
+    "test": "node --test tests/*.test.ts server/*.test.mjs",
+    "test:feedback": "node scripts/check-feedback.mjs",
     "test:survey": "node scripts/check-survey.mjs",
     "test:business": "node scripts/check-business.mjs",
     "test:hub": "node scripts/check-hub.mjs"

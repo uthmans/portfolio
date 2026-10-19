@@ -17,7 +17,7 @@ export type Project = {
   number: string;
   title: string;
   category: string;
-  status: "First version";
+  status: "First version" | "Version 2 · AI-ready";
   description: string;
   problem: string;
   audience: string;
@@ -58,9 +58,9 @@ export const surveyProject: Project = {
   number: "02",
   title: "Survey Insights Studio",
   category: "Data exploration",
-  status: "First version",
+  status: "Version 2 · AI-ready",
   description:
-    "Explore sample, generated, or imported survey responses with filters, rating charts, and calculations you can check.",
+    "Explore survey ratings and written feedback, with validated imports, evidence-linked example findings, downloadable reports, and a prepared AI integration.",
   problem:
     "Make a small survey easier to explore without hiding response counts or the effect of missing values.",
   audience:
@@ -72,12 +72,14 @@ export const surveyProject: Project = {
     "Response counts, distributions, and means",
     "Explicit missing-value rules and an unanswered state",
     "Filtered CSV download and a source-row table",
+    "Separate written-feedback CSV import and source-linked example analysis",
+    "Downloadable feedback reports and a validated backend integration for live AI",
   ],
   contribution:
     "I set the project goals and scope. This first version was implemented with AI coding assistance, including calculation and browser checks. I’m reviewing the result and learning to explain and maintain it.",
   technology: ["React", "TypeScript", "CSS"],
   decisions:
-    "CSVs must follow the documented five-column schema. Imported and generated data stay in the current tab and reset on reload; download to keep them. Invalid files preserve the current dataset. There is no AI integration, login, or server storage. Missing answers are excluded from averages and percentages, and shown separately.",
+    "Rating CSVs use the documented five-column schema; written feedback uses id,feedback. Data stays in the tab and resets on reload; download to keep it. Invalid files preserve the current dataset. Missing ratings are excluded from averages and percentages. The hand-written feedback example is fictional, not AI-generated. Live AI requires a separately configured backend and consent to send anonymised feedback; it is not connected on the public demo. Source-ID validation does not guarantee accurate interpretations. There is no login or server storage.",
   demoUrl: "survey/",
 };
 
