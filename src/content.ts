@@ -217,7 +217,6 @@ export const services = [
     ],
     example: "Explore Form & Field",
     demoUrl: "business/",
-    subject: "Let’s discuss a business website",
     contactLabel: "Discuss your website",
     prompt:
       "Tell me about your business, the pages you need, and what you want visitors to do.",
@@ -234,7 +233,6 @@ export const services = [
     ],
     example: "Explore Survey Insights Studio",
     demoUrl: "survey/",
-    subject: "Let’s discuss a dashboard or data tool",
     contactLabel: "Discuss your data tool",
     prompt:
       "Tell me what data you work with, what is difficult today, and what you want to understand or track. Please leave private data out of your first message.",
@@ -251,7 +249,6 @@ export const services = [
     ],
     example: "Explore Freelancer Project Hub",
     demoUrl: "hub/",
-    subject: "Let’s discuss an AI-assisted workflow",
     contactLabel: "Discuss your AI workflow",
     prompt:
       "Tell me which task you repeat, the tools you currently use, and where you would like help. Please leave private data out of your first message.",

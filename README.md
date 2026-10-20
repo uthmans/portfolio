@@ -66,7 +66,7 @@ The Rollup override pins its official npm tarball because the registry’s full 
 - `src/components/PortfolioBanner.tsx` and `portfolio-banner.css`: the shared thin green banner used on the portfolio, demos, and service pages. New project pages should reuse it, with a back-to-portfolio link on the left and the page title/context on the right.
 - `index.html`: page title, description, and document language.
 
-The confirmed public email is `uthmansalama@gmail.com`; other contact fields remain empty. Set `profile.email`, `linkedInUrl`, `githubUrl`, or `cvUrl` only to confirmed public details. Empty fields never become fake links. For a CV, place a public PDF in `public/` and set `cvUrl` to a relative path such as `uthman-salama-cv.pdf`, so the link works below `/portfolio/`. A direct email link opens the visitor’s email application; no form or delivery service is connected.
+The confirmed public email is `uthmansalama@gmail.com`; other contact fields remain empty. Set `profile.email`, `linkedInUrl`, `githubUrl`, or `cvUrl` only to confirmed public details. Empty fields never become fake links. For a CV, place a public PDF in `public/` and set `cvUrl` to a relative path such as `uthman-salama-cv.pdf`, so the link works below `/portfolio/`. Portfolio enquiries use the on-page contact form; connect its Formspree endpoint as described below before publishing.
 
 ## Add projects
 
@@ -84,7 +84,13 @@ Configure the non-secret frontend variable `VITE_HUB_PLAN_API_URL` to the Worker
 
 ## Main interactions to check
 
-The homepage Services section replaces the general capabilities list with three offers: business websites, dashboards and data tools, and AI-assisted workflows. Each links to an independent demo and a prefilled email enquiry. Offer text, deliverables, demo links, and email prompts live in `services` in `src/content.ts`; enquiries open the visitor’s email application and are not submitted by the site.
+The homepage Services section offers business websites, dashboards and data tools, and AI-assisted workflows. Each links to an independent demo and the on-page enquiry form, preselecting the service without overwriting anything the visitor has typed. Offer text and message prompts live in `services` in `src/content.ts`. The browser can autofill the visitor’s name and email; budget and timeline remain optional.
+
+### Contact form delivery
+
+The approved public endpoint is `https://formspree.io/f/xdeardkv`, configured as `VITE_CONTACT_FORM_URL` in the Pages build workflow. The recipient should be `uthmansalama@gmail.com`; complete any email verification Formspree requests. The endpoint is public, not an API secret. To replace it, update the workflow and rebuild Pages; use the same `VITE_CONTACT_FORM_URL` variable for local builds. Never put passwords or private API keys in a `VITE_` variable.
+
+The form submits directly to Formspree using JSON and stays on the portfolio. It displays success only after Formspree acknowledges acceptance; inbox arrival still depends on provider delivery and spam filtering. Network failures retain the typed fields and never retry automatically. Formspree processes the submitted personal information; its account limits and spam controls apply. Nothing is sent to Workers AI. Test an actual enquiry after configuration and confirm it arrives in the recipient inbox. A missing endpoint produces a clear error, not a false success.
 
 1. Section navigation and “Explore my work” scroll to the correct section.
 2. Project previews and titles open accessible native dialog details.

@@ -39,13 +39,15 @@ for (const [index, route] of ["business/", "survey/", "hub/"].entries()) {
   const offer = offers.nth(index);
   assert.equal(await offer.locator("ul li").count(), 3);
   assert.equal(await offer.locator("a").first().getAttribute("href"), route);
-  const enquiry = new URL(
+  assert.equal(
     await offer.locator(".service-enquiry").getAttribute("href"),
+    "#contact",
   );
-  assert.equal(enquiry.protocol, "mailto:");
-  assert.equal(enquiry.pathname, "uthmansalama@gmail.com");
-  assert.ok(enquiry.searchParams.get("subject")?.startsWith("Let’s discuss"));
-  assert.ok(enquiry.searchParams.get("body")?.startsWith("Hi Uthman,\n\n"));
+  await offer.locator(".service-enquiry").click();
+  assert.equal(
+    await page.locator('.enquiry-form select[name="service"]').inputValue(),
+    ["websites", "data-tools", "ai-workflows"][index],
+  );
 }
 assert.equal(
   await page.getByRole("link", { name: "Try the Project Hub" }).count(),
@@ -168,8 +170,10 @@ for (const [title, route] of [
 }
 assert.equal(await page.locator('a[href=""], a[href="mailto:"]').count(), 0);
 assert.equal(
-  await page.getByRole("link", { name: "Say hello" }).getAttribute("href"),
-  "mailto:uthmansalama@gmail.com",
+  await page
+    .getByRole("link", { name: "Start an enquiry" })
+    .getAttribute("href"),
+  "#enquiry-heading",
 );
 assert.equal(await page.getByText("Contact details coming soon").count(), 0);
 await page.addScriptTag({

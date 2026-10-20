@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Chart from "./survey/Chart";
 import PortfolioBanner from "./components/PortfolioBanner";
+import ContactForm from "./components/ContactForm";
 import RoomScene from "./business/RoomScene";
 import HubPreview from "./hub/Preview";
 import { sample, summarize } from "./survey/data";
@@ -223,6 +224,7 @@ function ProjectDetails({
 export default function App() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [enquiryService, setEnquiryService] = useState("");
   const hasContact = Boolean(profile.email || profile.linkedInUrl);
   const surveySummary = summarize(sample, "satisfaction");
 
@@ -577,7 +579,15 @@ export default function App() {
                   {profile.email && (
                     <a
                       className="text-button service-enquiry"
-                      href={`mailto:${profile.email}?subject=${encodeURIComponent(service.subject)}&body=${encodeURIComponent(`Hi Uthman,\n\n${service.prompt}\n\n`)}`}
+                      href="#contact"
+                      onClick={() => {
+                        setEnquiryService(service.id);
+                        requestAnimationFrame(() =>
+                          document
+                            .getElementById("enquiry-heading")
+                            ?.focus({ preventScroll: true }),
+                        );
+                      }}
                     >
                       {service.contactLabel}
                       <Arrow />
@@ -662,66 +672,72 @@ export default function App() {
           className="contact-section"
           aria-labelledby="contact-heading"
         >
-          <div>
-            <span className="eyebrow">04 / LET’S CONNECT</span>
-            <h2 id="contact-heading">
-              Good work starts
-              <br />
-              with a <em>conversation.</em>
-            </h2>
-            <p>
-              I’m interested in remote opportunities and freelance projects
-              <br className="desktop-break" /> where I can build, organize, and
-              keep learning.
-            </p>
+          <div className="contact-overview">
+            <div>
+              <span className="eyebrow">04 / LET’S CONNECT</span>
+              <h2 id="contact-heading">
+                Good work starts
+                <br />
+                with a <em>conversation.</em>
+              </h2>
+              <p>
+                I’m interested in remote opportunities and freelance projects
+                <br className="desktop-break" /> where I can build, organize,
+                and keep learning.
+              </p>
+            </div>
+            <div className="contact-actions">
+              {hasContact ? (
+                <>
+                  {profile.email && (
+                    <a className="contact-link" href="#enquiry-heading">
+                      Start an enquiry <Arrow />
+                    </a>
+                  )}
+                  {profile.linkedInUrl && (
+                    <a
+                      className="contact-secondary"
+                      href={profile.linkedInUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Connect on LinkedIn <Arrow />
+                    </a>
+                  )}
+                </>
+              ) : (
+                <div className="contact-pending">
+                  <span className="contact-mark" aria-hidden="true">
+                    <Arrow />
+                  </span>
+                  <strong>Contact details coming soon</strong>
+                  <p>
+                    This portfolio is taking shape.
+                    <br />A direct way to reach me will be added here.
+                  </p>
+                </div>
+              )}
+              {profile.githubUrl && (
+                <a
+                  className="contact-secondary"
+                  href={profile.githubUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  GitHub <Arrow />
+                </a>
+              )}
+              {profile.cvUrl && (
+                <a className="contact-secondary" href={profile.cvUrl} download>
+                  Download my CV <Arrow />
+                </a>
+              )}
+            </div>
           </div>
-          <div className="contact-actions">
-            {hasContact ? (
-              <>
-                {profile.email && (
-                  <a className="contact-link" href={`mailto:${profile.email}`}>
-                    Say hello <Arrow />
-                  </a>
-                )}
-                {profile.linkedInUrl && (
-                  <a
-                    className="contact-secondary"
-                    href={profile.linkedInUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Connect on LinkedIn <Arrow />
-                  </a>
-                )}
-              </>
-            ) : (
-              <div className="contact-pending">
-                <span className="contact-mark" aria-hidden="true">
-                  <Arrow />
-                </span>
-                <strong>Contact details coming soon</strong>
-                <p>
-                  This portfolio is taking shape.
-                  <br />A direct way to reach me will be added here.
-                </p>
-              </div>
-            )}
-            {profile.githubUrl && (
-              <a
-                className="contact-secondary"
-                href={profile.githubUrl}
-                target="_blank"
-                rel="noreferrer"
-              >
-                GitHub <Arrow />
-              </a>
-            )}
-            {profile.cvUrl && (
-              <a className="contact-secondary" href={profile.cvUrl} download>
-                Download my CV <Arrow />
-              </a>
-            )}
-          </div>
+          <ContactForm
+            service={enquiryService}
+            onServiceChange={setEnquiryService}
+          />
         </section>
       </main>
       <footer className="site-footer">
