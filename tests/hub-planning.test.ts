@@ -1,8 +1,17 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { validateBrief, validatePlan, projectFromPlan, fictionalBrief } from '../src/hub/planning.ts';
+import { planIssues, validateBrief, validateDraft, validatePlan, projectFromPlan, fictionalBrief } from '../src/hub/planning.ts';
 import { parseWorkspace } from '../src/hub/model.ts';
 const plan = { title: 'Bakery website', summary: 'Draft a mobile-friendly bakery website.', tasks: ['Clarify menu requirements', 'Prototype the enquiry flow'], questions: ['Who supplies the menu content?'], risks: ['Enquiry delivery is undecided.'] };
+test('review preserves longer AI drafts while saved-project limits remain enforced', () => {
+  const draft = { ...plan, summary: 'x'.repeat(350), questions: ['q'.repeat(100)] };
+  assert.deepEqual(validateDraft(draft), draft);
+  assert.deepEqual(planIssues(draft), ['summary_too_long', 'questions_too_long']);
+  assert.throws(() => projectFromPlan(draft, 'Owner', '', ''));
+  assert.throws(() => validateDraft({ ...plan, tasks: [{ title: 'not a string' }] }));
+  assert.throws(() => validateDraft({ ...plan, tasks: [] }));
+  assert.throws(() => validateDraft({ ...plan, summary: 'x'.repeat(3001) }));
+});
 test('brief and model plan validation reject empty, oversized and malformed content', () => {
   assert.equal(validateBrief(fictionalBrief), fictionalBrief);
   for (const brief of ['', 'short', 'x'.repeat(4001), { brief: fictionalBrief }]) assert.throws(() => validateBrief(brief));

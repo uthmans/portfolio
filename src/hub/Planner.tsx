@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { analysisErrorMessage } from "../survey/feedback";
-import { fictionalBrief, projectFromPlan, validateBrief, validatePlan, type ProjectPlan } from "./planning";
+import { fictionalBrief, planIssues, planIssueMessage, projectFromPlan, validateBrief, validateDraft, type ProjectPlan } from "./planning";
 import type { Project } from "./model";
 import "./planner.css";
 
@@ -33,7 +33,7 @@ export default function Planner({ onAdd, full }: { onAdd: (project: Project) => 
         const details = await response.json().catch(() => null);
         throw new Error(analysisErrorMessage(details?.code) || (response.status === 429 ? "The shared demo allowance is used up. Try again later." : "The AI planner could not finish. Your workspace has not changed."));
       }
-      setPlan(validatePlan(await response.json())); setReviewed(false);
+      setPlan(validateDraft(await response.json())); setReviewed(false);
       setMessage("Draft ready. Review and edit it before adding a project. Nothing has been saved yet.");
       requestAnimationFrame(() => { heading.current?.focus({ preventScroll: true }); heading.current?.scrollIntoView({ block: "start", behavior: "instant" }); });
     } catch (e) { if (!controller.current?.signal.aborted) setError(e instanceof Error ? e.message : "Planning failed. Your workspace has not changed."); }
@@ -49,6 +49,7 @@ export default function Planner({ onAdd, full }: { onAdd: (project: Project) => 
     } catch (e) { setError(e instanceof Error ? e.message : "Could not add the project. Your draft was kept."); }
   }
   const lines = (text: string) => text.split(/\r?\n/).map(line => line.trim()).filter(Boolean);
+  const reviewIssues = plan ? planIssues({ ...plan, tasks: lines(plan.tasks.join("\n")), questions: lines(plan.questions.join("\n")), risks: lines(plan.risks.join("\n")) }) : [];
   return <details className="hub-planner" id="hub-planner"><summary><span>Plan a project with AI</span><small>Turn a client brief into an editable checklist.</small></summary>
     <div className="hub-planner-body">
       <form onSubmit={generate} aria-busy={busy}>
@@ -63,6 +64,7 @@ export default function Planner({ onAdd, full }: { onAdd: (project: Project) => 
       {error && <p role="alert" className="hub-error">{error}</p>}
       {plan && <form className="hub-plan-review" onSubmit={add} onChange={() => setError("")}>
         <h2 ref={heading} tabIndex={-1}>Your draft plan is ready</h2><p>AI suggestions, not agreed scope. Edit the text, confirm requirements with the client, and add only what you want to track.</p>
+        {reviewIssues.length > 0 && <div className="hub-error" role="alert"><p>Before adding this draft:</p><ul>{reviewIssues.map(issue => <li key={issue}>{planIssueMessage(issue)}</li>)}</ul></div>}
         <label htmlFor="plan-title">Project title</label><input id="plan-title" required maxLength={80} value={plan.title} onChange={e => { setPlan({ ...plan, title: e.target.value }); setReviewed(false); }} />
         <label htmlFor="plan-summary">Project outline</label><textarea id="plan-summary" required maxLength={300} rows={3} value={plan.summary} onChange={e => { setPlan({ ...plan, summary: e.target.value }); setReviewed(false); }} />
         <label htmlFor="plan-tasks">Tasks · one per line, up to 10</label><textarea id="plan-tasks" required maxLength={1210} rows={6} value={plan.tasks.join("\n")} onChange={e => { setPlan({ ...plan, tasks: e.target.value.split("\n") }); setReviewed(false); }} /><p className="hub-plan-hint">Up to 120 characters per task. Remove any task by deleting its line.</p>
@@ -73,7 +75,7 @@ export default function Planner({ onAdd, full }: { onAdd: (project: Project) => 
         <p className="hub-plan-hint">AI does not set prices or deadlines. A blank budget is tracked as $0 until you edit it; a blank due date stays unset. New projects start as Planned, with $0 spent and all tasks unchecked.</p>
         <label className="hub-plan-check"><input type="checkbox" checked={reviewed} onChange={e => setReviewed(e.target.checked)} />I reviewed this draft and want to add it to my workspace.</label>
         {full && <p className="hub-error">Your workspace has 50 projects. Download a backup and remove an older project before adding this draft.</p>}
-        <div className="hub-plan-actions"><button className="hub-button" type="submit" disabled={!reviewed || busy || full}>Add to my projects</button><button className="hub-text-button" type="button" disabled={busy} onClick={() => { setPlan(null); setReviewed(false); setError(""); setMessage("Draft discarded. Your workspace has not changed."); }}>Discard draft</button></div>
+        <div className="hub-plan-actions"><button className="hub-button" type="submit" disabled={!reviewed || busy || full || reviewIssues.length > 0}>Add to my projects</button><button className="hub-text-button" type="button" disabled={busy} onClick={() => { setPlan(null); setReviewed(false); setError(""); setMessage("Draft discarded. Your workspace has not changed."); }}>Discard draft</button></div>
       </form>}
     </div>
   </details>;

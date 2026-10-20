@@ -91,10 +91,9 @@ test('project planning validates input/output, sends only the brief, and shares 
   const inference = async (_model, inputs) => {
     calls++; assert.deepEqual(JSON.parse(inputs.messages[1].content), { brief });
     assert.ok(inputs.response_format.json_schema.properties.tasks);
-    assert.equal(inputs.response_format.json_schema.properties.tasks.maxItems, 10);
-    assert.equal(inputs.response_format.json_schema.properties.tasks.items.maxLength, 120);
-    assert.equal(inputs.response_format.json_schema.properties.summary.maxLength, 300);
-    assert.equal(inputs.response_format.json_schema.properties.questions.maxItems, 3);
+    assert.equal(inputs.response_format.json_schema.properties.tasks.items.type, 'string');
+    assert.equal(inputs.response_format.json_schema.properties.tasks.uniqueItems, undefined);
+    assert.equal(inputs.response_format.json_schema.properties.summary.maxLength, undefined);
     return { response: plan };
   };
   assert.equal((await handleRequest(planRequest({ brief: 'x' }), env, inference)).status, 400); assert.equal(calls, 0);
@@ -110,10 +109,20 @@ test('project planning validates input/output, sends only the brief, and shares 
 
 test('planner safely identifies model-format failures without returning the model text', async () => {
   const request = () => new Request('https://worker.example/api/project-plan', { method: 'POST', headers: { Origin: origin, 'Content-Type': 'application/json' }, body: JSON.stringify({ brief: 'Create a mobile-friendly website for a fictional bakery with a menu.' }) });
-  const plan = { title: 'Bakery', summary: 'x'.repeat(301), tasks: ['Confirm content'], questions: [], risks: [] };
+  const plan = { title: 'Bakery', summary: 'x'.repeat(3001), tasks: ['Confirm content'], questions: [], risks: [] };
   const result = await handleRequest(request(), environment(), async () => ({ response: plan }));
   const body = await result.json(); assert.equal(body.code, 'invalid_plan'); assert.deepEqual(body.issues, ['summary_too_long']);
   assert.ok(!JSON.stringify(body).includes('xxx'));
   const malformed = await handleRequest(request(), environment(), async () => ({ response: '{"title":' }));
   assert.deepEqual((await malformed.json()).issues, ['format']);
+});
+
+test('long but readable model drafts reach review; schema errors are classified without another inference', async () => {
+  const request = () => new Request('https://worker.example/api/project-plan', { method: 'POST', headers: { Origin: origin, 'Content-Type': 'application/json' }, body: JSON.stringify({ brief: 'Create a website for a fictional bakery with a menu and enquiry form.' }) });
+  const draft = { title: 'Bakery', summary: 'x'.repeat(350), tasks: ['Confirm content'], questions: [], risks: [] };
+  const response = await handleRequest(request(), environment(), async () => ({ response: draft }));
+  assert.equal(response.status, 200); assert.deepEqual(await response.json(), draft);
+  let calls = 0;
+  const rejected = await handleRequest(request(), environment(), async () => { calls++; throw Error('Unsupported JSON schema grammar uniqueItems'); });
+  assert.equal((await rejected.json()).code, 'workers_ai_format'); assert.equal(calls, 1);
 });

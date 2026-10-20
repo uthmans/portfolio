@@ -5,7 +5,7 @@ import { storageKey } from '../src/hub/model.ts';
 await mkdir('test-results', { recursive: true });
 const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || '/usr/bin/chromium', args: ['--no-sandbox'] });
 const base = process.env.PORTFOLIO_URL || 'http://127.0.0.1:4173/portfolio/';
-const plan = { title: 'Fictional bakery website', summary: 'Draft a mobile-friendly menu and catering enquiry website.', tasks: ['Confirm the menu content', 'Prototype the enquiry form', 'Test the mobile layout'], questions: ['Who will receive enquiries?'], risks: ['Enquiry delivery is undecided.'] };
+const plan = { title: 'Fictional bakery website', summary: 'Draft a mobile-friendly menu and catering enquiry website. '.repeat(7), tasks: ['Confirm the menu content', 'Prototype the enquiry form', 'Test the mobile layout'], questions: ['Who will receive enquiries?'], risks: ['Enquiry delivery is undecided.'] };
 try {
   const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
   const errors = []; page.on('pageerror', e => errors.push(e.message));
@@ -25,12 +25,14 @@ try {
   await area.getByRole('heading', { name: 'Your draft plan is ready' }).waitFor();
   assert.equal(await page.evaluate(key => localStorage.getItem(key), storageKey), null);
   assert.equal(await page.locator('.hub-projects > article').count(), 3);
+  await area.getByRole('alert').filter({ hasText: 'Shorten the project outline to 300 characters' }).waitFor();
+  await area.getByLabel('Project outline').fill('A mobile-friendly bakery website with menu and enquiries.');
   const add = area.getByRole('button', { name: 'Add to my projects' }); assert.equal(await add.isDisabled(), true);
   await area.getByLabel('Project title', { exact: true }).fill('Reviewed bakery website');
   await area.getByLabel('Client or project owner').fill('Bakery demo (fictional)');
   await area.getByLabel('Budget in USD').fill('450.50');
   await area.getByLabel('Tasks · one per line').fill('Review content\nReview content');
-  await area.getByLabel('I reviewed this draft').check(); await add.click();
+  await area.getByLabel('I reviewed this draft').check(); assert.equal(await add.isDisabled(), true);
   await area.getByRole('alert').filter({ hasText: 'Each task must be different' }).waitFor();
   assert.equal(await page.evaluate(key => localStorage.getItem(key), storageKey), null);
   await area.getByLabel('Tasks · one per line').fill('Review content\nBuild the menu\nTest mobile navigation');
@@ -42,6 +44,11 @@ try {
   for (const width of [375, 768, 1440]) {
     await page.setViewportSize({ width, height: 1000 });
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `Overflow at ${width}`);
+    assert.ok(await area.locator('.hub-plan-check').first().evaluate(label => {
+      const input = label.querySelector('input'); const text = Array.from(label.childNodes).find(n => n.nodeType === Node.TEXT_NODE && n.textContent.trim());
+      const range = document.createRange(); range.selectNodeContents(text); const rect = range.getBoundingClientRect(); const box = input.getBoundingClientRect();
+      return box.right < rect.left && Math.abs(box.top - rect.top) < 10;
+    }), `Checkbox/text alignment at ${width}`);
   }
   await area.screenshot({ path: 'test-results/hub-ai-plan-review.png' });
   await add.click(); await area.getByRole('status').filter({ hasText: 'Project added' }).waitFor();
