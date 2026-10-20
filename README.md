@@ -1,6 +1,6 @@
 # Uthman Salama’s portfolio
 
-A personal portfolio for practical websites, databases, and workflows. All four core projects are implemented. Survey Insights Studio includes a written-feedback workspace with a hand-written example and a prepared AI backend integration. No private organizational materials or datasets are used.
+A personal portfolio for practical websites, data tools, and workflows. All four core projects are implemented. The three standalone demos include live Cloudflare Workers AI features, with explicit visitor consent and shared free-demo limits. No private organizational materials or datasets are used.
 
 ## Run locally
 
@@ -70,7 +70,7 @@ The confirmed public email is `uthmansalama@gmail.com`; other contact fields rem
 
 ## Add projects
 
-Project records in `src/content.ts` contain the problem, audience, features, contribution, technology, decisions, and optional real demo/source URLs. Update a status only when supported by working evidence. Selected work features all four working projects: the portfolio, Survey Insights Studio, Form & Field, and Freelancer Project Hub. The home page contains no planned-project gallery or promised AI integration. Preview panels illustrate the real demonstrations; open a live demo to interact with it.
+Project records in `src/content.ts` contain the problem, audience, solution, demo walkthrough, verification evidence, features, contribution, technology, decisions, and optional real demo/source URLs. Update a status only when supported by working evidence. Selected work leads with Survey Insights Studio, Form & Field, and Freelancer Project Hub, followed by the portfolio itself. Each Read case study button opens an accessible dialog with a suggested workflow, design decisions, and honest limitations. Preview panels illustrate the real demonstrations; open a live demo to interact with it. Case studies describe implemented behaviour rather than unmeasured client outcomes, and distinguish controlled AI tests from variable live responses.
 
 ## Form & Field v2: AI service guide
 
@@ -150,7 +150,6 @@ The illustrative USD rules are: room planning $180 per room, styling $120 per ro
 The enquiry requires a 2–80-character name, a valid email-shaped address, a 20–1,200-character brief, and acknowledgement of the demo. “Fill with sample details” supplies an explicitly fictional example. “Preview enquiry” validates and creates a local snapshot, labeled not sent. The visitor can download that snapshot as text. Editing any enquiry field or estimate clears the old preview. Reloading clears the form. No network delivery, server storage, payment, or appointment integration exists.
 
 `tests/business.test.ts` checks pricing, invalid options, validation boundaries, and the honest download text. `npm run test:business` exercises all pages, quote interactions, errors/focus, sample details, preview/download, direct refresh, mobile navigation, reduced motion, and accessibility.
-
 
 ### Freelancer Project Hub
 

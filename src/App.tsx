@@ -100,9 +100,9 @@ function ProjectDetails({
         if (event.key !== "Tab") return;
         const controls = Array.from(
           event.currentTarget.querySelectorAll<HTMLElement>(
-            'button, a[href], input, select, textarea, [tabindex="0"]',
+            'button, a[href], input, select, textarea, summary, [tabindex="0"]',
           ),
-        );
+        ).filter((element) => element.getClientRects().length > 0);
         const first = controls[0];
         const last = controls[controls.length - 1];
         if (event.shiftKey && document.activeElement === first) {
@@ -130,7 +130,7 @@ function ProjectDetails({
         <>
           <div className="dialog-top">
             <span className="eyebrow">
-              PROJECT {project.number} / {project.status.toUpperCase()}
+              CASE STUDY {project.number} / INDEPENDENT PROJECT
             </span>
             <button
               className="close-button"
@@ -142,46 +142,75 @@ function ProjectDetails({
           </div>
           <h2 id="project-detail-title">{project.title}</h2>
           <p className="dialog-intro">{project.description}</p>
+          <p className="case-study-context">
+            {project.demoUrl ? "Fictional demo · " : "Personal website · "}
+            Built with AI coding assistance · {project.status}
+          </p>
+          {project.demoUrl && (
+            <a className="text-button case-study-demo" href={project.demoUrl}>
+              Try the demo <Arrow />
+            </a>
+          )}
           <div className="detail-block">
-            <h3>The idea</h3>
+            <h3>The problem</h3>
             <p>{project.problem}</p>
             <p>
               <strong>For:</strong> {project.audience}
             </p>
           </div>
           <div className="detail-block">
-            <h3>What’s in this version</h3>
+            <h3>The solution</h3>
+            <p>{project.result}</p>
+          </div>
+          <div className="detail-block">
+            <h3>Try the workflow</h3>
+            <ol>
+              {project.walkthrough.map((step) => (
+                <li key={step}>{step}</li>
+              ))}
+            </ol>
+          </div>
+          <details className="detail-block case-study-features">
+            <summary>All features in this version</summary>
             <ul>
               {project.features.map((feature) => (
                 <li key={feature}>{feature}</li>
               ))}
             </ul>
-          </div>
+          </details>
           <div className="detail-block">
             <h3>My role & AI assistance</h3>
             <p>{project.contribution}</p>
           </div>
           <div className="detail-block">
-            <h3>Decisions & limitations</h3>
+            <h3>Key decisions & limitations</h3>
             <p>{project.decisions}</p>
+          </div>
+          <div className="detail-block">
+            <h3>How it was checked</h3>
+            <ul>
+              {project.verification.map((check) => (
+                <li key={check}>{check}</li>
+              ))}
+            </ul>
+            {project.demoUrl && (
+              <p className="case-study-testing-note">
+                Automated AI checks use controlled responses. Live AI wording
+                can vary; review suggestions before using them. The demos share
+                a limited free AI allowance.
+              </p>
+            )}
           </div>
           <div className="tags">
             {project.technology.map((tech) => (
               <span key={tech}>{tech}</span>
             ))}
           </div>
-          {(project.demoUrl || project.sourceUrl) && (
+          {project.sourceUrl && (
             <div className="project-links">
-              {project.demoUrl && (
-                <a href={project.demoUrl} target="_blank" rel="noreferrer">
-                  Live demo ↗
-                </a>
-              )}
-              {project.sourceUrl && (
-                <a href={project.sourceUrl} target="_blank" rel="noreferrer">
-                  Source code ↗
-                </a>
-              )}
+              <a href={project.sourceUrl} target="_blank" rel="noreferrer">
+                Source code ↗
+              </a>
             </div>
           )}
         </>
@@ -324,50 +353,11 @@ export default function App() {
               </h2>
             </div>
             <p>
-              Independent projects, built step by step.
+              Working websites, data tools, and AI workflows.
               <br />
-              Explore the work and try a live demonstration.
+              Try a demo or read the decisions behind the build.
             </p>
           </div>
-          <article className="featured-project">
-            <div className="featured-visual">
-              <span className="visual-label">
-                THE PORTFOLIO / FIRST VERSION
-              </span>
-              <PortfolioPreview />
-              <button
-                className="visual-open preview-trigger"
-                onClick={() => setSelectedProject(portfolioProject)}
-                aria-label="View details for A portfolio with a purpose"
-              >
-                <Arrow />
-              </button>
-            </div>
-            <div className="featured-copy">
-              <div className="project-meta">
-                <span>PROJECT 01</span>
-                <span className="status">
-                  <i />
-                  First version
-                </span>
-              </div>
-              <h3>{portfolioProject.title}</h3>
-              <p>{portfolioProject.description}</p>
-              <div className="tags">
-                <span>Responsive website</span>
-                <span>React & TypeScript</span>
-              </div>
-              <button
-                className="text-button"
-                onClick={() => setSelectedProject(portfolioProject)}
-              >
-                Explore the project <Arrow />
-              </button>
-              <p className="honesty-note">
-                Independent work · Built with AI coding assistance
-              </p>
-            </div>
-          </article>
           <article className="featured-project survey-feature">
             <div className="survey-feature-visual">
               <span className="eyebrow">WORKING DEMO / FICTIONAL SAMPLE</span>
@@ -389,7 +379,7 @@ export default function App() {
             </div>
             <div className="featured-copy">
               <div className="project-meta">
-                <span>PROJECT 02</span>
+                <span>PROJECT {surveyProject.number}</span>
                 <span className="status">
                   <i />
                   {surveyProject.status}
@@ -398,17 +388,18 @@ export default function App() {
               <h3>{surveyProject.title}</h3>
               <p>{surveyProject.description}</p>
               <div className="tags">
-                <span>Interactive application</span>
-                <span>Original fictional data</span>
+                <span>CSV → charts → AI themes</span>
+                <span>Source-linked findings</span>
               </div>
               <a className="text-button" href="survey/">
                 Try the live demo <Arrow />
               </a>
               <button
                 className="text-button survey-details-button"
+                aria-label={`Read case study: ${surveyProject.title}`}
                 onClick={() => setSelectedProject(surveyProject)}
               >
-                Project details <Arrow />
+                Read case study <Arrow />
               </button>
               <p className="honesty-note">
                 Independent demo · Built with AI coding assistance
@@ -431,7 +422,7 @@ export default function App() {
             </div>
             <div className="featured-copy">
               <div className="project-meta">
-                <span>PROJECT 03</span>
+                <span>PROJECT {businessProject.number}</span>
                 <span className="status">
                   <i />
                   {businessProject.status}
@@ -440,17 +431,18 @@ export default function App() {
               <h3>{businessProject.title}</h3>
               <p>{businessProject.description}</p>
               <div className="tags">
-                <span>Service website</span>
-                <span>Interactive estimate</span>
+                <span>AI service guide</span>
+                <span>Fixed-rule estimates</span>
               </div>
               <a className="text-button" href="business/">
                 Try Form & Field <Arrow />
               </a>
               <button
                 className="text-button survey-details-button"
+                aria-label={`Read case study: ${businessProject.title}`}
                 onClick={() => setSelectedProject(businessProject)}
               >
-                Business project details <Arrow />
+                Read case study <Arrow />
               </button>
               <p className="honesty-note">
                 Independent demo · Fictional brand · AI-assisted build
@@ -469,7 +461,7 @@ export default function App() {
             </div>
             <div className="featured-copy">
               <div className="project-meta">
-                <span>PROJECT 04</span>
+                <span>PROJECT {hubProject.number}</span>
                 <span className="status">
                   <i />
                   {hubProject.status}
@@ -486,12 +478,53 @@ export default function App() {
               </a>
               <button
                 className="text-button survey-details-button"
+                aria-label={`Read case study: ${hubProject.title}`}
                 onClick={() => setSelectedProject(hubProject)}
               >
-                Hub project details <Arrow />
+                Read case study <Arrow />
               </button>
               <p className="honesty-note">
                 Independent demo · Fictional sample · AI-assisted build
+              </p>
+            </div>
+          </article>
+          <article className="featured-project">
+            <div className="featured-visual">
+              <span className="visual-label">
+                THE PORTFOLIO / PERSONAL WEBSITE
+              </span>
+              <PortfolioPreview />
+              <button
+                className="visual-open preview-trigger"
+                onClick={() => setSelectedProject(portfolioProject)}
+                aria-label="View details for A portfolio with a purpose"
+              >
+                <Arrow />
+              </button>
+            </div>
+            <div className="featured-copy">
+              <div className="project-meta">
+                <span>PROJECT {portfolioProject.number}</span>
+                <span className="status">
+                  <i />
+                  Personal website
+                </span>
+              </div>
+              <h3>{portfolioProject.title}</h3>
+              <p>{portfolioProject.description}</p>
+              <div className="tags">
+                <span>Responsive website</span>
+                <span>React & TypeScript</span>
+              </div>
+              <button
+                className="text-button"
+                aria-label={`Read case study: ${portfolioProject.title}`}
+                onClick={() => setSelectedProject(portfolioProject)}
+              >
+                Read case study <Arrow />
+              </button>
+              <p className="honesty-note">
+                Independent work · Built with AI coding assistance
               </p>
             </div>
           </article>
@@ -591,9 +624,9 @@ export default function App() {
               <span className="eyebrow">TECH2PEACE / 2021–2026</span>
               <h3>Operations, Systems &amp; Resource Development Lead</h3>
               <p>
-                Built and administered Airtable-based CRM and operations
-                systems covering more than 10,000 records, and created tools
-                for recruitment, events, contracts, fundraising, and feedback
+                Built and administered Airtable-based CRM and operations systems
+                covering more than 10,000 records, and created tools for
+                recruitment, events, contracts, fundraising, and feedback
                 analysis.
               </p>
             </div>
@@ -679,11 +712,7 @@ export default function App() {
               </a>
             )}
             {profile.cvUrl && (
-              <a
-                className="contact-secondary"
-                href={profile.cvUrl}
-                download
-              >
+              <a className="contact-secondary" href={profile.cvUrl} download>
                 Download my CV <Arrow />
               </a>
             )}

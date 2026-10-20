@@ -42,7 +42,7 @@ assert.equal(
   1,
 );
 const opener = page.getByRole("button", {
-  name: "Explore the project",
+  name: "Read case study: A portfolio with a purpose",
   exact: true,
 });
 await opener.click();
@@ -65,7 +65,14 @@ assert.equal(
   true,
 );
 await page
-  .getByRole("button", { name: "Hub project details", exact: true })
+  .getByRole("button", {
+    name: "Read case study: Freelancer Project Hub",
+    exact: true,
+  })
+  .click();
+await page
+  .getByRole("dialog")
+  .getByText("All features in this version", { exact: true })
   .click();
 assert.match(
   await page.getByRole("dialog").innerText(),
@@ -74,11 +81,77 @@ assert.match(
 assert.equal(
   await page
     .getByRole("dialog")
-    .getByRole("link", { name: "Live demo" })
+    .getByRole("link", { name: "Try the demo", exact: true })
     .getAttribute("href"),
   "hub/",
 );
 await page.keyboard.press("Escape");
+for (const [title, route] of [
+  ["Survey Insights Studio", "survey/"],
+  ["A small business, online", "business/"],
+  ["Freelancer Project Hub", "hub/"],
+]) {
+  await page
+    .getByRole("button", { name: `Read case study: ${title}`, exact: true })
+    .click();
+  const study = page.getByRole("dialog");
+  await study.getByRole("link", { name: "Try the demo", exact: true }).focus();
+  await page.keyboard.press("Tab");
+  assert.equal(
+    await study
+      .locator("summary")
+      .evaluate((element) => element === document.activeElement),
+    true,
+    "Feature disclosure is reachable by keyboard",
+  );
+  await page.keyboard.press("Space");
+  assert.equal(await study.locator("details").getAttribute("open"), "");
+  await page.keyboard.press("Space");
+  for (const heading of [
+    "The problem",
+    "The solution",
+    "Try the workflow",
+    "My role & AI assistance",
+    "Key decisions & limitations",
+    "How it was checked",
+  ]) {
+    assert.equal(
+      await study.getByRole("heading", { name: heading, exact: true }).count(),
+      1,
+    );
+  }
+  assert.equal(
+    await study
+      .getByRole("link", { name: "Try the demo", exact: true })
+      .getAttribute("href"),
+    route,
+  );
+  assert.equal(await study.locator("ol li").count(), 4);
+  await page.setViewportSize({ width: 375, height: 812 });
+  assert.equal(
+    await study.evaluate(
+      (element) => element.scrollWidth <= element.clientWidth,
+    ),
+    true,
+    `${title}: mobile case study overflow`,
+  );
+  await page.addScriptTag({
+    content: await readFile(
+      new URL("../node_modules/axe-core/axe.min.js", import.meta.url),
+      "utf8",
+    ),
+  });
+  const studyViolations = await page.evaluate(async () =>
+    (await window.axe.run(document.querySelector("dialog"))).violations.map(
+      (v) => v.id,
+    ),
+  );
+  assert.deepEqual(studyViolations, [], `${title}: case study accessibility`);
+  if (route === "survey/")
+    await study.screenshot({ path: "test-results/case-study-mobile.png" });
+  await page.keyboard.press("Escape");
+  await page.setViewportSize({ width: 1440, height: 1000 });
+}
 assert.equal(await page.locator('a[href=""], a[href="mailto:"]').count(), 0);
 assert.equal(
   await page.getByRole("link", { name: "Say hello" }).getAttribute("href"),
@@ -104,6 +177,10 @@ await page.evaluate(() => {
   window.scrollTo({ top: 0, behavior: "instant" });
 });
 await page.screenshot({ path: "test-results/desktop.png", fullPage: true });
+await page
+  .locator(".featured-project")
+  .first()
+  .screenshot({ path: "test-results/homepage-project-card.png" });
 for (const width of [320, 375, 768, 1024, 1440]) {
   await page.setViewportSize({ width, height: 900 });
   assert.equal(
@@ -127,7 +204,7 @@ assert.equal(await page.locator("#site-navigation").isVisible(), false);
 assert.equal(new URL(page.url()).hash, "#about");
 await page
   .getByRole("button", {
-    name: "Hub project details",
+    name: "Read case study: Freelancer Project Hub",
   })
   .click();
 assert.equal(await page.getByRole("dialog").isVisible(), true);
