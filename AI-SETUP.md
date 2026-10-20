@@ -1,6 +1,14 @@
 # Free AI analysis with Cloudflare Workers AI
 
-The public survey now uses **Cloudflare Workers AI**, not OpenAI. You do not need to buy API credits, add an API key, run Ollama, or keep a computer online.
+The portfolio’s AI features use **Cloudflare Workers AI**, not OpenAI. You do not need to buy API credits, add an API key, run Ollama, or keep a computer online.
+
+## Freelancer Project Hub v2
+
+The same Worker now serves `/api/project-plan`, using the same fixed free-allocation model, AI binding and shared quota object as survey analysis. GitHub Pages supplies `VITE_HUB_PLAN_API_URL=https://portfolio.uthmansalama.workers.dev/api/project-plan` at build time. No additional secret, provider account or paid plan is needed. The health response includes `projectPlanEndpoint` once this route is deployed.
+
+Open the Hub and expand **Plan a project with AI**. Paste an anonymised brief of 20–4,000 characters, or use the fictional bakery example; approve sending it and generate. Only the brief is sent, not saved project data. Review and edit the outline, 1–10 task suggestions, up to 3 clarification questions and up to 3 potential risks. Enter the client/owner yourself; budget and due date are optional manual choices. Confirm review and select **Add to my projects**. Previewing, editing, discarding or failing generation does not change the workspace. Changing the brief clears its draft and consent. Added projects use the existing local saving and backup schema, with stage Planned, $0 spent, unchecked tasks, and questions/risks saved in notes. No emails, bookings, invoices or client commitments are created.
+
+The planner has no paid fallback and shares the 3/hour per IP and 20/day global allowance with survey analysis. Existing OpenAI-era and new Workers AI configuration remain separate; do not create another API key. Local verification: build with both public endpoint variables, start the production preview and run `npm run test:hub-planner` (mocked inference), `npm run test:hub`, `npm test`, `npm run worker:check` and `npm run worker:test`. The simulator covers both routes, while live inference/model-quality evaluation for the planner still needs a post-deployment check.
 
 ## What you need to do
 

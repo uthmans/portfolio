@@ -472,13 +472,13 @@ export default function App() {
                 <span>PROJECT 04</span>
                 <span className="status">
                   <i />
-                  First version
+                  {hubProject.status}
                 </span>
               </div>
               <h3>{hubProject.title}</h3>
               <p>{hubProject.description}</p>
               <div className="tags">
-                <span>Project & task tracking</span>
+                <span>AI planning & task tracking</span>
                 <span>Browser-local saving</span>
               </div>
               <a className="text-button" href="hub/">

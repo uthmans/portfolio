@@ -72,6 +72,12 @@ The confirmed public email is `uthmansalama@gmail.com`; other contact fields rem
 
 Project records in `src/content.ts` contain the problem, audience, features, contribution, technology, decisions, and optional real demo/source URLs. Update a status only when supported by working evidence. Selected work features all four working projects: the portfolio, Survey Insights Studio, Form & Field, and Freelancer Project Hub. The home page contains no planned-project gallery or promised AI integration. Preview panels illustrate the real demonstrations; open a live demo to interact with it.
 
+## Hub v2: brief to reviewed plan
+
+Expand **Plan a project with AI** in the Hub. After consent, a 20–4,000-character brief is sent to `/api/project-plan` on the Cloudflare Worker. A fictional bakery brief is included to try. The response is validated and shown as an editable outline, task list, clarification questions and risks. No project or existing data is changed until the visitor enters a client/owner, reviews the draft and selects **Add to my projects**. Amounts and deadlines are manual; new projects start as Planned with unchecked tasks and no spending. Blank budgets are tracked as $0. Questions and risks are kept in project notes, so existing JSON backups remain compatible. Requests share Survey Insights' free-demo limits; no paid fallback or automatic external actions occur.
+
+Configure the non-secret frontend variable `VITE_HUB_PLAN_API_URL` to the Worker endpoint when building. The GitHub Pages workflow already provides it. Run `npm run test:hub-planner` against the configured production preview for consent, no autosave, editable review, confirmed add, persistence, backup compatibility, stale clearing, error preservation, mobile layout and accessibility. Tests mock inference; they do not consume AI allowance. See `AI-SETUP.md` for deployment and privacy details.
+
 ## Main interactions to check
 
 1. Section navigation and “Explore my work” scroll to the correct section.

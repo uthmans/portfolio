@@ -81,3 +81,24 @@ test('Workers AI failures and limits are safe and never fall back to a paid prov
   const stringOutput = await handleRequest(request(), environment(), async () => ({ response: JSON.stringify(exampleAnalysis) }));
   assert.deepEqual(await stringOutput.json(), exampleAnalysis);
 });
+
+test('project planning validates input/output, sends only the brief, and shares the feedback quota', async () => {
+  const env = environment();
+  const brief = 'Build a mobile-friendly website for a fictional bakery with a menu and enquiry form.';
+  const plan = { title: 'Bakery website', summary: 'Draft a simple bakery website.', tasks: ['Clarify enquiry requirements'], questions: ['Who provides menu content?'], risks: ['Content ownership is unconfirmed.'] };
+  const planRequest = body => new Request('https://worker.example/api/project-plan', { method: 'POST', headers: { Origin: origin, 'Content-Type': 'application/json', 'CF-Connecting-IP': '192.0.2.1' }, body: JSON.stringify(body) });
+  let calls = 0;
+  const inference = async (_model, inputs) => {
+    calls++; assert.deepEqual(JSON.parse(inputs.messages[1].content), { brief });
+    assert.ok(inputs.response_format.json_schema.properties.tasks);
+    return { response: plan };
+  };
+  assert.equal((await handleRequest(planRequest({ brief: 'x' }), env, inference)).status, 400); assert.equal(calls, 0);
+  const valid = await handleRequest(planRequest({ brief, projects: ['private-project-not-for-provider'] }), env, inference);
+  assert.equal(valid.status, 200); assert.deepEqual(await valid.json(), plan);
+  const invalid = await handleRequest(planRequest({ brief }), env, async () => ({ response: { ...plan, tasks: [] } }));
+  assert.equal((await invalid.json()).code, 'invalid_plan');
+  assert.equal((await handleRequest(request(), env, async () => ({ response: exampleAnalysis }))).status, 200);
+  assert.equal((await handleRequest(planRequest({ brief }), env, inference)).status, 429);
+  assert.equal(calls, 1);
+});

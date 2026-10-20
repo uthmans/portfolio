@@ -2,6 +2,7 @@
 import { Miniflare, convertV4MiniflareOptions } from 'miniflare';
 import assert from 'node:assert/strict';
 import { exampleAnalysis, feedbackSample } from '../src/survey/feedback.ts';
+const examplePlan = { title: 'Bakery website', summary: 'Draft a simple bakery website.', tasks: ['Clarify enquiry requirements'], questions: ['Who supplies menu content?'], risks: ['Content delivery is unconfirmed.'] };
 const mf = new Miniflare(convertV4MiniflareOptions({
   workers: [{ name: 'portfolio',
   modules: true, modulesRoot: '/tmp/portfolio-worker-bundle', scriptPath: '/tmp/portfolio-worker-bundle/index.js', compatibilityDate: '2026-10-19',
@@ -11,7 +12,7 @@ const mf = new Miniflare(convertV4MiniflareOptions({
   outboundService: async () => { throw Error('External network calls are forbidden in this test'); },
   }, {
     name: 'ai-mock', modules: true, compatibilityDate: '2026-10-19',
-    script: `import { WorkerEntrypoint } from 'cloudflare:workers'; let calls = 0; export default class extends WorkerEntrypoint { async run(model, inputs) { if (model !== '@cf/meta/llama-3.1-8b-instruct-fp8-fast' || inputs.response_format.type !== 'json_schema') throw Error('Wrong model or format'); calls++; return { response: ${JSON.stringify(exampleAnalysis)} }; } async fetch() { return Response.json({calls}); } }`,
+    script: `import { WorkerEntrypoint } from 'cloudflare:workers'; let calls = 0; export default class extends WorkerEntrypoint { async run(model, inputs) { if (model !== '@cf/meta/llama-3.1-8b-instruct-fp8-fast' || inputs.response_format.type !== 'json_schema') throw Error('Wrong model or format'); calls++; return { response: JSON.parse(inputs.messages[1].content).brief ? ${JSON.stringify(examplePlan)} : ${JSON.stringify(exampleAnalysis)} }; } async fetch() { return Response.json({calls}); } }`,
   }],
 }));
 try {
@@ -24,5 +25,7 @@ try {
   }
   const mock = await mf.getWorker('ai-mock');
   assert.equal((await (await mock.fetch('https://mock/count')).json()).calls, 3);
+  const planning = await mf.dispatchFetch('https://worker.example/api/project-plan', { method: 'POST', headers: { Origin: 'https://uthmans.github.io', 'Content-Type': 'application/json', 'CF-Connecting-IP': '192.0.2.2' }, body: JSON.stringify({ brief: 'Build a small website for a fictional bakery with a menu and enquiry form.' }) });
+  assert.equal(planning.status, 200); assert.deepEqual(await planning.json(), examplePlan);
   console.log('Cloudflare runtime passed: Worker entry, native Durable Object storage, mocked provider round trip, and quota rejection before provider call.');
 } finally { await mf.dispose(); }

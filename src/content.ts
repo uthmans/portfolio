@@ -17,7 +17,7 @@ export type Project = {
   number: string;
   title: string;
   category: string;
-  status: "First version" | "Version 2 · AI-ready";
+  status: "First version" | "Version 2 · AI-ready" | "Version 2";
   description: string;
   problem: string;
   audience: string;
@@ -115,9 +115,9 @@ export const hubProject: Project = {
   number: "04",
   title: "Freelancer Project Hub",
   category: "Internal application",
-  status: "First version",
+  status: "Version 2",
   description:
-    "A browser-local workspace for projects, clients, tasks, stages, and budgets, with validated backups you can download and restore.",
+    "Turn a client brief into an editable AI project plan, then track projects, tasks and budgets in a browser-local workspace with downloadable backups.",
   problem:
     "Bring scattered project details and next steps into one view, while keeping budget and task calculations clear.",
   audience: "Independent freelancers organising a small set of projects.",
@@ -128,12 +128,14 @@ export const hubProject: Project = {
     "Search, stage and overdue filters with matching summary totals",
     "Browser-local saving, JSON backup and validated restore",
     "Empty states and explicit confirmation before replacing a workspace",
+    "AI brief-to-plan drafts with editable tasks, clarification questions and potential risks",
+    "Explicit review before adding a draft; budgets and deadlines are set manually",
   ],
   contribution:
-    "I set the goals and chose a freelancer workspace to demonstrate useful application workflows. The first version was implemented with AI coding assistance, including calculation, persistence, and browser checks. I’m learning to explain and maintain the work.",
+    "I set the goals and chose a freelancer workspace to demonstrate useful application workflows. The implementation and AI planning integration were built with AI coding assistance, including calculation, persistence, validation, and browser checks. I chose an editable review step before adding suggestions, with budgets and dates kept under the visitor’s control. I’m learning to explain and maintain the work.",
   technology: ["React", "TypeScript", "CSS", "Browser localStorage"],
   decisions:
-    "The starting projects and clients are fictional. Changes are saved in this browser only: no account, server storage, multi-device sync, invoices or payments. Browser storage can be cleared; download a backup to keep a copy. Invalid backups preserve the current workspace. Project stages and task completion are independent.",
+    "Starting projects and clients are fictional. The optional planner sends only the brief you approve to Cloudflare Workers AI, sharing the free-demo allowance with Survey Insights. AI suggestions require review and are not agreed scope or pricing. Nothing is added until you confirm; new projects start as Planned, with unchecked tasks and no spend. Leave dates blank if undecided; an unset budget is tracked as $0 until edited. Projects stay in this browser, with no accounts or multi-device sync. Download backups to keep a copy. Invalid backups preserve the workspace. Project stages and task completion are independent.",
   demoUrl: "hub/",
 };
 

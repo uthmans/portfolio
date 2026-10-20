@@ -1,0 +1,68 @@
+import { chromium } from 'playwright';
+import assert from 'node:assert/strict';
+import { mkdir, readFile } from 'node:fs/promises';
+import { storageKey } from '../src/hub/model.ts';
+await mkdir('test-results', { recursive: true });
+const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || '/usr/bin/chromium', args: ['--no-sandbox'] });
+const base = process.env.PORTFOLIO_URL || 'http://127.0.0.1:4173/portfolio/';
+const plan = { title: 'Fictional bakery website', summary: 'Draft a mobile-friendly menu and catering enquiry website.', tasks: ['Confirm the menu content', 'Prototype the enquiry form', 'Test the mobile layout'], questions: ['Who will receive enquiries?'], risks: ['Enquiry delivery is undecided.'] };
+try {
+  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+  const errors = []; page.on('pageerror', e => errors.push(e.message));
+  let status = 200; let output = plan; let calls = 0;
+  await page.route('**/api/project-plan', async route => {
+    calls++; const payload = route.request().postDataJSON();
+    assert.deepEqual(Object.keys(payload), ['brief']); assert.ok(payload.brief.includes('bakery'));
+    await route.fulfill({ status, json: output });
+  });
+  await page.goto(new URL('hub/', base).href);
+  const area = page.locator('#hub-planner');
+  await area.locator('summary').click();
+  await area.getByRole('button', { name: 'Use a fictional bakery brief' }).click();
+  const generate = area.getByRole('button', { name: 'Generate project plan' });
+  assert.equal(await generate.isDisabled(), true); assert.equal(calls, 0);
+  await area.getByLabel('I have permission to send this brief').check(); await generate.click();
+  await area.getByRole('heading', { name: 'Your draft plan is ready' }).waitFor();
+  assert.equal(await page.evaluate(key => localStorage.getItem(key), storageKey), null);
+  assert.equal(await page.locator('.hub-projects > article').count(), 3);
+  const add = area.getByRole('button', { name: 'Add to my projects' }); assert.equal(await add.isDisabled(), true);
+  await area.getByLabel('Project title', { exact: true }).fill('Reviewed bakery website');
+  await area.getByLabel('Client or project owner').fill('Bakery demo (fictional)');
+  await area.getByLabel('Budget in USD').fill('450.50');
+  await area.getByLabel('Tasks · one per line').fill('Review content\nReview content');
+  await area.getByLabel('I reviewed this draft').check(); await add.click();
+  await area.getByRole('alert').filter({ hasText: 'Each task must be different' }).waitFor();
+  assert.equal(await page.evaluate(key => localStorage.getItem(key), storageKey), null);
+  await area.getByLabel('Tasks · one per line').fill('Review content\nBuild the menu\nTest mobile navigation');
+  assert.equal(await area.getByLabel('I reviewed this draft').isChecked(), false);
+  await area.getByLabel('I reviewed this draft').check();
+  await page.addScriptTag({ path: 'node_modules/axe-core/axe.min.js' });
+  const accessibility = await page.evaluate(() => window.axe.run('#hub-planner', { runOnly: ['wcag2a','wcag2aa','wcag21aa'] }));
+  assert.deepEqual(accessibility.violations.map(v => v.id), []);
+  for (const width of [375, 768, 1440]) {
+    await page.setViewportSize({ width, height: 1000 });
+    assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `Overflow at ${width}`);
+  }
+  await area.screenshot({ path: 'test-results/hub-ai-plan-review.png' });
+  await add.click(); await area.getByRole('status').filter({ hasText: 'Project added' }).waitFor();
+  assert.equal(await page.locator('.hub-projects > article').count(), 4);
+  const saved = await page.evaluate(key => JSON.parse(localStorage.getItem(key)), storageKey);
+  const created = saved.projects.find(p => p.title === 'Reviewed bakery website');
+  assert.equal(created.budget, 45050); assert.equal(created.spent, 0); assert.equal(created.stage, 'Planned');
+  assert.ok(created.tasks.every(t => !t.done)); assert.match(created.notes, /Who will receive enquiries/);
+  const backupEvent = page.waitForEvent('download'); await page.getByRole('button', { name: 'Download backup' }).click();
+  const backup = await backupEvent; assert.deepEqual(JSON.parse(await readFile(await backup.path(), 'utf8')), saved);
+  await page.reload(); assert.equal(await page.locator('.hub-projects > article').count(), 4);
+  await area.locator('summary').click(); await area.getByRole('button', { name: 'Use a fictional bakery brief' }).click();
+  await area.getByLabel('I have permission to send this brief').check(); await generate.click();
+  await area.getByRole('heading', { name: 'Your draft plan is ready' }).waitFor();
+  await area.getByLabel('What does the client need?').fill('A fictional bakery needs an updated brief for its mobile website.');
+  assert.equal(await area.locator('.hub-plan-review').count(), 0); assert.equal(await area.getByLabel('I have permission to send this brief').isChecked(), false);
+  await area.getByLabel('I have permission to send this brief').check();
+  status = 429; output = { error: 'limit' }; await generate.click();
+  await area.getByRole('alert').filter({ hasText: 'shared demo allowance' }).waitFor();
+  assert.equal(await page.locator('.hub-projects > article').count(), 4);
+  assert.deepEqual(await page.evaluate(key => JSON.parse(localStorage.getItem(key)), storageKey), saved);
+  assert.deepEqual(errors, []);
+  console.log('Hub AI planner passed: consent, brief-only payload, editable review, no autosave, validation, confirmed add, persistence, backup compatibility, stale clearing, failure preservation, responsive layout and accessibility.');
+} finally { await browser.close(); }

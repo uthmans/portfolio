@@ -15,7 +15,8 @@
     "test:feedback": "node scripts/check-feedback.mjs",
     "test:survey": "node scripts/check-survey.mjs",
     "test:business": "node scripts/check-business.mjs",
-    "test:hub": "node scripts/check-hub.mjs"
+    "test:hub": "node scripts/check-hub.mjs",
+    "test:hub-planner": "node scripts/check-hub-planner.mjs"
   },
   "dependencies": {
     "@fontsource-variable/dm-sans": "^5.2.8",

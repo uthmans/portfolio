@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import PortfolioBanner from "../components/PortfolioBanner";
+import Planner from "./Planner";
 import {
   filterProjects,
   localDate,
@@ -516,8 +517,9 @@ export default function HubApp() {
           <strong>Your browser. Your workspace.</strong>
           <p>
             Start with three fictional projects, then try your own. Data stays
-            in this browser’s storage. It isn’t sent to a server or synced
-            between devices. Download a backup to keep a copy. USD amounts are
+            in this browser’s storage and isn’t synced between devices.
+            The optional AI planner sends only the brief you choose to share.
+            Download a backup to keep a copy. USD amounts are
             tracking figures, not invoices.
           </p>
           <p>
@@ -525,6 +527,10 @@ export default function HubApp() {
             doesn’t automatically close a project.
           </p>
         </aside>
+        <Planner full={workspace.projects.length >= 50} onAdd={project => {
+          commit(replaceProject(workspace, project), "Reviewed AI draft added as a planned project.");
+          clearFilters();
+        }} />
         <div className="hub-toolbar">
           <button className="hub-secondary" onClick={download}>
             Download backup
