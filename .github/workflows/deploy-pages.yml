@@ -39,6 +39,7 @@ jobs:
         env:
           VITE_FEEDBACK_API_URL: https://portfolio.uthmansalama.workers.dev/api/feedback
           VITE_HUB_PLAN_API_URL: https://portfolio.uthmansalama.workers.dev/api/project-plan
+          VITE_SERVICE_GUIDE_API_URL: https://portfolio.uthmansalama.workers.dev/api/service-guide
         run: npm run build
       - name: Report deployment revision
         run: |

@@ -126,3 +126,24 @@ test('long but readable model drafts reach review; schema errors are classified 
   const rejected = await handleRequest(request(), environment(), async () => { calls++; throw Error('Unsupported JSON schema grammar uniqueItems'); });
   assert.equal((await rejected.json()).code, 'workers_ai_format'); assert.equal(calls, 1);
 });
+
+test('service guide uses the catalogue, shares quota and rejects unknown service IDs', async () => {
+  const env = environment();
+  const description = 'My fictional home office needs a clearer desk layout and storage without building work.';
+  const guideRequest = description => new Request('https://worker.example/api/service-guide', { method: 'POST', headers: { Origin: origin, 'Content-Type': 'application/json', 'CF-Connecting-IP': '192.0.2.1' }, body: JSON.stringify({ description, contact: 'must-not-be-sent' }) });
+  let calls = 0;
+  const suggestion = { serviceId: 'workspace', reason: 'A workspace concept fits your stated needs.', questions: ['What storage do you use?'], caveat: 'This is not a professional assessment.' };
+  const inference = async (_model, inputs) => {
+    calls++; assert.deepEqual(JSON.parse(inputs.messages[1].content), { description });
+    assert.match(inputs.messages[0].content, /not force a service recommendation/);
+    assert.match(inputs.messages[0].content, /Do not mention prices/);
+    return { response: { ...suggestion, price: 0 } };
+  };
+  assert.equal((await handleRequest(guideRequest('x'), env, inference)).status, 400); assert.equal(calls, 0);
+  const valid = await handleRequest(guideRequest(description), env, inference); assert.equal(valid.status, 200); assert.deepEqual(await valid.json(), suggestion);
+  const unknown = await handleRequest(guideRequest(description), env, async () => ({ response: { ...suggestion, serviceId: 'electrical-repairs' } }));
+  assert.equal((await unknown.json()).code, 'invalid_service_advice');
+  const none = await handleRequest(guideRequest(description), env, async () => ({ response: { ...suggestion, serviceId: 'none' } }));
+  assert.equal(none.status, 200);
+  assert.equal((await handleRequest(request(), env, async () => ({ response: exampleAnalysis }))).status, 429);
+});

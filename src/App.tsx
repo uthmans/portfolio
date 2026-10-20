@@ -434,7 +434,7 @@ export default function App() {
                 <span>PROJECT 03</span>
                 <span className="status">
                   <i />
-                  First version
+                  {businessProject.status}
                 </span>
               </div>
               <h3>{businessProject.title}</h3>

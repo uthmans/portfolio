@@ -15,6 +15,7 @@
     "test:feedback": "node scripts/check-feedback.mjs",
     "test:survey": "node scripts/check-survey.mjs",
     "test:business": "node scripts/check-business.mjs",
+    "test:service-guide": "node scripts/check-service-guide.mjs",
     "test:hub": "node scripts/check-hub.mjs",
     "test:hub-planner": "node scripts/check-hub-planner.mjs"
   },

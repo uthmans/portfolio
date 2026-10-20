@@ -88,9 +88,9 @@ export const businessProject: Project = {
   number: "03",
   title: "A small business, online",
   category: "Interactive website",
-  status: "First version",
+  status: "Version 2",
   description:
-    "Form & Field: an original fictional interiors studio with service pages, a transparent estimate calculator, and a validated enquiry preview.",
+    "Form & Field: a fictional interiors studio with an AI service guide, clear service pages, fixed-rule estimates, and a validated enquiry preview.",
   problem:
     "Help visitors understand a service, compare clear pricing, and take a useful next step without misleading them about bookings or delivery.",
   audience:
@@ -101,12 +101,14 @@ export const businessProject: Project = {
     "Room-count and add-on quote calculator with explicit rules",
     "Accessible enquiry validation and sample details",
     "Local enquiry preview and a downloadable text summary",
+    "AI service suggestions with explanations, scope limits and follow-up questions",
+    "Explicit handoff to the calculator with listed pricing and preserved room/add-on choices",
   ],
   contribution:
     "I chose this project to demonstrate website design and useful interactions. The fictional brand and implementation were created with AI coding assistance, including pricing, validation, and browser checks. My next step is reviewing the design and testing the journey so I can explain and maintain the work.",
   technology: ["React", "TypeScript", "CSS", "Original SVG illustrations"],
   decisions:
-    "Form & Field is fictional. Prices are illustrative USD amounts; this is not a real business offer. The form creates a local preview only: no enquiry, booking, or payment is sent. No client testimonials, completed client projects, or real business contact details are invented. Enquiry data resets on reload; download to keep the preview.",
+    "Form & Field is fictional. Prices are illustrative USD amounts; this is not a real business offer. Only a description you approve is sent to Cloudflare Workers AI, sharing the portfolio’s free-demo limits. AI suggests a listed service or asks for clarification; it does not set prices or provide construction or safety assessments. You choose whether to apply a suggestion. The form creates a local preview only: no enquiry, booking, or payment is sent. No client testimonials, completed client projects, or real business contact details are invented. Enquiry data resets on reload; download to keep the preview.",
   demoUrl: "business/",
 };
 

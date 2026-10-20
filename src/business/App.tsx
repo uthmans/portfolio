@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from "react";
 import RoomScene from "./RoomScene";
 import PortfolioBanner from "../components/PortfolioBanner";
+import ServiceGuide from "./ServiceGuide";
 import {
   calculateQuote,
   enquiryText,
@@ -350,6 +351,13 @@ export default function BusinessApp() {
                 ))}
               </div>
             </section>
+            <ServiceGuide onChoose={id => {
+              setServiceId(id); setPreview(null); setDownloadNotice("");
+              requestAnimationFrame(() => {
+                document.getElementById("estimate")?.scrollIntoView({ block: "start", behavior: "instant" });
+                document.getElementById("quote-service")?.focus({ preventScroll: true });
+              });
+            }} />
             <section id="spaces" className="ff-section ff-spaces">
               <div className="ff-section-heading">
                 <div>

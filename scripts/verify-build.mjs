@@ -29,7 +29,7 @@ for (const route of [
 }
 assert.equal(surveyProject.status, "Version 2 · AI-ready");
 assert.equal(surveyProject.demoUrl, "survey/");
-assert.equal(businessProject.status, "First version");
+assert.equal(businessProject.status, "Version 2");
 assert.equal(businessProject.demoUrl, "business/");
 assert.equal(hubProject.status, "Version 2");
 assert.equal(hubProject.demoUrl, "hub/");
