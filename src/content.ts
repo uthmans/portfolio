@@ -204,6 +204,60 @@ export const hubProject: Project = {
   ],
 };
 
+export const services = [
+  {
+    id: "websites",
+    title: "Business websites",
+    description:
+      "Give people a clear picture of your business and an easy way to take the next step.",
+    deliverables: [
+      "Responsive service pages and landing pages",
+      "Contact forms, enquiry journeys, and estimate tools",
+      "Clear navigation and accessible interactions",
+    ],
+    example: "Explore Form & Field",
+    demoUrl: "business/",
+    subject: "Let’s discuss a business website",
+    contactLabel: "Discuss your website",
+    prompt:
+      "Tell me about your business, the pages you need, and what you want visitors to do.",
+  },
+  {
+    id: "data-tools",
+    title: "Dashboards & data tools",
+    description:
+      "Make spreadsheets and feedback easier to explore, understand, and use.",
+    deliverables: [
+      "CSV imports with useful validation",
+      "Interactive charts, filters, and clear calculations",
+      "Downloadable data and reports",
+    ],
+    example: "Explore Survey Insights Studio",
+    demoUrl: "survey/",
+    subject: "Let’s discuss a dashboard or data tool",
+    contactLabel: "Discuss your data tool",
+    prompt:
+      "Tell me what data you work with, what is difficult today, and what you want to understand or track. Please leave private data out of your first message.",
+  },
+  {
+    id: "ai-workflows",
+    title: "AI-assisted workflows",
+    description:
+      "Turn repetitive steps or unstructured information into a practical workflow you can review and control.",
+    deliverables: [
+      "AI summaries and editable planning drafts",
+      "Forms, databases, and workflow connections",
+      "Review steps, validation, and clear usage limits",
+    ],
+    example: "Explore Freelancer Project Hub",
+    demoUrl: "hub/",
+    subject: "Let’s discuss an AI-assisted workflow",
+    contactLabel: "Discuss your AI workflow",
+    prompt:
+      "Tell me which task you repeat, the tools you currently use, and where you would like help. Please leave private data out of your first message.",
+  },
+];
+
 export const experienceTools = [
   "Airtable",
   "Fillout",

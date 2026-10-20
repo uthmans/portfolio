@@ -84,6 +84,8 @@ Configure the non-secret frontend variable `VITE_HUB_PLAN_API_URL` to the Worker
 
 ## Main interactions to check
 
+The homepage Services section replaces the general capabilities list with three offers: business websites, dashboards and data tools, and AI-assisted workflows. Each links to an independent demo and a prefilled email enquiry. Offer text, deliverables, demo links, and email prompts live in `services` in `src/content.ts`; enquiries open the visitor’s email application and are not submitted by the site.
+
 1. Section navigation and “Explore my work” scroll to the correct section.
 2. Project previews and titles open accessible native dialog details.
 3. Escape and the close button dismiss details; focus returns to the opener.

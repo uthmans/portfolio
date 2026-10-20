@@ -6,6 +6,7 @@ import HubPreview from "./hub/Preview";
 import { sample, summarize } from "./survey/data";
 import {
   experienceTools,
+  services,
   portfolioProject,
   surveyProject,
   businessProject,
@@ -265,6 +266,7 @@ export default function App() {
         >
           {[
             ["Work", "#work"],
+            ["Services", "#services"],
             ["About", "#about"],
             ["Contact", "#contact"],
           ].map(([label, link]) => (
@@ -531,62 +533,65 @@ export default function App() {
         </section>
 
         <section
-          className="section capabilities-section"
-          aria-labelledby="capabilities-heading"
+          id="services"
+          className="section services-section"
+          aria-labelledby="services-heading"
         >
-          <div className="capabilities-intro">
-            <span className="eyebrow">02 / WHAT I BRING</span>
-            <h2 id="capabilities-heading">
-              Connecting the
-              <br />
-              <em>moving parts.</em>
-            </h2>
+          <div className="section-heading">
+            <div>
+              <span className="eyebrow">02 / HOW I CAN HELP</span>
+              <h2 id="services-heading">
+                Useful tools.
+                <br />
+                <em>Built around your work.</em>
+              </h2>
+            </div>
             <p>
-              I like turning scattered information and everyday tasks into
-              something clear, organized, and useful.
+              Start with a website, a data problem, or a workflow that takes too
+              much time. We can discuss a practical scope together.
             </p>
-            <span className="small-note">
-              Grounded in experience. Growing through practice.
-            </span>
           </div>
-          <div className="capabilities-list">
-            {[
-              [
-                "01",
-                "Websites & digital presence",
-                "Experience managing websites with WordPress and Elementor. Now learning to build original, interactive sites through AI-assisted coding.",
-                "Experience + developing skills",
-              ],
-              [
-                "02",
-                "Automations & workflows",
-                "Experience connecting forms, databases, and administrative processes with tools like Airtable and Fillout, making everyday work easier to organize.",
-                "Established experience",
-              ],
-              [
-                "03",
-                "Reporting & useful data",
-                "Experience with spreadsheets, CRM information, and reporting. I’m now building interactive dashboards with clear calculations and data validation.",
-                "Experience + developing skills",
-              ],
-              [
-                "04",
-                "People & project coordination",
-                "Technology coordination, community and program operations, and keeping people, information, and tasks connected.",
-                "Established experience",
-              ],
-            ].map(([number, title, text, label]) => (
-              <div className="capability" key={number}>
-                <span>{number}</span>
-                <div>
-                  <h3>{title}</h3>
-                  <p>{text}</p>
-                  <small>{label}</small>
+          <div className="service-offers">
+            {services.map((service, index) => (
+              <article
+                className="service-offer"
+                key={service.id}
+                aria-labelledby={`service-${service.id}`}
+              >
+                <span className="eyebrow">0{index + 1}</span>
+                <h3 id={`service-${service.id}`}>{service.title}</h3>
+                <p>{service.description}</p>
+                <ul>
+                  {service.deliverables.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+                <div className="service-offer-actions">
+                  <span className="service-example-label">
+                    See an independent demo
+                  </span>
+                  <a className="text-button" href={service.demoUrl}>
+                    {service.example}
+                    <Arrow />
+                  </a>
+                  {profile.email && (
+                    <a
+                      className="text-button service-enquiry"
+                      href={`mailto:${profile.email}?subject=${encodeURIComponent(service.subject)}&body=${encodeURIComponent(`Hi Uthman,\n\n${service.prompt}\n\n`)}`}
+                    >
+                      {service.contactLabel}
+                      <Arrow />
+                    </a>
+                  )}
                 </div>
-                <Arrow />
-              </div>
+              </article>
             ))}
           </div>
+          <p className="services-next-step">
+            Have something in mind? Tell me your goal, the tools you use, and
+            your preferred timeline. We’ll discuss scope and costs before
+            starting.
+          </p>
         </section>
 
         <section

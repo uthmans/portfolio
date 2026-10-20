@@ -33,6 +33,20 @@ await page.evaluate(() => document.fonts.ready);
 assert.equal(await page.locator("h1").count(), 1);
 assert.equal(await page.locator(".featured-project").count(), 4);
 assert.equal(await page.locator("#roadmap").count(), 0);
+const offers = page.locator("#services .service-offer");
+assert.equal(await offers.count(), 3);
+for (const [index, route] of ["business/", "survey/", "hub/"].entries()) {
+  const offer = offers.nth(index);
+  assert.equal(await offer.locator("ul li").count(), 3);
+  assert.equal(await offer.locator("a").first().getAttribute("href"), route);
+  const enquiry = new URL(
+    await offer.locator(".service-enquiry").getAttribute("href"),
+  );
+  assert.equal(enquiry.protocol, "mailto:");
+  assert.equal(enquiry.pathname, "uthmansalama@gmail.com");
+  assert.ok(enquiry.searchParams.get("subject")?.startsWith("Let’s discuss"));
+  assert.ok(enquiry.searchParams.get("body")?.startsWith("Hi Uthman,\n\n"));
+}
 assert.equal(
   await page.getByRole("link", { name: "Try the Project Hub" }).count(),
   1,
@@ -178,6 +192,9 @@ await page.evaluate(() => {
 });
 await page.screenshot({ path: "test-results/desktop.png", fullPage: true });
 await page
+  .locator("#services")
+  .screenshot({ path: "test-results/services-desktop.png" });
+await page
   .locator(".featured-project")
   .first()
   .screenshot({ path: "test-results/homepage-project-card.png" });
@@ -196,6 +213,16 @@ await page.goto(base);
 const menu = page.getByRole("button", { name: /Menu/ });
 await menu.click();
 assert.equal(await page.locator("#site-navigation").isVisible(), true);
+await page
+  .getByRole("navigation", { name: "Main navigation" })
+  .getByRole("link", { name: "Services", exact: true })
+  .click();
+assert.equal(new URL(page.url()).hash, "#services");
+assert.equal(await page.locator("#site-navigation").isVisible(), false);
+await page
+  .locator("#services")
+  .screenshot({ path: "test-results/services-mobile.png" });
+await menu.click();
 await page
   .getByRole("navigation", { name: "Main navigation" })
   .getByRole("link", { name: "About", exact: true })
