@@ -91,14 +91,29 @@ test('project planning validates input/output, sends only the brief, and shares 
   const inference = async (_model, inputs) => {
     calls++; assert.deepEqual(JSON.parse(inputs.messages[1].content), { brief });
     assert.ok(inputs.response_format.json_schema.properties.tasks);
+    assert.equal(inputs.response_format.json_schema.properties.tasks.maxItems, 10);
+    assert.equal(inputs.response_format.json_schema.properties.tasks.items.maxLength, 120);
+    assert.equal(inputs.response_format.json_schema.properties.summary.maxLength, 300);
+    assert.equal(inputs.response_format.json_schema.properties.questions.maxItems, 3);
     return { response: plan };
   };
   assert.equal((await handleRequest(planRequest({ brief: 'x' }), env, inference)).status, 400); assert.equal(calls, 0);
   const valid = await handleRequest(planRequest({ brief, projects: ['private-project-not-for-provider'] }), env, inference);
   assert.equal(valid.status, 200); assert.deepEqual(await valid.json(), plan);
   const invalid = await handleRequest(planRequest({ brief }), env, async () => ({ response: { ...plan, tasks: [] } }));
-  assert.equal((await invalid.json()).code, 'invalid_plan');
+  const invalidBody = await invalid.json();
+  assert.equal(invalidBody.code, 'invalid_plan'); assert.deepEqual(invalidBody.issues, ['tasks_count']);
   assert.equal((await handleRequest(request(), env, async () => ({ response: exampleAnalysis }))).status, 200);
   assert.equal((await handleRequest(planRequest({ brief }), env, inference)).status, 429);
   assert.equal(calls, 1);
+});
+
+test('planner safely identifies model-format failures without returning the model text', async () => {
+  const request = () => new Request('https://worker.example/api/project-plan', { method: 'POST', headers: { Origin: origin, 'Content-Type': 'application/json' }, body: JSON.stringify({ brief: 'Create a mobile-friendly website for a fictional bakery with a menu.' }) });
+  const plan = { title: 'Bakery', summary: 'x'.repeat(301), tasks: ['Confirm content'], questions: [], risks: [] };
+  const result = await handleRequest(request(), environment(), async () => ({ response: plan }));
+  const body = await result.json(); assert.equal(body.code, 'invalid_plan'); assert.deepEqual(body.issues, ['summary_too_long']);
+  assert.ok(!JSON.stringify(body).includes('xxx'));
+  const malformed = await handleRequest(request(), environment(), async () => ({ response: '{"title":' }));
+  assert.deepEqual((await malformed.json()).issues, ['format']);
 });

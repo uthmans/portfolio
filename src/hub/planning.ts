@@ -1,6 +1,24 @@
 import { parseMoney, parseWorkspace, validDate, type Project } from "./model.ts";
 
 export type ProjectPlan = { title: string; summary: string; tasks: string[]; questions: string[]; risks: string[] };
+export function planIssues(value: unknown): string[] {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return ["format"];
+  const plan = value as Record<string, unknown>;
+  const issues: string[] = [];
+  for (const [field, max] of [["title", 80], ["summary", 300]] as const) {
+    if (typeof plan[field] !== "string" || !plan[field].trim()) issues.push(`${field}_missing`);
+    else if (plan[field].length > max) issues.push(`${field}_too_long`);
+  }
+  for (const [field, maxCount, maxLength, minCount] of [["tasks", 10, 120, 1], ["questions", 3, 90, 0], ["risks", 3, 90, 0]] as const) {
+    const items = plan[field];
+    if (!Array.isArray(items)) { issues.push(`${field}_format`); continue; }
+    if (items.length < minCount || items.length > maxCount) issues.push(`${field}_count`);
+    if (items.some(item => typeof item !== "string" || !item.trim())) issues.push(`${field}_format`);
+    if (items.some(item => typeof item === "string" && item.length > maxLength)) issues.push(`${field}_too_long`);
+    if (field === "tasks" && items.every(item => typeof item === "string") && new Set(items.map(item => item.trim().toLowerCase())).size !== items.length) issues.push("tasks_duplicate");
+  }
+  return issues;
+}
 export function validateBrief(value: unknown): string {
   if (typeof value !== "string" || value.trim().length < 20 || value.length > 4000 || /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(value))
     throw new Error("Describe the project in 20–4,000 characters. Remove personal and confidential information.");

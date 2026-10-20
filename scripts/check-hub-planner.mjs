@@ -63,6 +63,10 @@ try {
   await area.getByRole('alert').filter({ hasText: 'shared demo allowance' }).waitFor();
   assert.equal(await page.locator('.hub-projects > article').count(), 4);
   assert.deepEqual(await page.evaluate(key => JSON.parse(localStorage.getItem(key)), storageKey), saved);
+  status = 502; output = { code: 'invalid_plan', issues: ['summary_too_long'] }; await generate.click();
+  await area.getByRole('alert').filter({ hasText: 'You do not need to rewrite the example brief' }).waitFor();
+  assert.match(await area.getByLabel('What does the client need?').inputValue(), /bakery/);
+  assert.deepEqual(await page.evaluate(key => JSON.parse(localStorage.getItem(key)), storageKey), saved);
   assert.deepEqual(errors, []);
   console.log('Hub AI planner passed: consent, brief-only payload, editable review, no autosave, validation, confirmed add, persistence, backup compatibility, stale clearing, failure preservation, responsive layout and accessibility.');
 } finally { await browser.close(); }

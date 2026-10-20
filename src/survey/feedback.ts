@@ -4,7 +4,7 @@ export type Analysis = { summary: string; findings: Finding[] };
 export function analysisErrorMessage(code: unknown): string | undefined {
   if (typeof code !== "string") return undefined;
   const messages: Record<string, string> = {
-    invalid_plan: "The AI returned an incomplete or invalid project plan. No project was added. Your brief was kept; try a clearer description later.",
+    invalid_plan: "The AI draft did not match the planner’s required format. No project was added, and your brief was kept. You do not need to rewrite the example brief; the service needs attention.",
     ai_binding_missing: "Cloudflare Workers AI is not connected to this deployment yet. The portfolio owner needs to check the AI binding.",
     workers_ai_limit: "Cloudflare’s free AI allowance or request limit has been reached. Please try again later; no paid fallback is used.",
     workers_ai_unavailable: "Cloudflare Workers AI could not complete this request. Please try again later. If it persists, the portfolio owner should check Workers AI activation and model availability.",

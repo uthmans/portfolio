@@ -10,6 +10,8 @@ Open the Hub and expand **Plan a project with AI**. Paste an anonymised brief of
 
 The planner has no paid fallback and shares the 3/hour per IP and 20/day global allowance with survey analysis. Existing OpenAI-era and new Workers AI configuration remain separate; do not create another API key. Local verification: build with both public endpoint variables, start the production preview and run `npm run test:hub-planner` (mocked inference), `npm run test:hub`, `npm test`, `npm run worker:check` and `npm run worker:test`. The simulator covers both routes, while live inference/model-quality evaluation for the planner still needs a post-deployment check.
 
+The model's requested JSON schema includes the same length/count limits as the saved project format. If a plan still fails, `/api/project-plan` returns `code: "invalid_plan"` and safe `issues`, such as `summary_too_long`, `tasks_count`, `tasks_format`, `tasks_duplicate` or `format`. These contain no brief or generated text. Share that response for diagnosis rather than rewriting the supplied fictional brief or clicking Generate repeatedly. The brief and workspace remain unchanged after a rejected result; schema checks do not guarantee model content is sensible.
+
 ## What you need to do
 
 1. **Keep your Cloudflare account on Workers Free.** Cloudflare's published free allowance is **10,000 neurons per day**, shared with any other Workers AI apps on your account and reset at midnight UTC. Neurons measure AI compute; they are not a fixed number of requests. On Free, further requests fail when the allowance is exhausted. Workers Paid can charge for usage above the free allowance, so do not upgrade or enable paid AI Gateway credits for this demo.
