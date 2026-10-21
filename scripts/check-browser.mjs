@@ -29,6 +29,11 @@ assert.equal(
   (await page.request.get(new URL(favicon, base).href)).status(),
   200,
 );
+const cvLink = page.getByRole("link", { name: "Download my CV", exact: true });
+assert.notEqual(await cvLink.getAttribute("download"), null);
+const cv = await page.request.get(new URL(await cvLink.getAttribute("href"), base).href);
+assert.equal(cv.status(), 200, "CV download resolves successfully");
+assert.equal((await cv.body()).subarray(0, 5).toString(), "%PDF-", "CV is a PDF, not a fallback HTML page");
 await page.evaluate(() => document.fonts.ready);
 assert.equal(await page.locator("h1").count(), 1);
 assert.equal(await page.locator(".featured-project").count(), 4);

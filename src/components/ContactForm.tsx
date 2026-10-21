@@ -149,7 +149,8 @@ export default function ContactForm({
         </label>
         <p className="enquiry-privacy">
           Your details go through Formspree to Uthman so he can reply about your
-          project. Please leave out passwords and private client data.
+          project. Your unsent draft resets if you reload or close this page.
+          Please leave out passwords and private client data.
         </p>
         <button className="enquiry-submit" type="submit">
           {busy ? "Sending…" : sent ? "Message sent" : "Send enquiry"}

@@ -170,9 +170,13 @@ export default function SurveyApp() {
               : dataset.kind === "generated"
                 ? `These responses are entirely fictional. Ratings are chosen from 1–5, with about 10% left blank. Every row includes a written comment chosen from fictional templates, matched to its satisfaction rating where present. Comments are not real feedback or AI-generated.`
                 : "Your imported CSV is now used for the charts and calculations. Its responses are not labeled as fictional."}{" "}
-            Imported and generated data stay in this tab and reset on reload.
-            Download a CSV to keep them. Rating data is processed in your browser.
             Include a feedback column in the same CSV to explore written responses below.
+          </p>
+          <p>
+            <strong>Keeping your work:</strong> Imported and generated data, filters,
+            and AI results reset when you reload or close this page. Download your
+            CSV and analysis report to keep a copy. Charts are calculated in your
+            browser; only the written comments you approve are sent for AI analysis.
           </p>
         </aside>
 

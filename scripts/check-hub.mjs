@@ -20,12 +20,12 @@ try {
   });
   await page.goto(base);
   await page
-    .getByRole("button", { name: "Hub project details", exact: true })
+    .getByRole("button", { name: "Read case study: Freelancer Project Hub", exact: true })
     .click();
   assert.equal(
     await page
       .getByRole("dialog")
-      .getByRole("link", { name: "Live demo" })
+      .getByRole("link", { name: "Try the demo", exact: true })
       .getAttribute("href"),
     "hub/",
   );

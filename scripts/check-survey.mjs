@@ -20,12 +20,12 @@ try {
     process.env.PORTFOLIO_URL || "http://127.0.0.1:5173/portfolio/";
   await page.goto(portfolioUrl);
   await page
-    .getByRole("button", { name: "Project details", exact: true })
+    .getByRole("button", { name: "Read case study: Survey Insights Studio", exact: true })
     .click();
   assert.equal(
     await page
       .getByRole("dialog")
-      .getByRole("link", { name: "Live demo" })
+      .getByRole("link", { name: "Try the demo", exact: true })
       .getAttribute("href"),
     "survey/",
   );

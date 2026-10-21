@@ -34,12 +34,12 @@ try {
   }
   await page.goto(portfolioUrl);
   await page
-    .getByRole("button", { name: "Business project details", exact: true })
+    .getByRole("button", { name: "Read case study: A small business, online", exact: true })
     .click();
   assert.equal(
     await page
       .getByRole("dialog")
-      .getByRole("link", { name: "Live demo" })
+      .getByRole("link", { name: "Try the demo", exact: true })
       .getAttribute("href"),
     "business/",
   );

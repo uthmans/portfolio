@@ -530,6 +530,12 @@ export default function BusinessApp() {
                   This form creates a local preview only. Nothing is sent, saved
                   to a server, or booked. Use fictional details to try it.
                 </p>
+                <p>
+                  Your estimate and enquiry reset when you reload or close this
+                  page. Download the preview to keep a copy. The separate AI
+                  guide only sends the space description you approve, not these
+                  contact fields.
+                </p>
                 <button
                   className="ff-sample-button"
                   onClick={() => {

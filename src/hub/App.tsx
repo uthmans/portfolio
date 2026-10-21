@@ -519,7 +519,9 @@ export default function HubApp() {
             Start with three fictional projects, then try your own. Data stays
             in this browser’s storage and isn’t synced between devices.
             The optional AI planner sends only the brief you choose to share.
-            Download a backup to keep a copy. USD amounts are
+            Download a backup to keep a copy. Reloading keeps saved changes;
+            clearing browser data removes them. Restore a downloaded backup
+            to move your workspace to another browser. USD amounts are
             tracking figures, not invoices.
           </p>
           <p>

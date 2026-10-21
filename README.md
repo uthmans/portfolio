@@ -88,6 +88,8 @@ The homepage Services section offers business websites, dashboards and data tool
 
 ### Contact form delivery
 
+The visitor-journey checks include the CV PDF response, on-page service selection, contact failure/success states, demo navigation, CSV and report downloads, estimate links, and Hub backup/restore. Run the browser scripts against a production preview with all four endpoint variables configured. AI and email delivery tests intercept requests with controlled responses; they do not establish live inference quality or inbox delivery.
+
 The approved public endpoint is `https://formspree.io/f/xdeardkv`, configured as `VITE_CONTACT_FORM_URL` in the Pages build workflow. The recipient should be `uthmansalama@gmail.com`; complete any email verification Formspree requests. The endpoint is public, not an API secret. To replace it, update the workflow and rebuild Pages; use the same `VITE_CONTACT_FORM_URL` variable for local builds. Never put passwords or private API keys in a `VITE_` variable.
 
 The form submits directly to Formspree using JSON and stays on the portfolio. It displays success only after Formspree acknowledges acceptance; inbox arrival still depends on provider delivery and spam filtering. Network failures retain the typed fields and never retry automatically. Formspree processes the submitted personal information; its account limits and spam controls apply. Nothing is sent to Workers AI. Test an actual enquiry after configuration and confirm it arrives in the recipient inbox. A missing endpoint produces a clear error, not a false success.
