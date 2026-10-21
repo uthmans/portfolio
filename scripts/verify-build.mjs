@@ -33,6 +33,18 @@ assert.equal(businessProject.status, "Version 2");
 assert.equal(businessProject.demoUrl, "business/");
 assert.equal(hubProject.status, "Version 2");
 assert.equal(hubProject.demoUrl, "hub/");
+for (const file of [
+  "portfolio-walkthrough.mp4",
+  "portfolio-walkthrough-poster.jpg",
+  "portfolio-walkthrough.en.vtt",
+]) {
+  await access(`dist/media/${file}`);
+}
+assert.ok(
+  (
+    await readFile("dist/media/portfolio-walkthrough.en.vtt", "utf8")
+  ).startsWith("WEBVTT"),
+);
 const commit =
   process.env.GITHUB_SHA ||
   execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();

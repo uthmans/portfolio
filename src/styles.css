@@ -321,6 +321,80 @@ p {
   line-height: 1.9;
   padding-bottom: 5px;
 }
+.walkthrough {
+  display: grid;
+  grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.5fr);
+  gap: 24px 38px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: #ebeede;
+  padding: 32px;
+  margin-bottom: 36px;
+}
+.walkthrough-copy h3 {
+  margin: 18px 0;
+  font-size: 35px;
+  line-height: 1.2;
+  letter-spacing: -1px;
+}
+.walkthrough-copy h3 em {
+  font-family: Georgia, serif;
+  font-weight: 400;
+  color: #647447;
+}
+.walkthrough p {
+  font-size: var(--text-body);
+  color: var(--muted);
+  line-height: 1.8;
+}
+.walkthrough figure {
+  margin: 0;
+  min-width: 0;
+}
+.walkthrough video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 5px;
+  background: var(--green);
+}
+.walkthrough figcaption {
+  color: var(--muted);
+  font-size: var(--text-small);
+  line-height: 1.7;
+  margin-top: 12px;
+}
+.walkthrough-contact {
+  display: inline-block;
+  font-size: var(--text-small);
+  line-height: 1.7;
+  margin-top: 16px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.walkthrough-transcript {
+  grid-column: 1 / -1;
+  border-top: 1px solid #c8d2bc;
+  padding-top: 18px;
+}
+.walkthrough-transcript summary {
+  cursor: pointer;
+  font-size: var(--text-body);
+}
+.walkthrough-transcript p {
+  max-width: 780px;
+  margin-top: 16px;
+}
+.featured-project {
+  scroll-margin-top: 20px;
+}
+@media (max-width: 900px) {
+  .walkthrough {
+    grid-template-columns: 1fr;
+    padding: 24px;
+  }
+}
 .featured-project {
   display: grid;
   grid-template-columns: 1.35fr 1fr;

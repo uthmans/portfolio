@@ -84,6 +84,8 @@ Configure the non-secret frontend variable `VITE_HUB_PLAN_API_URL` to the Worker
 
 ## Main interactions to check
 
+The homepage walkthrough above the project cards uses the latest approved cleaned voice recording and a portfolio-specific “Try the demos” ending. Its self-hosted MP4, optimised poster, and English WebVTT captions live in `public/media/`; the component and text transcript are in `src/components/Walkthrough.tsx`. Native controls, `playsInline`, and `preload="none"` keep playback optional without autoplay or an initial video download. The clip retains clearly labelled illustrative AI responses. Run `npm run test:walkthrough` against the production preview to verify real playback, captions, seeking, transcript, layout, and demo links.
+
 The homepage Services section offers business websites, dashboards and data tools, and AI-assisted workflows. Each links to an independent demo and the on-page enquiry form, preselecting the service without overwriting anything the visitor has typed. Offer text and message prompts live in `services` in `src/content.ts`. The browser can autofill the visitor’s name and email; budget and timeline remain optional.
 
 ### Contact form delivery

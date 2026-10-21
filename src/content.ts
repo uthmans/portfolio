@@ -46,6 +46,7 @@ export const portfolioProject: Project = {
   features: [
     "Responsive gallery of four working projects",
     "Keyboard-accessible project details",
+    "Optional video walkthrough with English captions and a text transcript",
     "Editable content and contact configuration",
     "Reduced-motion support",
   ],

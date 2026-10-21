@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Chart from "./survey/Chart";
 import PortfolioBanner from "./components/PortfolioBanner";
 import ContactForm from "./components/ContactForm";
+import Walkthrough from "./components/Walkthrough";
 import RoomScene from "./business/RoomScene";
 import HubPreview from "./hub/Preview";
 import { sample, summarize } from "./survey/data";
@@ -362,7 +363,11 @@ export default function App() {
               Try a demo or read the decisions behind the build.
             </p>
           </div>
-          <article className="featured-project survey-feature">
+          <Walkthrough />
+          <article
+            id="project-survey"
+            className="featured-project survey-feature"
+          >
             <div className="survey-feature-visual">
               <span className="eyebrow">WORKING DEMO / FICTIONAL SAMPLE</span>
               <div className="survey-feature-screen" aria-hidden="true">
@@ -410,7 +415,10 @@ export default function App() {
               </p>
             </div>
           </article>
-          <article className="featured-project business-feature">
+          <article
+            id="project-business"
+            className="featured-project business-feature"
+          >
             <div className="business-feature-visual">
               <span className="eyebrow">WORKING DEMO / FICTIONAL BUSINESS</span>
               <div className="business-feature-scene" aria-hidden="true">
@@ -453,7 +461,7 @@ export default function App() {
               </p>
             </div>
           </article>
-          <article className="featured-project hub-feature">
+          <article id="project-hub" className="featured-project hub-feature">
             <div className="hub-feature-visual">
               <span className="eyebrow">
                 WORKING DEMO / FICTIONAL WORKSPACE
