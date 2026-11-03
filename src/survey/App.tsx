@@ -2,7 +2,7 @@ import { useState, type ChangeEvent } from "react";
 import { MAX_FILE_BYTES, MAX_ROWS, parseCsv } from "./csv";
 import { generateResponses } from "./generate";
 import Chart from "./Chart";
-import FeedbackStudio from "./Feedback";
+import FeedbackStudio from "./FeedbackStudio";
 import PortfolioBanner from "../components/PortfolioBanner";
 import {
   filterResponses,
