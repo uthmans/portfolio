@@ -220,7 +220,9 @@ p {
 }
 .hero-art {
   position: relative;
-  height: 350px;
+  display: grid;
+  gap: 32px;
+  padding: 45px 24px 0;
   width: 100%;
   max-width: 470px;
   justify-self: end;
@@ -237,11 +239,11 @@ p {
 .art-note {
   background: #e7eacb;
   transform: rotate(-7deg);
-  position: absolute;
-  top: 45px;
-  left: 17%;
+  position: relative;
+  justify-self: center;
   padding: 31px 34px 25px;
   width: 275px;
+  max-width: 100%;
   box-shadow: 0 12px 28px #28382f0c;
   border: 1px solid #d1d5b9;
 }
@@ -270,15 +272,16 @@ p {
   color: var(--green);
   position: absolute;
   right: 5px;
-  top: 178px;
+  top: 0;
   line-height: 1;
   text-shadow: 2px 3px #f4f3ed;
   transform: rotate(8deg);
 }
 .art-caption {
-  position: absolute;
-  bottom: -6px;
-  right: 15px;
+  position: relative;
+  justify-self: end;
+  text-align: right;
+  line-height: 1.6;
   font-size: 8px;
   letter-spacing: 1.6px;
 }
@@ -1768,7 +1771,6 @@ p {
     gap: 24px;
   }
   .art-note {
-    left: 8%;
     width: 245px;
     padding: 25px;
   }
@@ -1777,10 +1779,6 @@ p {
   }
   .art-symbol {
     font-size: 113px;
-    right: 0;
-    top: 186px;
-  }
-  .art-caption {
     right: 0;
   }
   .featured-visual {
@@ -1960,14 +1958,11 @@ p {
     margin-top: 23px;
   }
   .hero-art {
-    height: 275px;
     width: 350px;
     max-width: 100%;
     justify-self: center;
   }
   .art-note {
-    top: 26px;
-    left: 35px;
     width: 235px;
     padding: 23px 27px 20px;
   }
@@ -1978,12 +1973,9 @@ p {
   .art-symbol {
     font-size: 103px;
     right: 5px;
-    top: 153px;
   }
   .art-caption {
     font-size: 6px;
-    bottom: 3px;
-    right: 25px;
   }
   .hero-footer {
     font-size: var(--text-label);
@@ -2468,13 +2460,13 @@ p {
   min-width: 0;
 }
 .art-symbol {
-  width: 125px;
-  height: 125px;
+  width: 72px;
+  height: 72px;
 }
 @media (max-width: 760px) {
   .art-symbol {
-    width: 105px;
-    height: 105px;
+    width: 64px;
+    height: 64px;
   }
 }
 .featured-visual > .preview-trigger {
