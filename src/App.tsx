@@ -369,11 +369,24 @@ export default function App() {
             <div className="transit-feature-visual">
               <span className="eyebrow">CURRENTLY BUILDING / COMMUNITY TRANSPORT</span>
               <div className="transit-route" aria-hidden="true">
-                <span className="eyebrow">ONE ROUTE. BETTER CONNECTED.</span>
-                <div><span>Kufr Malik</span><span className="transit-route-line">↔</span><span>Ramallah</span></div>
-                <p>Route information · Driver availability · Passenger contact</p>
+                <div className="transit-scene-heading"><span className="eyebrow">FROM VILLAGE TO CITY</span><span className="transit-edition">01 / THE DAILY ROUTE</span></div>
+                <svg className="transit-landscape" viewBox="0 0 500 330" fill="none">
+                  <circle cx="389" cy="64" r="36" fill="#d9deab" />
+                  <path d="M0 160Q90 64 208 145T500 116V330H0Z" fill="#d7dfc6" />
+                  <path d="M0 212Q120 115 258 195T500 158V330H0Z" fill="#becbad" />
+                  <path d="M0 277Q151 172 305 248T500 223V330H0Z" fill="#a2b392" />
+                  <path d="M74 145C64 223 278 115 301 200S399 246 435 191" stroke="#f4f3ed" strokeWidth="20" strokeLinecap="round" />
+                  <path d="M74 145C64 223 278 115 301 200S399 246 435 191" stroke="#657851" strokeWidth="2" strokeDasharray="5 8" />
+                  <g fill="#f4f3ed" stroke="#637653" strokeWidth="2"><path d="M49 111V92L64 81L79 92V111Z" /><path d="M80 111V98H101V111Z" /><path d="M405 164V132H422V164M425 164V118H443V164M447 164V140H462V164" /></g>
+                  <g fill="#243c31" stroke="#f4f3ed" strokeWidth="4"><circle cx="74" cy="145" r="7"/><circle cx="435" cy="191" r="7"/></g>
+                  <g transform="translate(218 163) rotate(-10)"><rect width="49" height="27" rx="7" fill="#243c31"/><path d="M8 5H34L41 15H8Z" fill="#dceaaf"/><circle cx="12" cy="28" r="5" fill="#243c31"/><circle cx="38" cy="28" r="5" fill="#243c31"/></g>
+                </svg>
+                <span className="transit-stop transit-stop-origin">Kufr Malik<small>THE JOURNEY BEGINS</small></span>
+                <span className="transit-stop transit-stop-destination">Ramallah<small>CONNECTED BY COMMUNITY</small></span>
+                <div className="transit-app-peek"><div><span className="transit-app-icon">↗</span><span>Kufr Malik Transit<small>كفر مالك · رام الله</small></span></div><p>A simpler way<br/>to find your ride.</p><span className="transit-app-action">Explore the route <Arrow /></span></div>
+                <span className="transit-scene-footer">LOCAL ROUTES. EVERYDAY CONNECTIONS.</span>
               </div>
-              <span className="transit-preview-note">Route illustration · Explore the current build below</span>
+              <span className="transit-preview-note">Concept illustration · Arabic & English · Built for mobile</span>
             </div>
             <div className="featured-copy">
               <div className="project-meta"><span>PROJECT {transitProject.number}</span><span className="status"><i />In progress</span></div>
