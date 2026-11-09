@@ -17,7 +17,7 @@ export type Project = {
   number: string;
   title: string;
   category: string;
-  status: "First version" | "Version 2";
+  status: "First version" | "Version 2" | "In progress";
   description: string;
   problem: string;
   audience: string;
@@ -44,7 +44,7 @@ export const portfolioProject: Project = {
     "Make it easy for hiring managers and potential clients to understand my background and explore honest evidence of my work.",
   audience: "Hiring managers, collaborators, and potential freelance clients.",
   features: [
-    "Responsive gallery of four working projects",
+    "Responsive gallery of working demos and an ongoing application",
     "Keyboard-accessible project details",
     "Optional video walkthrough with English captions and a text transcript",
     "Editable content and contact configuration",
@@ -66,6 +66,25 @@ export const portfolioProject: Project = {
     "Browser checks cover project dialogs, keyboard focus, mobile navigation, and working demo links.",
     "Layout checks cover five viewport widths, reduced motion, and automated accessibility scans.",
   ],
+};
+
+export const transitProject: Project = {
+  id: "transit",
+  number: "05",
+  title: "Kufr Malik Transit",
+  category: "Community transport application",
+  status: "In progress",
+  description: "An ongoing app for the Kufr Malik–Ramallah route, bringing driver availability, route information and passenger contact into one mobile interface.",
+  problem: "Help passengers find driver information and coordinate a journey, while giving drivers a way to share availability without relying on scattered updates.",
+  audience: "Passengers and drivers travelling between Kufr Malik and Ramallah.",
+  features: ["Arabic and English interfaces", "Route view and driver directory", "Call and WhatsApp passenger contact flows", "Driver availability and opt-in GPS sharing", "Installable web app with an update notice"],
+  contribution: "I am developing and refining the app around local transport needs and phone feedback. AI coding assistance supports implementation and testing as I continue learning to maintain the application.",
+  technology: ["React", "TypeScript", "Progressive web app", "Geolocation"],
+  decisions: "This is an ongoing independent project, not a finished transport service. Driver tools require authorized access. A prepared WhatsApp message is not a confirmed reservation: the passenger must send it and wait for the driver's confirmation. Location sharing is opt-in. Real phone-to-phone GPS behaviour still needs driver trials; availability and location information should not be treated as guaranteed arrival times.",
+  result: "The current build brings passenger route information and driver contact into one place. Work continues on real-device validation and refinements from user feedback.",
+  walkthrough: ["Open the current app and explore the route and driver directory.", "Switch between Arabic and English in Settings.", "Review the passenger contact options. Only contact a driver if you intend to arrange a real journey."],
+  verification: ["Implementation includes checks for driver access, passenger contact flows and responsive layouts.", "Real phone-to-phone GPS behaviour still requires a driver trial. This case study will evolve with the project."],
+  demoUrl: "https://uthmans.github.io/fordat-kufr-malik/",
 };
 
 export const surveyProject: Project = {

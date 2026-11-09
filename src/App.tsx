@@ -14,6 +14,7 @@ import {
   businessProject,
   profile,
   hubProject,
+  transitProject,
   type Project,
 } from "./content";
 
@@ -146,12 +147,12 @@ function ProjectDetails({
           <h2 id="project-detail-title">{project.title}</h2>
           <p className="dialog-intro">{project.description}</p>
           <p className="case-study-context">
-            {project.demoUrl ? "Fictional demo · " : "Personal website · "}
+            {project.status === "In progress" ? "Ongoing application · " : project.demoUrl ? "Fictional demo · " : "Personal website · "}
             Built with AI coding assistance · {project.status}
           </p>
           {project.demoUrl && (
             <a className="text-button case-study-demo" href={project.demoUrl}>
-              Try the demo <Arrow />
+              {project.status === "In progress" ? "Explore the current app" : "Try the demo"} <Arrow />
             </a>
           )}
           <div className="detail-block">
@@ -196,7 +197,7 @@ function ProjectDetails({
                 <li key={check}>{check}</li>
               ))}
             </ul>
-            {project.demoUrl && (
+            {project.demoUrl && project.status !== "In progress" && (
               <p className="case-study-testing-note">
                 Automated AI checks use controlled responses. Live AI wording
                 can vary; review suggestions before using them. The demos share
@@ -364,6 +365,26 @@ export default function App() {
             </p>
           </div>
           <Walkthrough />
+          <article id="project-transit" className="featured-project transit-feature">
+            <div className="transit-feature-visual">
+              <span className="eyebrow">CURRENTLY BUILDING / COMMUNITY TRANSPORT</span>
+              <div className="transit-route" aria-hidden="true">
+                <span className="eyebrow">ONE ROUTE. BETTER CONNECTED.</span>
+                <div><span>Kufr Malik</span><span className="transit-route-line">↔</span><span>Ramallah</span></div>
+                <p>Route information · Driver availability · Passenger contact</p>
+              </div>
+              <span className="transit-preview-note">Route illustration · Explore the current build below</span>
+            </div>
+            <div className="featured-copy">
+              <div className="project-meta"><span>PROJECT {transitProject.number}</span><span className="status"><i />In progress</span></div>
+              <h3>{transitProject.title}</h3>
+              <p>{transitProject.description}</p>
+              <div className="tags"><span>Arabic & English</span><span>Mobile web app</span></div>
+              <a className="text-button" href={transitProject.demoUrl}>Explore the current app <Arrow /></a>
+              <button className="text-button survey-details-button" aria-label={`Read case study: ${transitProject.title}`} onClick={() => setSelectedProject(transitProject)}>Read case study <Arrow /></button>
+              <p className="honesty-note">Independent project · Active development · Real-device trials ongoing</p>
+            </div>
+          </article>
           <article
             id="project-survey"
             className="featured-project survey-feature"
