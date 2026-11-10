@@ -8,16 +8,15 @@ export const profile = {
   availability: "Open to remote roles & freelance projects",
   email: "uthmansalama@gmail.com",
   linkedInUrl: "",
-  githubUrl: "",
+  githubUrl: "https://github.com/uthmans",
   cvUrl: "Uthman-Salama-CV-2026.pdf",
 };
 
 export type Project = {
   id: string;
-  number: string;
   title: string;
   category: string;
-  status: "First version" | "Version 2" | "In progress";
+  status: "Working demo" | "Personal website" | "In progress";
   description: string;
   problem: string;
   audience: string;
@@ -34,10 +33,9 @@ export type Project = {
 
 export const portfolioProject: Project = {
   id: "portfolio",
-  number: "04",
   title: "A portfolio with a purpose",
-  category: "Website · Design · Development",
-  status: "First version",
+  category: "Personal website",
+  status: "Personal website",
   description:
     "A responsive home for working demos, project case studies, my experience, and a downloadable CV.",
   problem:
@@ -70,9 +68,8 @@ export const portfolioProject: Project = {
 
 export const transitProject: Project = {
   id: "transit",
-  number: "05",
   title: "Kufr Malik Transit",
-  category: "Community transport application",
+  category: "Community transport app",
   status: "In progress",
   description: "An ongoing app for the Kufr Malik–Ramallah route, bringing driver availability, route information and passenger contact into one mobile interface.",
   problem: "Help passengers find driver information and coordinate a journey, while giving drivers a way to share availability without relying on scattered updates.",
@@ -89,10 +86,9 @@ export const transitProject: Project = {
 
 export const surveyProject: Project = {
   id: "survey",
-  number: "01",
   title: "Survey Insights Studio",
-  category: "Data exploration",
-  status: "Version 2",
+  category: "Data tool",
+  status: "Working demo",
   description:
     "Turn survey responses into clear charts and AI feedback themes, with original comments beside each finding and downloadable reports.",
   problem:
@@ -132,10 +128,9 @@ export const surveyProject: Project = {
 
 export const businessProject: Project = {
   id: "business",
-  number: "02",
   title: "A small business, online",
-  category: "Interactive website",
-  status: "Version 2",
+  category: "Business website",
+  status: "Working demo",
   description:
     "Form & Field: a fictional interiors studio with an AI service guide, clear service pages, fixed-rule estimates, and a validated enquiry preview.",
   problem:
@@ -179,10 +174,9 @@ export const businessProject: Project = {
 
 export const hubProject: Project = {
   id: "hub",
-  number: "03",
   title: "Freelancer Project Hub",
-  category: "Internal application",
-  status: "Version 2",
+  category: "Project management tool",
+  status: "Working demo",
   description:
     "Turn a client brief into an editable AI project plan, then track projects, tasks and budgets in a browser-local workspace with downloadable backups.",
   problem:

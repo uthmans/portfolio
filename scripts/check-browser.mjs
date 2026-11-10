@@ -36,7 +36,7 @@ assert.equal(cv.status(), 200, "CV download resolves successfully");
 assert.equal((await cv.body()).subarray(0, 5).toString(), "%PDF-", "CV is a PDF, not a fallback HTML page");
 await page.evaluate(() => document.fonts.ready);
 assert.equal(await page.locator("h1").count(), 1);
-assert.equal(await page.locator(".featured-project").count(), 5);
+assert.equal(await page.locator(".featured-project").count(), 3);
 assert.equal(await page.locator("#roadmap").count(), 0);
 const offers = page.locator("#services .service-offer");
 assert.equal(await offers.count(), 3);
@@ -130,7 +130,7 @@ for (const [title, route] of [
   await page.keyboard.press("Space");
   for (const heading of [
     "The problem",
-    "The solution",
+    "What it does today",
     "Try the workflow",
     "My role & AI assistance",
     "Key decisions & limitations",

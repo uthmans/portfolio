@@ -4,7 +4,6 @@ import PortfolioBanner from "./components/PortfolioBanner";
 import ContactForm from "./components/ContactForm";
 import Walkthrough from "./components/Walkthrough";
 import RoomScene from "./business/RoomScene";
-import HubPreview from "./hub/Preview";
 import { sample, summarize } from "./survey/data";
 import {
   experienceTools,
@@ -28,55 +27,6 @@ function Arrow() {
     >
       <path d="M5 19 19 5M5 5h14v14" stroke="currentColor" strokeWidth="1.5" />
     </svg>
-  );
-}
-
-function PortfolioPreview() {
-  return (
-    <div className="portfolio-preview" aria-hidden="true">
-      <div className="preview-top">
-        <b>
-          us<span>.</span>
-        </b>
-        <span>Work &nbsp; About &nbsp; Contact</span>
-      </div>
-      <div className="preview-body">
-        <span className="preview-eyebrow">
-          A LITTLE CLARITY GOES A LONG WAY
-        </span>
-        <h3>
-          Ideas into
-          <br />
-          useful things<span>.</span>
-        </h3>
-        <p>Websites, data & everyday workflows.</p>
-        <span className="preview-cta">Explore my work ↗</span>
-      </div>
-      <div className="preview-bottom">
-        <span>SELECTED WORK</span>
-        <span>01 — 04</span>
-      </div>
-      <div className="preview-tiles">
-        <div>
-          <i className="mini-bars">
-            <i />
-            <i />
-            <i />
-            <i />
-          </i>
-        </div>
-        <div>
-          <span className="mini-sun">✳</span>
-        </div>
-        <div>
-          <i className="mini-lines">
-            <i />
-            <i />
-            <i />
-          </i>
-        </div>
-      </div>
-    </div>
   );
 }
 
@@ -134,7 +84,7 @@ function ProjectDetails({
         <>
           <div className="dialog-top">
             <span className="eyebrow">
-              CASE STUDY {project.number} / INDEPENDENT PROJECT
+              CASE STUDY / {project.category}
             </span>
             <button
               className="close-button"
@@ -163,7 +113,15 @@ function ProjectDetails({
             </p>
           </div>
           <div className="detail-block">
-            <h3>The solution</h3>
+            <h3>My role & AI assistance</h3>
+            <p>{project.contribution}</p>
+          </div>
+          <div className="detail-block">
+            <h3>Key decisions & limitations</h3>
+            <p>{project.decisions}</p>
+          </div>
+          <div className="detail-block">
+            <h3>What it does today</h3>
             <p>{project.result}</p>
           </div>
           <div className="detail-block">
@@ -182,14 +140,6 @@ function ProjectDetails({
               ))}
             </ul>
           </details>
-          <div className="detail-block">
-            <h3>My role & AI assistance</h3>
-            <p>{project.contribution}</p>
-          </div>
-          <div className="detail-block">
-            <h3>Key decisions & limitations</h3>
-            <p>{project.decisions}</p>
-          </div>
           <div className="detail-block">
             <h3>How it was checked</h3>
             <ul>
@@ -303,6 +253,7 @@ export default function App() {
                 <span>{profile.headline[2]}</span>
               </h1>
               <p>{profile.introduction}</p>
+              <p className="hero-experience">Five years connecting people, operations and technology at Tech2Peace—building CRM and workflow systems with 10,000+ records. <a href="#about">More about my experience <Arrow /></a></p>
               <a className="primary-link" href="#work">
                 Explore my work{" "}
                 <span className="arrow-down">
@@ -364,12 +315,11 @@ export default function App() {
               Try a demo or read the decisions behind the build.
             </p>
           </div>
-          <Walkthrough />
           <article id="project-transit" className="featured-project transit-feature">
             <div className="transit-feature-visual">
               <span className="eyebrow">CURRENTLY BUILDING / COMMUNITY TRANSPORT</span>
               <div className="transit-route" aria-hidden="true">
-                <div className="transit-scene-heading"><span className="eyebrow">FROM VILLAGE TO CITY</span><span className="transit-edition">01 / THE DAILY ROUTE</span></div>
+                <div className="transit-scene-heading"><span className="eyebrow">FROM VILLAGE TO CITY</span><span className="transit-edition">THE DAILY ROUTE</span></div>
                 <svg className="transit-landscape" viewBox="0 0 500 330" fill="none">
                   <circle cx="389" cy="64" r="36" fill="#d9deab" />
                   <path d="M0 160Q90 64 208 145T500 116V330H0Z" fill="#d7dfc6" />
@@ -383,19 +333,18 @@ export default function App() {
                 </svg>
                 <span className="transit-stop transit-stop-origin">Kufr Malik<small>THE JOURNEY BEGINS</small></span>
                 <span className="transit-stop transit-stop-destination">Ramallah<small>CONNECTED BY COMMUNITY</small></span>
-                <div className="transit-app-peek"><div><span className="transit-app-icon">↗</span><span>Kufr Malik Transit<small>كفر مالك · رام الله</small></span></div><p>A simpler way<br/>to find your ride.</p><span className="transit-app-action">Explore the route <Arrow /></span></div>
+                <div className="transit-app-peek"><div><span className="transit-app-icon">↗</span><span>Kufr Malik Transit<small>كفر مالك · رام الله</small></span></div><p>A simpler way<br/>to find your ride.</p><span className="transit-app-action">Route & driver directory</span></div>
                 <span className="transit-scene-footer">LOCAL ROUTES. EVERYDAY CONNECTIONS.</span>
               </div>
               <span className="transit-preview-note">Concept illustration · Arabic & English · Built for mobile</span>
             </div>
             <div className="featured-copy">
-              <div className="project-meta"><span>PROJECT {transitProject.number}</span><span className="status"><i />In progress</span></div>
+              <div className="project-meta"><span>{transitProject.category}</span><span className="status"><i />In progress</span></div>
               <h3>{transitProject.title}</h3>
               <p>{transitProject.description}</p>
               <div className="tags"><span>Arabic & English</span><span>Mobile web app</span></div>
               <a className="text-button" href={transitProject.demoUrl}>Explore the current app <Arrow /></a>
               <button className="text-button survey-details-button" aria-label={`Read case study: ${transitProject.title}`} onClick={() => setSelectedProject(transitProject)}>Read case study <Arrow /></button>
-              <p className="honesty-note">Independent project · Active development · Real-device trials ongoing</p>
             </div>
           </article>
           <article
@@ -416,13 +365,10 @@ export default function App() {
                   missing · Mean {surveySummary.mean?.toFixed(2) ?? "—"} / 5
                 </span>
               </div>
-              <a href="survey/" className="survey-preview-action">
-                Open the live demo <Arrow />
-              </a>
             </div>
             <div className="featured-copy">
               <div className="project-meta">
-                <span>PROJECT {surveyProject.number}</span>
+                <span>{surveyProject.category}</span>
                 <span className="status">
                   <i />
                   {surveyProject.status}
@@ -444,9 +390,6 @@ export default function App() {
               >
                 Read case study <Arrow />
               </button>
-              <p className="honesty-note">
-                Independent demo · Built with AI coding assistance
-              </p>
             </div>
           </article>
           <article
@@ -462,13 +405,10 @@ export default function App() {
                 </div>
                 <RoomScene variant="nook" />
               </div>
-              <a href="business/" className="survey-preview-action">
-                Explore the business demo <Arrow />
-              </a>
             </div>
             <div className="featured-copy">
               <div className="project-meta">
-                <span>PROJECT {businessProject.number}</span>
+                <span>{businessProject.category}</span>
                 <span className="status">
                   <i />
                   {businessProject.status}
@@ -490,90 +430,25 @@ export default function App() {
               >
                 Read case study <Arrow />
               </button>
-              <p className="honesty-note">
-                Independent demo · Fictional brand · AI-assisted build
-              </p>
             </div>
           </article>
-          <article id="project-hub" className="featured-project hub-feature">
-            <div className="hub-feature-visual">
-              <span className="eyebrow">
-                WORKING DEMO / FICTIONAL WORKSPACE
-              </span>
-              <HubPreview />
-              <a href="hub/" className="survey-preview-action">
-                Open the project workspace <Arrow />
-              </a>
+          <div className="more-work" aria-labelledby="more-work-heading">
+            <h3 id="more-work-heading">More work</h3>
+            <div className="more-work-grid">
+              {[hubProject, portfolioProject].map(project => (
+                <article id={`project-${project.id}`} className="more-work-card" key={project.id}>
+                  <div className="project-meta"><span>{project.category}</span><span className="status">{project.status}</span></div>
+                  <h3>{project.title}</h3>
+                  <p>{project.description}</p>
+                  <div className="more-work-actions">
+                    {project.demoUrl && <a className="text-button" href={project.demoUrl}>Try the Project Hub <Arrow /></a>}
+                    <button className="text-button" aria-label={`Read case study: ${project.title}`} onClick={() => setSelectedProject(project)}>Read case study <Arrow /></button>
+                  </div>
+                </article>
+              ))}
             </div>
-            <div className="featured-copy">
-              <div className="project-meta">
-                <span>PROJECT {hubProject.number}</span>
-                <span className="status">
-                  <i />
-                  {hubProject.status}
-                </span>
-              </div>
-              <h3>{hubProject.title}</h3>
-              <p>{hubProject.description}</p>
-              <div className="tags">
-                <span>AI planning & task tracking</span>
-                <span>Browser-local saving</span>
-              </div>
-              <a className="text-button" href="hub/">
-                Try the Project Hub <Arrow />
-              </a>
-              <button
-                className="text-button survey-details-button"
-                aria-label={`Read case study: ${hubProject.title}`}
-                onClick={() => setSelectedProject(hubProject)}
-              >
-                Read case study <Arrow />
-              </button>
-              <p className="honesty-note">
-                Independent demo · Fictional sample · AI-assisted build
-              </p>
-            </div>
-          </article>
-          <article className="featured-project">
-            <div className="featured-visual">
-              <span className="visual-label">
-                THE PORTFOLIO / PERSONAL WEBSITE
-              </span>
-              <PortfolioPreview />
-              <button
-                className="visual-open preview-trigger"
-                onClick={() => setSelectedProject(portfolioProject)}
-                aria-label="View details for A portfolio with a purpose"
-              >
-                <Arrow />
-              </button>
-            </div>
-            <div className="featured-copy">
-              <div className="project-meta">
-                <span>PROJECT {portfolioProject.number}</span>
-                <span className="status">
-                  <i />
-                  Personal website
-                </span>
-              </div>
-              <h3>{portfolioProject.title}</h3>
-              <p>{portfolioProject.description}</p>
-              <div className="tags">
-                <span>Responsive website</span>
-                <span>React & TypeScript</span>
-              </div>
-              <button
-                className="text-button"
-                aria-label={`Read case study: ${portfolioProject.title}`}
-                onClick={() => setSelectedProject(portfolioProject)}
-              >
-                Read case study <Arrow />
-              </button>
-              <p className="honesty-note">
-                Independent work · Built with AI coding assistance
-              </p>
-            </div>
-          </article>
+          </div>
+          <Walkthrough />
         </section>
 
         <section
@@ -759,6 +634,7 @@ export default function App() {
                   </p>
                 </div>
               )}
+              <a className="contact-secondary" href={`mailto:${profile.email}`}>Email me directly <Arrow /></a>
               {profile.githubUrl && (
                 <a
                   className="contact-secondary"

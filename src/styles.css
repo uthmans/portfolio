@@ -2839,6 +2839,36 @@ p {
   .transit-app-peek p { font-size: 21px; margin: 14px 0; }
   .transit-scene-footer { font-size: 6px; letter-spacing: .8px; }
 }
+.hero-layout > div > .hero-experience {
+  border-left: 2px solid #b8c79d;
+  padding-left: 16px;
+  font-size: var(--text-small);
+  line-height: 1.7;
+  margin-top: 24px;
+}
+.hero-experience a {
+  display: inline-block;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  color: var(--ink);
+  margin-top: 8px;
+}
+.project-meta { flex-wrap: wrap; gap: 12px; }
+.project-meta > span:first-child { letter-spacing: .6px; }
+.more-work { margin: 32px 0; }
+.more-work > h3 { font-size: 24px; font-weight: 500; margin-bottom: 20px; }
+.more-work-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.more-work-card { padding: 28px; border: 1px solid var(--line); border-radius: 5px; min-width: 0; }
+.more-work-card .project-meta { margin-bottom: 22px; }
+.more-work-card h3 { font-size: 24px; font-weight: 500; letter-spacing: -.6px; }
+.more-work-card p { font-size: var(--text-small); color: var(--muted); margin-top: 14px; }
+.more-work-actions { display: flex; flex-wrap: wrap; gap: 16px 24px; }
+.more-work-actions .text-button { gap: 16px; margin-top: 22px; }
+.work-section > .walkthrough { margin-top: 36px; }
+@media (max-width: 760px) {
+  .more-work-grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .more-work-card { padding: 24px; }
+}
 .business-feature {
   margin-top: 28px;
 }

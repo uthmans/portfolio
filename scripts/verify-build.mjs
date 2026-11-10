@@ -27,11 +27,11 @@ for (const route of [
     await access(`dist/${url.slice(base.length)}`);
   }
 }
-assert.equal(surveyProject.status, "Version 2");
+assert.equal(surveyProject.status, "Working demo");
 assert.equal(surveyProject.demoUrl, "survey/");
-assert.equal(businessProject.status, "Version 2");
+assert.equal(businessProject.status, "Working demo");
 assert.equal(businessProject.demoUrl, "business/");
-assert.equal(hubProject.status, "Version 2");
+assert.equal(hubProject.status, "Working demo");
 assert.equal(hubProject.demoUrl, "hub/");
 for (const file of [
   "portfolio-walkthrough.mp4",
