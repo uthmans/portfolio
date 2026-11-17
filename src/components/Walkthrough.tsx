@@ -15,7 +15,7 @@ export default function Walkthrough() {
           information into useful next steps.
         </p>
         <a className="text-button" href="#project-survey">
-          Try the demos below <span aria-hidden="true">↓</span>
+          Explore the featured demos <span aria-hidden="true">↗</span>
         </a>
         <a className="walkthrough-contact" href="#contact">
           Have a project in mind? Let’s talk.
@@ -45,7 +45,7 @@ export default function Walkthrough() {
         </video>
         <figcaption id="walkthrough-note">
           Independent demos with fictional examples. AI responses in this video
-          are illustrative; explore the live tools below.
+          are illustrative; explore the featured tools above.
         </figcaption>
       </figure>
       <details className="walkthrough-transcript">

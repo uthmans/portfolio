@@ -107,7 +107,7 @@ try {
         .locator(".walkthrough")
         .screenshot({ path: "test-results/portfolio-walkthrough-mobile.png" });
   }
-  await page.getByRole("link", { name: "Try the demos below" }).click();
+  await page.getByRole("link", { name: "Explore the featured demos" }).click();
   assert.equal(new URL(page.url()).hash, "#project-survey");
   assert.equal(
     await page.locator("#project-survey h3").innerText(),

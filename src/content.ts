@@ -2,9 +2,9 @@
 // Add only confirmed contact details. Empty fields never produce placeholder links.
 export const profile = {
   name: "Uthman Salama",
-  headline: ["Websites.", "Automations.", "Made useful."],
+  headline: ["Programmes.", "Systems.", "Made useful."],
   introduction:
-    "I build websites, data tools, and AI-assisted workflows that make everyday work easier. Explore working demos, see the decisions behind them, and imagine what we could build for your business.",
+    "I bring people, programmes and digital workflows together to help teams stay organised. Alongside my professional operations experience, I build independent websites and data tools with AI coding assistance.",
   availability: "Open to remote roles & freelance projects",
   email: "uthmansalama@gmail.com",
   linkedInUrl: "",
@@ -274,7 +274,9 @@ export const experienceTools = [
   "Fillout",
   "Zite",
   "Google Workspace",
-  "Spreadsheets",
+  "Excel",
   "Mailchimp",
   "WordPress / Elementor",
+  "Microsoft 365",
+  "Zoom",
 ];

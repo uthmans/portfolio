@@ -194,7 +194,7 @@ export default function App() {
       <a className="skip-link" href="#main">
         Skip to content
       </a>
-      <PortfolioBanner title="Websites & automations" home />
+      <PortfolioBanner title="Programme operations & digital systems" home />
       <header className="site-header">
         <a href="#" className="wordmark" aria-label="us. — Uthman Salama, home">
           us<span>.</span>
@@ -237,7 +237,7 @@ export default function App() {
       <main id="main">
         <section className="hero" aria-labelledby="hero-heading">
           <div className="hero-meta">
-            <span className="eyebrow">WEBSITES & WORKFLOW AUTOMATION</span>
+            <span className="eyebrow">PROGRAMME OPERATIONS & DIGITAL SYSTEMS</span>
             <span className="availability">
               <i />
               {profile.availability}
@@ -253,7 +253,7 @@ export default function App() {
                 <span>{profile.headline[2]}</span>
               </h1>
               <p>{profile.introduction}</p>
-              <p className="hero-experience">More than five years in programme operations and digital systems at Tech2Peace—coordinating programmes and building Airtable workflows with 10,000+ records. <a href="#about">More about my experience <Arrow /></a></p>
+              <p className="hero-experience">More than five years at Tech2Peace: programme delivery, community coordination and Airtable systems with 10,000+ records. <a href="#about">More about my experience <Arrow /></a></p>
               <a className="primary-link" href="#work">
                 Explore my work{" "}
                 <span className="arrow-down">
@@ -544,7 +544,7 @@ export default function App() {
             <span className="eyebrow">03 / A LITTLE ABOUT ME</span>
             <h2 id="about-heading">Hi, I’m Uthman.</h2>
             <p className="about-lead">
-              I’m drawn to the work between people and technology.
+              Programme coordination, practical systems and clear follow-through.
             </p>
             <p>
               From May 2021 to September 2026, I worked at Tech2Peace across
@@ -563,9 +563,20 @@ export default function App() {
               </p>
             </div>
             <p>
-              Now, I’m exploring how AI-assisted coding can help me turn that
-              practical experience into original digital tools. I’m learning by
-              building, asking questions, testing, and improving.
+              My work also covered technical courses, instructor coordination
+              and hackathons, programme budgets, grant applications and donor
+              reporting. I worked with the CEO on resource development,
+              contributing to more than EUR 60,000 in secured funding.
+            </p>
+            <p>
+              Today, I’m extending that experience through independent
+              AI-assisted web projects. These demonstrate my approach to useful
+              workflows and interface design; they are separate from my
+              professional work at Tech2Peace.
+            </p>
+            <p>
+              B.A. in Computer Science, minor in Media &amp; TV — Al-Quds Bard
+              College, 2014–2018.
             </p>
             <div
               className="tool-list"
