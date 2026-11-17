@@ -9,7 +9,7 @@ export const profile = {
   email: "uthmansalama@gmail.com",
   linkedInUrl: "",
   githubUrl: "https://github.com/uthmans",
-  cvUrl: "Uthman-Salama-CV-2026.pdf",
+  cvUrl: "Uthman_Salama_CV_Master_2026.pdf",
 };
 
 export type Project = {

@@ -253,7 +253,7 @@ export default function App() {
                 <span>{profile.headline[2]}</span>
               </h1>
               <p>{profile.introduction}</p>
-              <p className="hero-experience">Five years connecting people, operations and technology at Tech2Peace—building CRM and workflow systems with 10,000+ records. <a href="#about">More about my experience <Arrow /></a></p>
+              <p className="hero-experience">More than five years in programme operations and digital systems at Tech2Peace—coordinating programmes and building Airtable workflows with 10,000+ records. <a href="#about">More about my experience <Arrow /></a></p>
               <a className="primary-link" href="#work">
                 Explore my work{" "}
                 <span className="arrow-down">
@@ -548,18 +548,18 @@ export default function App() {
             </p>
             <p>
               From May 2021 to September 2026, I worked at Tech2Peace across
-              technology coordination, community and program operations,
-              databases and CRM, reporting, website management, and
-              administrative systems.
+              programme delivery, technical learning, community coordination,
+              digital systems, donor reporting and resource development.
             </p>
             <div className="experience-summary">
               <span className="eyebrow">TECH2PEACE / 2021–2026</span>
-              <h3>Operations, Systems &amp; Resource Development Lead</h3>
+              <h3>Tech &amp; Community Coordinator, Resource Development</h3>
               <p>
-                Built and administered Airtable-based CRM and operations systems
-                covering more than 10,000 records, and created tools for
-                recruitment, events, contracts, fundraising, and feedback
-                analysis.
+                Coordinated 20+ residential seminars and approximately 40 alumni
+                events annually. Independently consolidated scattered records
+                into a linked Airtable database with 10,000+ records and 700+
+                alumni, and connected application forms, interview scheduling
+                and recurring email workflows.
               </p>
             </div>
             <p>
@@ -575,7 +575,7 @@ export default function App() {
                 <span key={tool}>{tool}</span>
               ))}
             </div>
-            <p className="languages">English · Arabic · Spanish</p>
+            <p className="languages">Spanish — Native · English — C2 (EF SET 74/100) · Arabic — Intermediate spoken, basic written</p>
             <p className="about-note">
               All projects here are independent. Organizational systems, data,
               and materials remain private; this portfolio does not imply an
@@ -598,9 +598,9 @@ export default function App() {
                 with a <em>conversation.</em>
               </h2>
               <p>
-                I’m interested in remote opportunities and freelance projects
-                <br className="desktop-break" /> where I can build, organize,
-                and keep learning.
+                Based in Ramallah, Palestine, and available immediately for remote
+                opportunities and freelance projects. From February 2027, working
+                hours can be agreed around my master’s studies.
               </p>
             </div>
             <div className="contact-actions">
@@ -646,9 +646,14 @@ export default function App() {
                 </a>
               )}
               {profile.cvUrl && (
+                <>
+                <a className="contact-secondary" href={profile.cvUrl} target="_blank" rel="noreferrer">
+                  View my CV (PDF) <Arrow />
+                </a>
                 <a className="contact-secondary" href={profile.cvUrl} download>
                   Download my CV <Arrow />
                 </a>
+                </>
               )}
             </div>
           </div>
