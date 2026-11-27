@@ -14,6 +14,7 @@ export type Project = {
 };
 export type Workspace = { version: 1; projects: Project[] };
 export const storageKey = "uthman-freelancer-hub-v1";
+export const unreadableKey = `${storageKey}-unreadable`;
 export const money = (cents: number) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
     cents / 100,

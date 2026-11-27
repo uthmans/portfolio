@@ -5,16 +5,23 @@ export function analysisErrorMessage(code: unknown): string | undefined {
   if (typeof code !== "string") return undefined;
   const messages: Record<string, string> = {
     invalid_service_advice: "The AI returned an invalid service suggestion. Your description was kept and the calculator has not changed.",
-    workers_ai_format: "The AI service rejected the planner’s response-format settings. No project was added. Your brief was kept; this needs a service fix, not a rewritten brief.",
+    workers_ai_format: "The AI service rejected the response-format settings. Nothing was changed and your text was kept; this needs a service fix, not a rewrite.",
     invalid_plan: "The AI draft did not match the planner’s required format. No project was added, and your brief was kept. You do not need to rewrite the example brief; the service needs attention.",
     ai_binding_missing: "Cloudflare Workers AI is not connected to this deployment yet. The portfolio owner needs to check the AI binding.",
     workers_ai_limit: "Cloudflare’s free AI allowance or request limit has been reached. Please try again later; no paid fallback is used.",
     workers_ai_unavailable: "Cloudflare Workers AI could not complete this request. Please try again later. If it persists, the portfolio owner should check Workers AI activation and model availability.",
-    provider_timeout: "The AI request took too long. Your responses were kept. Please try again later.",
+    provider_timeout: "The AI request took too long. Nothing was changed and your text was kept. Please try again later.",
     invalid_analysis: "The AI returned an incomplete analysis or invalid source references. No new report was accepted. Your responses were kept.",
     quota_unavailable: "The service could not check its usage limits. No AI request was sent. Please try again later.",
   };
   return Object.hasOwn(messages, code) ? messages[code] : undefined;
+}
+/** Turns a failed AI request into visitor-friendly text instead of raw browser errors. */
+export function requestErrorMessage(e: unknown, fallback: string): string {
+  if ((e as { name?: unknown } | null)?.name === "TimeoutError") return analysisErrorMessage("provider_timeout")!;
+  // fetch rejects with TypeError when the network or service cannot be reached.
+  if (e instanceof TypeError) return "Couldn’t reach the AI service. Check your connection and try again. Nothing was changed.";
+  return e instanceof Error ? e.message : fallback;
 }
 export const feedbackSample: Feedback[] = [
   { id: "F01", feedback: "The facilitator explained the automation examples clearly. I wanted more time to practise." },

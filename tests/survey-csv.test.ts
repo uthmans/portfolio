@@ -138,3 +138,9 @@ test("generator is reproducible, diverse, valid, and round-trippable", () => {
   assert.throws(() => generateResponses(10.5, 42));
   assert.throws(() => generateResponses(10, -1));
 });
+
+test("exported CSV cells cannot run as spreadsheet formulas", () => {
+  const rows = [{ id: "R1", track: "Websites", format: "Online", satisfaction: 4, confidence: 3, feedback: '=HYPERLINK("http://x")' }];
+  const line = toCsv(rows as never).split("\r\n")[1];
+  assert.ok(line.endsWith(`,"'=HYPERLINK(""http://x"")"`), line);
+});

@@ -163,7 +163,8 @@ export function toCsv(rows: ResponseRow[]) {
           ...(hasFeedback ? [row.feedback ?? ""] : []),
         ]
           .map((value) => {
-            const cell = String(value);
+            // Stop spreadsheets running imported text such as "=HYPERLINK(...)" as a formula.
+            const cell = String(value).replace(/^[=+\-@\t\r]/, "'$&");
             return /[",\r\n]/.test(cell)
               ? `"${cell.replaceAll('"', '""')}"`
               : cell;

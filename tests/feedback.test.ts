@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { analysisErrorMessage, validateFeedback, validateAnalysis, exampleAnalysis, feedbackSample, analysisReport } from '../src/survey/feedback.ts';
+import { analysisErrorMessage, requestErrorMessage, validateFeedback, validateAnalysis, exampleAnalysis, feedbackSample, analysisReport } from '../src/survey/feedback.ts';
 
 test('only known diagnostic codes become user-facing error messages', () => {
   assert.match(analysisErrorMessage('workers_ai_limit')!, /free AI allowance/);
@@ -20,4 +20,11 @@ test('analysis rejects invented or repeated evidence and malformed findings', ()
   const report = analysisReport(exampleAnalysis, feedbackSample, 'Hand-written example');
   assert.match(report, /Hand-written example/);
   assert.ok(report.includes(feedbackSample[0].feedback));
+});
+
+test('timeouts and network failures never show raw browser error text', () => {
+  assert.match(requestErrorMessage(new DOMException('signal timed out', 'TimeoutError'), 'x'), /took too long/);
+  assert.match(requestErrorMessage(new TypeError('Failed to fetch'), 'x'), /Couldn’t reach the AI service/);
+  assert.equal(requestErrorMessage(new Error('Known message'), 'x'), 'Known message');
+  assert.equal(requestErrorMessage('odd', 'Fallback'), 'Fallback');
 });

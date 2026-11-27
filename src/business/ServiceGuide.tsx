@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { analysisErrorMessage } from "../survey/feedback";
+import { analysisErrorMessage, requestErrorMessage } from "../survey/feedback";
 import { exampleSpace, validateAdvice, validateSpace, type ServiceAdvice } from "./guide";
 import { services, money, type ServiceId } from "./model";
 import "./guide.css";
@@ -31,7 +31,7 @@ export default function ServiceGuide({ onChoose }: { onChoose: (id: ServiceId) =
       setAdvice(validateAdvice(await response.json()));
       setMessage("Suggestion ready. Review it below; your estimate has not changed.");
       requestAnimationFrame(() => { result.current?.focus({ preventScroll: true }); result.current?.scrollIntoView({ block: "start", behavior: "instant" }); });
-    } catch (e) { if (!controller.current?.signal.aborted) setError(e instanceof Error ? e.message : "Could not complete the suggestion."); }
+    } catch (e) { if (!controller.current?.signal.aborted) setError(requestErrorMessage(e, "Could not complete the suggestion.")); }
     finally { setBusy(false); }
   }
   return <section className="ff-section ff-guide" id="service-guide" aria-labelledby="guide-title">

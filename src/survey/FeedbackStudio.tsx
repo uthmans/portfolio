@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { analysisErrorMessage, analysisReport, exampleAnalysis, validateAnalysis, type Analysis, type Feedback } from "./feedback";
+import { analysisErrorMessage, analysisReport, requestErrorMessage, exampleAnalysis, validateAnalysis, type Analysis, type Feedback } from "./feedback";
 import type { ResponseRow } from "./data";
 import "./feedback.css";
 
@@ -40,7 +40,7 @@ export default function FeedbackStudio({ responses, isSample }: { responses: Res
         resultHeading.current?.focus({ preventScroll: true });
         resultHeading.current?.scrollIntoView({ block: "start", behavior: "instant" });
       });
-    } catch (e) { setMessage(e instanceof Error ? e.message : "Analysis failed. Your responses were kept."); }
+    } catch (e) { setMessage(requestErrorMessage(e, "Analysis failed. Your responses were kept.")); }
     finally { setBusy(false); }
   }
   function download() {

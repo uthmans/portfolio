@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { analysisErrorMessage } from "../survey/feedback";
+import { analysisErrorMessage, requestErrorMessage } from "../survey/feedback";
 import { fictionalBrief, planIssues, planIssueMessage, projectFromPlan, validateBrief, validateDraft, type ProjectPlan } from "./planning";
 import type { Project } from "./model";
 import "./planner.css";
@@ -36,7 +36,7 @@ export default function Planner({ onAdd, full }: { onAdd: (project: Project) => 
       setPlan(validateDraft(await response.json())); setReviewed(false);
       setMessage("Draft ready. Review and edit it before adding a project. Nothing has been saved yet.");
       requestAnimationFrame(() => { heading.current?.focus({ preventScroll: true }); heading.current?.scrollIntoView({ block: "start", behavior: "instant" }); });
-    } catch (e) { if (!controller.current?.signal.aborted) setError(e instanceof Error ? e.message : "Planning failed. Your workspace has not changed."); }
+    } catch (e) { if (!controller.current?.signal.aborted) setError(requestErrorMessage(e, "Planning failed. Your workspace has not changed.")); }
     finally { setBusy(false); }
   }
   function add(event: FormEvent) {
