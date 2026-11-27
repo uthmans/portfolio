@@ -17,13 +17,9 @@ await page.route("https://formspree.io/f/**", async (route) => {
     body: JSON.stringify(failure ? { error: "unavailable" } : { ok: true }),
   });
 });
-await page.goto(base);
-await page
-  .getByRole("link", { name: "Discuss your website", exact: true })
-  .click();
+await page.goto(`${base}#contact`);
 const form = page.locator(".enquiry-form");
-assert.equal(new URL(page.url()).hash, "#contact");
-assert.equal(await form.locator("select").inputValue(), "websites");
+await form.locator("select").selectOption("websites");
 await form.getByRole("button", { name: "Send enquiry" }).click();
 assert.equal(requests.length, 0, "Empty form must not send");
 await form.getByLabel("Your name", { exact: false }).fill("Demo Visitor");
@@ -33,10 +29,7 @@ await form
 await form
   .locator("textarea")
   .fill("I need a clear website for a fictional bakery.");
-await page
-  .getByRole("link", { name: "Discuss your data tool", exact: true })
-  .click();
-assert.equal(await form.locator("select").inputValue(), "data-tools");
+await form.locator("select").selectOption("data-tools");
 assert.equal(
   await form.locator("textarea").inputValue(),
   "I need a clear website for a fictional bakery.",

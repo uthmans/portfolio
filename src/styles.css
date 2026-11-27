@@ -2942,3 +2942,11 @@ p {
     display: block;
   }
 }
+/* Decorative art and filler add ~600px of scrolling on phones; desktop keeps them. */
+@media (max-width: 760px) {
+  .hero-art,
+  .hero-footer,
+  .about-art {
+    display: none;
+  }
+}

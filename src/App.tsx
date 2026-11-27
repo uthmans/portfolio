@@ -7,7 +7,6 @@ import RoomScene from "./business/RoomScene";
 import { sample, summarize } from "./survey/data";
 import {
   experienceTools,
-  services,
   portfolioProject,
   surveyProject,
   businessProject,
@@ -220,7 +219,6 @@ export default function App() {
         >
           {[
             ["Work", "#work"],
-            ["Services", "#services"],
             ["About", "#about"],
             ["Contact", "#contact"],
           ].map(([label, link]) => (
@@ -452,76 +450,6 @@ export default function App() {
         </section>
 
         <section
-          id="services"
-          className="section services-section"
-          aria-labelledby="services-heading"
-        >
-          <div className="section-heading">
-            <div>
-              <span className="eyebrow">02 / HOW I CAN HELP</span>
-              <h2 id="services-heading">
-                Useful tools.
-                <br />
-                <em>Built around your work.</em>
-              </h2>
-            </div>
-            <p>
-              Start with a website, a data problem, or a workflow that takes too
-              much time. We can discuss a practical scope together.
-            </p>
-          </div>
-          <div className="service-offers">
-            {services.map((service, index) => (
-              <article
-                className="service-offer"
-                key={service.id}
-                aria-labelledby={`service-${service.id}`}
-              >
-                <span className="eyebrow">0{index + 1}</span>
-                <h3 id={`service-${service.id}`}>{service.title}</h3>
-                <p>{service.description}</p>
-                <ul>
-                  {service.deliverables.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-                <div className="service-offer-actions">
-                  <span className="service-example-label">
-                    See an independent demo
-                  </span>
-                  <a className="text-button" href={service.demoUrl}>
-                    {service.example}
-                    <Arrow />
-                  </a>
-                  {profile.email && (
-                    <a
-                      className="text-button service-enquiry"
-                      href="#contact"
-                      onClick={() => {
-                        setEnquiryService(service.id);
-                        requestAnimationFrame(() =>
-                          document
-                            .getElementById("enquiry-heading")
-                            ?.focus({ preventScroll: true }),
-                        );
-                      }}
-                    >
-                      {service.contactLabel}
-                      <Arrow />
-                    </a>
-                  )}
-                </div>
-              </article>
-            ))}
-          </div>
-          <p className="services-next-step">
-            Have something in mind? Tell me your goal, the tools you use, and
-            your preferred timeline. We’ll discuss scope and costs before
-            starting.
-          </p>
-        </section>
-
-        <section
           id="about"
           className="section about-section"
           aria-labelledby="about-heading"
@@ -541,7 +469,7 @@ export default function App() {
             </span>
           </div>
           <div className="about-copy">
-            <span className="eyebrow">03 / A LITTLE ABOUT ME</span>
+            <span className="eyebrow">02 / A LITTLE ABOUT ME</span>
             <h2 id="about-heading">Hi, I’m Uthman.</h2>
             <p className="about-lead">
               Programme coordination, practical systems and clear follow-through.
@@ -602,7 +530,7 @@ export default function App() {
         >
           <div className="contact-overview">
             <div>
-              <span className="eyebrow">04 / LET’S CONNECT</span>
+              <span className="eyebrow">03 / LET’S CONNECT</span>
               <h2 id="contact-heading">
                 Good work starts
                 <br />
@@ -610,8 +538,8 @@ export default function App() {
               </h2>
               <p>
                 Based in Ramallah, Palestine, and available immediately for remote
-                opportunities and freelance projects. From February 2027, working
-                hours can be agreed around my master’s studies.
+                roles in programme operations and digital systems. From February
+                2027, working hours can be agreed around my master’s studies.
               </p>
             </div>
             <div className="contact-actions">

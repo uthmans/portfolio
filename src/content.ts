@@ -5,7 +5,7 @@ export const profile = {
   headline: ["Programmes.", "Systems.", "Made useful."],
   introduction:
     "I bring people, programmes and digital workflows together to help teams stay organised. Alongside my professional operations experience, I build independent websites and data tools with AI coding assistance.",
-  availability: "Open to remote roles & freelance projects",
+  availability: "Open to remote roles",
   email: "uthmansalama@gmail.com",
   linkedInUrl: "https://www.linkedin.com/in/uthman-s-7aa804304/",
   githubUrl: "https://github.com/uthmans",
