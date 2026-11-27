@@ -7,7 +7,7 @@ export const profile = {
     "I bring people, programmes and digital workflows together to help teams stay organised. Alongside my professional operations experience, I build independent websites and data tools with AI coding assistance.",
   availability: "Open to remote roles & freelance projects",
   email: "uthmansalama@gmail.com",
-  linkedInUrl: "",
+  linkedInUrl: "https://www.linkedin.com/in/uthman-s-7aa804304/",
   githubUrl: "https://github.com/uthmans",
   cvUrl: "Uthman_Salama_CV_Master_2026.pdf",
 };
