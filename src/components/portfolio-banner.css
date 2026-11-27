@@ -78,4 +78,8 @@
     padding: 5px 0;
     gap: 2px 12px;
   }
+  /* On the home page the title repeats the header below it. */
+  .portfolio-banner-home + .portfolio-banner-page {
+    display: none;
+  }
 }

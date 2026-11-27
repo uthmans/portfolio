@@ -18,7 +18,7 @@ export default function Walkthrough() {
           Explore the featured demos <span aria-hidden="true">↗</span>
         </a>
         <a className="walkthrough-contact" href="#contact">
-          Have a project in mind? Let’s talk.
+          Hiring? Let’s talk.
         </a>
       </div>
       <figure>

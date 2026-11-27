@@ -76,7 +76,7 @@ export default function ContactForm({
       }}
     >
       <h3 id="enquiry-heading" tabIndex={-1}>
-        Tell me about your project.
+        Send me a message.
       </h3>
       <p className="enquiry-intro">
         A few details are enough to start. Required fields are marked *.
@@ -130,7 +130,7 @@ export default function ContactForm({
           </label>
         </div>
         <label>
-          What would you like to build? *
+          Your message *
           <textarea
             name="message"
             required
@@ -139,7 +139,7 @@ export default function ContactForm({
             rows={5}
             placeholder={
               services.find((item) => item.id === service)?.prompt ||
-              "What’s your goal, and what would you like help with?"
+              "Tell me about the role, team or project you have in mind."
             }
           />
         </label>
@@ -148,8 +148,8 @@ export default function ContactForm({
           <input name="website" tabIndex={-1} autoComplete="off" />
         </label>
         <p className="enquiry-privacy">
-          Your details go through Formspree to Uthman so he can reply about your
-          project. Your unsent draft resets if you reload or close this page.
+          Your details go through Formspree to Uthman so he can reply to your
+          message. Your unsent draft resets if you reload or close this page.
           Please leave out passwords and private client data.
         </p>
         <button className="enquiry-submit" type="submit">
