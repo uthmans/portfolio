@@ -614,3 +614,7 @@ progress {
 .hub-summary dd.hub-summary-note {
   font-size: 14px;
 }
+/* Focus lands on the main region after a dialog's opener disappears; no outline on a whole-page box. */
+.hub-main:focus {
+  outline: none;
+}

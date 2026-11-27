@@ -311,11 +311,16 @@ try {
   assert.equal(await cp.locator(".hub-project").count(), 3);
   assert.match(
     await cp.locator(".hub-notice").innerText(),
-    /could not be loaded/,
+    /could not be read/,
   );
   assert.equal(
     await cp.evaluate((k) => localStorage.getItem(k), key),
     "broken-json",
+  );
+  assert.equal(
+    await cp.evaluate((k) => localStorage.getItem(`${k}-unreadable`), key),
+    "broken-json",
+    "Unreadable data is kept aside before the next save overwrites it",
   );
   await corrupt.close();
   console.log(

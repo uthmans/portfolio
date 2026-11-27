@@ -12,6 +12,7 @@ import {
   stages,
   storageKey,
   summary,
+  unreadableKey,
   validDate,
   type Project,
   type Stage,
@@ -19,8 +20,9 @@ import {
 } from "./model";
 
 function load() {
+  let saved: string | null = null;
   try {
-    const saved = localStorage.getItem(storageKey);
+    saved = localStorage.getItem(storageKey);
     return {
       workspace: saved ? parseWorkspace(saved) : sampleWorkspace(),
       message: saved
@@ -28,10 +30,21 @@ function load() {
         : "Fictional sample loaded. Make a change to save it in this browser.",
     };
   } catch {
+    // The next save overwrites storageKey, so keep the unreadable original aside first.
+    let kept = false;
+    try {
+      if (saved) {
+        localStorage.setItem(unreadableKey, saved);
+        kept = true;
+      }
+    } catch {
+      // Storage unavailable: nothing more we can preserve.
+    }
     return {
       workspace: sampleWorkspace(),
-      message:
-        "Saved data could not be loaded. Showing the fictional sample; existing storage has not been replaced. Export a backup of your current work before continuing.",
+      message: kept
+        ? `Saved data could not be read, so the fictional sample is shown. A copy of the unreadable data was kept in this browser under “${unreadableKey}”.`
+        : "Saved data could not be loaded. Showing the fictional sample.",
     };
   }
 }
@@ -53,7 +66,9 @@ function Modal({
     element.querySelector<HTMLInputElement>("input")?.focus();
     return () => {
       element.close();
+      // A deleted project's button is gone, so fall back to the main region.
       if (opener?.isConnected) opener.focus();
+      else document.getElementById("hub-main")?.focus();
     };
   }, []);
   return (
@@ -496,7 +511,7 @@ export default function HubApp() {
         title="Freelancer Project Hub"
         context="Independent demo"
       />
-      <main id="hub-main" className="hub-main">
+      <main id="hub-main" className="hub-main" tabIndex={-1}>
         <header className="hub-intro">
           <div>
             <span className="hub-eyebrow">A LITTLE MORE ORGANIZED</span>

@@ -132,9 +132,10 @@ export default function BusinessApp() {
     const next = validateEnquiry(form);
     setErrors(next);
     setPreview(null);
+    setDownloadNotice("");
     const first = Object.keys(next)[0];
     if (first) document.getElementById(`enquiry-${first}`)?.focus();
-    else
+    else {
       setPreview({
         form: {
           ...form,
@@ -144,6 +145,11 @@ export default function BusinessApp() {
         },
         quote,
       });
+      // Move focus to the new preview so screen-reader users hear it appear.
+      requestAnimationFrame(() =>
+        document.getElementById("preview-title")?.focus(),
+      );
+    }
   }
   function downloadPreview() {
     if (!preview) return;
@@ -668,7 +674,7 @@ export default function BusinessApp() {
                     className="ff-enquiry-preview"
                     aria-labelledby="preview-title"
                   >
-                    <h3 id="preview-title" aria-live="polite">
+                    <h3 id="preview-title" tabIndex={-1}>
                       Local enquiry preview — not sent
                     </h3>
                     <p>
