@@ -19,23 +19,19 @@ await page.route("https://formspree.io/f/**", async (route) => {
 });
 await page.goto(`${base}#contact`);
 const form = page.locator(".enquiry-form");
-await form.locator("select").selectOption("websites");
-await form.getByRole("button", { name: "Send enquiry" }).click();
+await form.getByRole("button", { name: "Send message" }).click();
 assert.equal(requests.length, 0, "Empty form must not send");
 await form.getByLabel("Your name", { exact: false }).fill("Demo Visitor");
 await form
   .getByLabel("Email address", { exact: false })
   .fill("visitor@example.com");
+await form.getByLabel("Organisation", { exact: false }).fill("Example Org");
+await form.getByLabel("Role", { exact: false }).fill("Programme Coordinator");
 await form
   .locator("textarea")
-  .fill("I need a clear website for a fictional bakery.");
-await form.locator("select").selectOption("data-tools");
-assert.equal(
-  await form.locator("textarea").inputValue(),
-  "I need a clear website for a fictional bakery.",
-  "Changing service preserves the draft",
-);
-await form.getByRole("button", { name: "Send enquiry" }).click();
+  .fill("We are hiring a remote programme coordinator.");
+assert.equal(await form.locator("select").count(), 0, "No freelance topic menu");
+await form.getByRole("button", { name: "Send message" }).click();
 await page.getByRole("alert").waitFor();
 assert.match(await page.getByRole("alert").innerText(), /couldn’t confirm/);
 assert.equal(
@@ -44,10 +40,12 @@ assert.equal(
 );
 assert.equal(await form.locator(".enquiry-success").count(), 0);
 failure = false;
-await form.getByRole("button", { name: "Send enquiry" }).click();
+await form.getByRole("button", { name: "Send message" }).click();
 await form.locator(".enquiry-success").waitFor();
 assert.equal(requests.length, 2);
-assert.equal(requests[1].service, "Dashboards & data tools");
+assert.equal(requests[1].organisation, "Example Org");
+assert.equal(requests[1].role, "Programme Coordinator");
+assert.equal(requests[1].budget, undefined, "No freelance fields sent");
 assert.equal(requests[1].email, "visitor@example.com");
 assert.equal(await page.getByRole("alert").count(), 0);
 assert.equal(
@@ -65,5 +63,5 @@ await page.screenshot({
 });
 await browser.close();
 console.log(
-  "PASS: service prefill, draft preservation, required fields, failed delivery, confirmed submission and no navigation. Delivery responses mocked; no email sent.",
+  "PASS: recruiter fields, required fields, failed delivery, confirmed submission and no navigation. Delivery responses mocked; no email sent.",
 );

@@ -162,7 +162,7 @@ for (const [title, route] of [
 assert.equal(await page.locator('a[href=""], a[href="mailto:"]').count(), 0);
 assert.equal(
   await page
-    .getByRole("link", { name: "Start an enquiry" })
+    .getByRole("link", { name: "Send a message" })
     .getAttribute("href"),
   "#enquiry-heading",
 );
