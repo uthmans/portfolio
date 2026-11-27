@@ -31,7 +31,7 @@ Keep `deploy-pages.yml` as the sole Pages deployment workflow, so every deployme
 
 Each build verifies all seven HTML pages and their asset files, then writes `dist/deployment.json` with its Git commit and build timestamp. The published `/portfolio/deployment.json` can be compared with the successful workflow’s commit when diagnosing an outdated deployment.
 
-The website address is https://uthmans.github.io/portfolio/. Changing hosting or the repository name requires updating `base` in `vite.config.ts`.
+The website address is https://uthmans.github.io/portfolio/. Changing hosting or the repository name requires updating `base` in `vite.config.ts` and the absolute link-preview (`og:`) URLs in `index.html`.
 
 Fonts are bundled locally, and the site does not require API credentials or external services.
 
@@ -66,7 +66,7 @@ The Rollup override pins its official npm tarball because the registry’s full 
 - `src/components/PortfolioBanner.tsx` and `portfolio-banner.css`: the shared thin green banner used on the portfolio, demos, and service pages. New project pages should reuse it, with a back-to-portfolio link on the left and the page title/context on the right.
 - `index.html`: page title, description, and document language.
 
-The confirmed public email is `uthmansalama@gmail.com`; other contact fields remain empty. Set `profile.email`, `linkedInUrl`, `githubUrl`, or `cvUrl` only to confirmed public details. Empty fields never become fake links. For a CV, place a public PDF in `public/` and set `cvUrl` to a relative path such as `uthman-salama-cv.pdf`, so the link works below `/portfolio/`. Portfolio enquiries use the on-page contact form; connect its Formspree endpoint as described below before publishing.
+The confirmed public email is `uthmansalama@gmail.com`, and LinkedIn and GitHub are set. Set `profile.email`, `linkedInUrl`, `githubUrl`, or `cvUrl` only to confirmed public details. Empty fields never become fake links. For a CV, place a public PDF in `public/` and set `cvUrl` to a relative path such as `uthman-salama-cv.pdf`, so the link works below `/portfolio/`. Portfolio enquiries use the on-page contact form; connect its Formspree endpoint as described below before publishing.
 
 ## Add projects
 
