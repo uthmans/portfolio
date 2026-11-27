@@ -1,13 +1,6 @@
 import { useState } from "react";
-import { services } from "../content";
 
-export default function ContactForm({
-  service,
-  onServiceChange,
-}: {
-  service: string;
-  onServiceChange: (value: string) => void;
-}) {
+export default function ContactForm() {
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
@@ -52,13 +45,10 @@ export default function ContactForm({
             body: JSON.stringify({
               name: String(data.get("name") || "").trim(),
               email: String(data.get("email") || "").trim(),
-              service:
-                services.find((item) => item.id === service)?.title ||
-                "Something else / not sure yet",
-              budget: data.get("budget"),
-              timeline: data.get("timeline"),
+              organisation: String(data.get("organisation") || "").trim(),
+              role: String(data.get("role") || "").trim(),
               message: String(data.get("message") || "").trim(),
-              _subject: "New portfolio enquiry",
+              _subject: "New portfolio message",
               _gotcha: data.get("website"),
             }),
             signal: AbortSignal.timeout(20000),
@@ -79,7 +69,8 @@ export default function ContactForm({
         Send me a message.
       </h3>
       <p className="enquiry-intro">
-        A few details are enough to start. Required fields are marked *.
+        Recruiting for a role, or want to talk about my experience? Required
+        fields are marked *.
       </p>
       <fieldset disabled={busy || sent}>
         <label>
@@ -96,37 +87,14 @@ export default function ContactForm({
             maxLength={254}
           />
         </label>
-        <label>
-          What can I help with?
-          <select
-            name="service"
-            value={service}
-            onChange={(event) => onServiceChange(event.target.value)}
-          >
-            <option value="">Something else / not sure yet</option>
-            {services.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.title}
-              </option>
-            ))}
-          </select>
-        </label>
         <div className="enquiry-options">
           <label>
-            Budget (optional)
-            <input
-              name="budget"
-              maxLength={100}
-              placeholder="Not sure yet is fine"
-            />
+            Organisation (optional)
+            <input name="organisation" autoComplete="organization" maxLength={150} />
           </label>
           <label>
-            Timeline (optional)
-            <input
-              name="timeline"
-              maxLength={100}
-              placeholder="Exploring options"
-            />
+            Role (optional)
+            <input name="role" maxLength={150} />
           </label>
         </div>
         <label>
@@ -137,10 +105,7 @@ export default function ContactForm({
             minLength={10}
             maxLength={4000}
             rows={5}
-            placeholder={
-              services.find((item) => item.id === service)?.prompt ||
-              "Tell me about the role, team or project you have in mind."
-            }
+            placeholder="Tell me about the role, the team, and how to reach you."
           />
         </label>
         <label className="enquiry-honeypot" aria-hidden="true">
@@ -150,17 +115,17 @@ export default function ContactForm({
         <p className="enquiry-privacy">
           Your details go through Formspree to Uthman so he can reply to your
           message. Your unsent draft resets if you reload or close this page.
-          Please leave out passwords and private client data.
+          Please leave out passwords and other private data.
         </p>
         <button className="enquiry-submit" type="submit">
-          {busy ? "Sending…" : sent ? "Message sent" : "Send enquiry"}
+          {busy ? "Sending…" : sent ? "Message sent" : "Send message"}
         </button>
       </fieldset>
       <div role="status" aria-live="polite">
         {sent && (
           <p className="enquiry-success">
-            Thank you! Your enquiry was submitted successfully. I’ll reply to
-            the email address you provided.
+            Thank you! Your message was sent. I’ll reply to the email address
+            you provided.
           </p>
         )}
       </div>

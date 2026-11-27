@@ -175,7 +175,6 @@ function ProjectDetails({
 export default function App() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [enquiryService, setEnquiryService] = useState("");
   const hasContact = Boolean(profile.email || profile.linkedInUrl);
   const surveySummary = summarize(sample, "satisfaction");
 
@@ -547,7 +546,7 @@ export default function App() {
                 <>
                   {profile.email && (
                     <a className="contact-link" href="#enquiry-heading">
-                      Start an enquiry <Arrow />
+                      Send a message <Arrow />
                     </a>
                   )}
                   {profile.linkedInUrl && (
@@ -596,10 +595,7 @@ export default function App() {
               )}
             </div>
           </div>
-          <ContactForm
-            service={enquiryService}
-            onServiceChange={setEnquiryService}
-          />
+          <ContactForm />
         </section>
       </main>
       <footer className="site-footer">

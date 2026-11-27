@@ -86,7 +86,7 @@ Configure the non-secret frontend variable `VITE_HUB_PLAN_API_URL` to the Worker
 
 The homepage walkthrough above the project cards uses the latest approved cleaned voice recording and a portfolio-specific “Try the demos” ending. Its self-hosted MP4, optimised poster, and English WebVTT captions live in `public/media/`; the component and text transcript are in `src/components/Walkthrough.tsx`. Native controls, `playsInline`, and `preload="none"` keep playback optional without autoplay or an initial video download. The clip retains clearly labelled illustrative AI responses. Run `npm run test:walkthrough` against the production preview to verify real playback, captions, seeking, transcript, layout, and demo links.
 
-The homepage currently targets employment, so the freelance Services section is not rendered. Its offer text and message prompts remain in `services` in `src/content.ts`, which still feeds the contact form's topic menu; restore the section from Git history when freelance work becomes the focus. The browser can autofill the visitor’s name and email; budget and timeline remain optional.
+The homepage currently targets employment: the freelance Services section and its `services` data were removed, and the contact form asks recruiters for an optional organisation and role. Restore the section from Git history (before the recruiter contact-form change) when freelance work becomes the focus. The browser can autofill name, email and organisation.
 
 ### Contact form delivery
 
