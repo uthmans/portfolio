@@ -31,7 +31,7 @@ Keep `deploy-pages.yml` as the sole Pages deployment workflow, so every deployme
 
 Each build verifies all seven HTML pages and their asset files, then writes `dist/deployment.json` with its Git commit and build timestamp. The published `/portfolio/deployment.json` can be compared with the successful workflow’s commit when diagnosing an outdated deployment.
 
-The website address is https://uthmans.github.io/portfolio/. Changing hosting or the repository name requires updating `base` in `vite.config.ts`.
+The website address is https://uthmans.github.io/portfolio/. Changing hosting or the repository name requires updating `base` in `vite.config.ts` and the absolute link-preview (`og:`) URLs in `index.html`.
 
 Fonts are bundled locally, and the site does not require API credentials or external services.
 
