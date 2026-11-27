@@ -39,8 +39,8 @@ export const portfolioProject: Project = {
   description:
     "A responsive home for working demos, project case studies, my experience, and a downloadable CV.",
   problem:
-    "Make it easy for hiring managers and potential clients to understand my background and explore honest evidence of my work.",
-  audience: "Hiring managers, collaborators, and potential freelance clients.",
+    "Make it easy for hiring managers to understand my background and explore honest evidence of my work.",
+  audience: "Hiring managers, recruiters, and collaborators.",
   features: [
     "Responsive gallery of working demos and an ongoing application",
     "Keyboard-accessible project details",
@@ -174,14 +174,14 @@ export const businessProject: Project = {
 
 export const hubProject: Project = {
   id: "hub",
-  title: "Freelancer Project Hub",
+  title: "Project Hub",
   category: "Project management tool",
   status: "Working demo",
   description:
     "Turn a client brief into an editable AI project plan, then track projects, tasks and budgets in a browser-local workspace with downloadable backups.",
   problem:
     "Bring scattered project details and next steps into one view, while keeping budget and task calculations clear.",
-  audience: "Independent freelancers organising a small set of projects.",
+  audience: "Anyone organising a small set of projects, budgets and next steps.",
   features: [
     "Three original fictional projects to explore",
     "Create, edit and delete projects with validated USD amounts",
@@ -193,7 +193,7 @@ export const hubProject: Project = {
     "Explicit review before adding a draft; budgets and deadlines are set manually",
   ],
   contribution:
-    "I set the goals and chose a freelancer workspace to demonstrate useful application workflows. The implementation and AI planning integration were built with AI coding assistance, including calculation, persistence, validation, and browser checks. I chose an editable review step before adding suggestions, with budgets and dates kept under the visitor’s control. I’m learning to explain and maintain the work.",
+    "I set the goals and chose a project workspace to demonstrate useful application workflows. The implementation and AI planning integration were built with AI coding assistance, including calculation, persistence, validation, and browser checks. I chose an editable review step before adding suggestions, with budgets and dates kept under the visitor’s control. I’m learning to explain and maintain the work.",
   technology: [
     "React",
     "TypeScript",

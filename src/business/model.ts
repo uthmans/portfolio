@@ -116,7 +116,6 @@ export type Enquiry = {
   name: string;
   email: string;
   brief: string;
-  consent: boolean;
 };
 export type EnquiryErrors = Partial<Record<keyof Enquiry, string>>;
 export function validateEnquiry(form: Enquiry): EnquiryErrors {
@@ -131,8 +130,6 @@ export function validateEnquiry(form: Enquiry): EnquiryErrors {
     errors.email = "Enter an email in the format name@example.com.";
   if (form.brief.trim().length < 20 || form.brief.trim().length > 1200)
     errors.brief = "Describe the space in 20–1,200 characters.";
-  if (!form.consent)
-    errors.consent = "Confirm that this is a demo and nothing will be sent.";
   return errors;
 }
 export function enquiryText(enquiry: Enquiry, quote: Quote) {

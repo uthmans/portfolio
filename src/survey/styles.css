@@ -37,22 +37,6 @@
   font-size: 13px;
   white-space: nowrap;
 }
-.dataset-note {
-  border-left: 3px solid #7b9357;
-  padding: 16px 22px;
-  background: #e9eddf;
-  border-radius: 0 5px 5px 0;
-  margin-bottom: 32px;
-}
-.dataset-note strong {
-  font-size: 14px;
-}
-.dataset-note p {
-  font-size: 14px;
-  margin-top: 6px;
-  max-width: 90ch;
-  color: #46563d;
-}
 .studio-controls {
   padding: 26px;
   border: 1px solid var(--line);
@@ -507,13 +491,15 @@
   margin-top: 26px;
   padding-top: 10px;
 }
-.csv-guide summary {
+.csv-guide summary,
+.dataset-panel > summary {
   font-size: 15px;
   padding: 12px 0;
   line-height: 1.5;
   cursor: pointer;
 }
-.csv-guide summary:focus-visible {
+.csv-guide summary:focus-visible,
+.dataset-panel > summary:focus-visible {
   outline: 3px solid #6a8029;
   outline-offset: 4px;
 }
@@ -585,9 +571,6 @@
 .dataset-errors ul {
   padding-left: 21px;
   margin-bottom: 0;
-}
-.dataset-note strong {
-  overflow-wrap: anywhere;
 }
 .sample-badge {
   white-space: normal;

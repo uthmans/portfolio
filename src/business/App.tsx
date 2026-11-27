@@ -109,7 +109,6 @@ export default function BusinessApp() {
     name: "",
     email: "",
     brief: "",
-    consent: false,
   });
   const [errors, setErrors] = useState<EnquiryErrors>({});
   const [preview, setPreview] = useState<{
@@ -199,7 +198,6 @@ export default function BusinessApp() {
         >
           {[
             ["Services", "services"],
-            ["Concept spaces", "spaces"],
             ["Our approach", "approach"],
           ].map(([label, anchor]) => (
             <a
@@ -304,15 +302,14 @@ export default function BusinessApp() {
                 </p>
                 <div className="ff-hero-actions">
                   <a className="ff-button" href="#services">
-                    Find your starting point <Arrow />
+                    Browse the services <Arrow />
                   </a>
                   <a className="ff-text-link" href="#estimate">
                     Build an estimate <Arrow direction="down" />
                   </a>
                 </div>
                 <span className="ff-hero-note">
-                  An original fictional studio, built as an interactive website
-                  demo.
+                  A fictional business. No bookings or payments are made.
                 </span>
               </div>
               <div className="ff-hero-art">
@@ -326,7 +323,7 @@ export default function BusinessApp() {
               <div className="ff-section-heading">
                 <div>
                   <span className="ff-eyebrow">
-                    01 / FIND YOUR STARTING POINT
+                    01 / SERVICES
                   </span>
                   <h2>
                     A little help,
@@ -364,41 +361,6 @@ export default function BusinessApp() {
                 document.getElementById("quote-service")?.focus({ preventScroll: true });
               });
             }} />
-            <section id="spaces" className="ff-section ff-spaces">
-              <div className="ff-section-heading">
-                <div>
-                  <span className="ff-eyebrow">
-                    02 / A SENSE OF POSSIBILITY
-                  </span>
-                  <h2>
-                    Same space.
-                    <br />
-                    <em>A different feeling.</em>
-                  </h2>
-                </div>
-                <p>
-                  Original illustrated concept studies. These are fictional
-                  design directions, not photographs of completed client work.
-                </p>
-              </div>
-              <div className="ff-spaces-grid">
-                {[
-                  ["living", "Room to gather", "A warmer living room"],
-                  ["nook", "A slower moment", "A reading corner"],
-                  ["work", "Space to focus", "A home workspace"],
-                ].map(([variant, title, caption]) => (
-                  <figure key={variant}>
-                    <RoomScene
-                      variant={variant as "living" | "nook" | "work"}
-                    />
-                    <figcaption>
-                      <strong>{title}</strong>
-                      <span>{caption} · Concept illustration</span>
-                    </figcaption>
-                  </figure>
-                ))}
-              </div>
-            </section>
             <section id="approach" className="ff-section ff-approach">
               <Process />
             </section>
@@ -406,7 +368,7 @@ export default function BusinessApp() {
               <div className="ff-section-heading">
                 <div>
                   <span className="ff-eyebrow">
-                    03 / MAKE THE NUMBERS CLEAR
+                    02 / MAKE THE NUMBERS CLEAR
                   </span>
                   <h2>
                     A plan for your space.
@@ -415,8 +377,7 @@ export default function BusinessApp() {
                   </h2>
                 </div>
                 <p>
-                  Try the calculator with illustrative USD prices. It’s a demo
-                  estimate, not a booking or binding quote.
+                  Try the calculator with illustrative USD prices.
                 </p>
               </div>
               <div className="ff-estimate-grid">
@@ -502,46 +463,17 @@ export default function BusinessApp() {
                     Preview an enquiry with this estimate{" "}
                     <Arrow direction="down" />
                   </a>
-                  <details>
-                    <summary>See every pricing rule</summary>
-                    <ul>
-                      {services.map((service) => (
-                        <li key={service.id}>
-                          {service.name}: {money(service.price)} per room
-                        </li>
-                      ))}
-                      {extras.map((extra) => (
-                        <li key={extra.id}>
-                          {extra.name}: {money(extra.price)} once per project
-                        </li>
-                      ))}
-                    </ul>
-                    <p>
-                      No discounts, hidden multipliers, or real charges. Choose
-                      1–5 rooms.
-                    </p>
-                  </details>
                 </div>
               </div>
             </section>
             <section id="enquire" className="ff-section ff-enquiry">
               <div className="ff-enquiry-intro">
-                <span className="ff-eyebrow">04 / TRY THE NEXT STEP</span>
+                <span className="ff-eyebrow">03 / TRY THE NEXT STEP</span>
                 <h2>
                   Tell us about
                   <br />
                   <em>your imaginary space.</em>
                 </h2>
-                <p>
-                  This form creates a local preview only. Nothing is sent, saved
-                  to a server, or booked. Use fictional details to try it.
-                </p>
-                <p>
-                  Your estimate and enquiry reset when you reload or close this
-                  page. Download the preview to keep a copy. The separate AI
-                  guide only sends the space description you approve, not these
-                  contact fields.
-                </p>
                 <button
                   className="ff-sample-button"
                   onClick={() => {
@@ -550,7 +482,6 @@ export default function BusinessApp() {
                       email: "alex@example.com",
                       brief:
                         "An imaginary living room needs a clearer furniture layout and a warmer reading corner. I would like a simple plan using the existing pieces.",
-                      consent: true,
                     });
                     setErrors({});
                     setPreview(null);
@@ -642,28 +573,6 @@ export default function BusinessApp() {
                 {errors.brief && (
                   <p id="brief-error" className="ff-field-error">
                     {errors.brief}
-                  </p>
-                )}
-                <label className="ff-consent" htmlFor="enquiry-consent">
-                  <input
-                    id="enquiry-consent"
-                    type="checkbox"
-                    checked={form.consent}
-                    onChange={(event) =>
-                      updateForm("consent", event.target.checked)
-                    }
-                    aria-invalid={Boolean(errors.consent)}
-                    aria-describedby={
-                      errors.consent ? "consent-error" : undefined
-                    }
-                  />
-                  <span>
-                    I understand this is a demo and nothing will be sent.
-                  </span>
-                </label>
-                {errors.consent && (
-                  <p id="consent-error" className="ff-field-error">
-                    {errors.consent}
                   </p>
                 )}
                 <button className="ff-button" type="submit">

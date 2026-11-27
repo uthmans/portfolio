@@ -86,6 +86,7 @@ try {
   await page.keyboard.press("Tab");
   assert.equal(await page.getByLabel("Question").inputValue(), "confidence");
   await page.getByLabel("Question").selectOption("satisfaction");
+  await page.getByText("Use your own data", { exact: true }).click();
   await page
     .getByText("Required CSV format & example", { exact: true })
     .click();

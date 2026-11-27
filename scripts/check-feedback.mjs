@@ -23,6 +23,7 @@ try {
   assert.equal(await section.locator('.feedback-finding').first().locator('li').count(), 3);
   await page.getByLabel('Learning track').selectOption('All');
   const input = page.getByLabel('Choose CSV file', { exact: true });
+  await page.getByText('Use your own data', { exact: true }).click();
   await page.getByLabel('Number of responses', { exact: true }).fill('15');
   await page.getByRole('button', { name: 'Generate fictional dataset', exact: true }).click();
   await section.getByText(/15 of 15 selected responses include a written comment/).waitFor();
