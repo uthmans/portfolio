@@ -35,12 +35,12 @@ export default function ServiceGuide({ onChoose }: { onChoose: (id: ServiceId) =
     finally { setBusy(false); }
   }
   return <section className="ff-section ff-guide" id="service-guide" aria-labelledby="guide-title">
-    <span className="ff-eyebrow">A LITTLE HELP CHOOSING</span><h2 id="guide-title">Find your <em>starting point.</em></h2><p>Describe what you would like to change. Our AI guide can suggest one of the three demo services, explain its choice, or ask for more detail.</p>
+    <span className="ff-eyebrow">A LITTLE HELP CHOOSING</span><h2 id="guide-title">Ask the AI <em>service guide.</em></h2><p>Describe what you would like to change. Our AI guide can suggest one of the three demo services, explain its choice, or ask for more detail.</p>
     <form onSubmit={submit} aria-busy={busy}>
       <label htmlFor="guide-description">Tell us about your space</label><textarea id="guide-description" rows={4} required minLength={20} maxLength={2000} value={description} disabled={busy} onChange={e => change(e.target.value)} aria-describedby="guide-privacy" placeholder="For example: what the room is used for, what isn’t working, and what you hope to improve." />
       <p id="guide-privacy">Only this description is sent to Cloudflare Workers AI. Leave out names, addresses and private details. This fictional studio does not offer professional construction or safety advice.</p>
       <button type="button" className="ff-text-link" disabled={busy} onClick={() => change(exampleSpace)}>Use a fictional home-office example</button>
-      {endpoint ? <><label className="ff-guide-consent"><input type="checkbox" checked={consent} disabled={busy} onChange={e => setConsent(e.target.checked)} /><span>I have permission to share this description for AI guidance.</span></label><button className="ff-button" type="submit" disabled={busy || !consent}>{busy ? "Finding your starting point…" : "Suggest a service"}</button></> : <p>The AI guide is not connected yet. You can explore services and use the calculator directly.</p>}
+      {endpoint ? <><label className="ff-guide-consent"><input type="checkbox" checked={consent} disabled={busy} onChange={e => setConsent(e.target.checked)} /><span>I have permission to share this description for AI guidance.</span></label><button className="ff-button" type="submit" disabled={busy || !consent}>{busy ? "Finding a suggestion…" : "Suggest a service"}</button></> : <p>The AI guide is not connected yet. You can explore services and use the calculator directly.</p>}
       <p className="ff-guide-small">Free allowance shared with the portfolio’s other AI demos: 3 requests per hour per network, 20 total per day.</p>
     </form>
     <p role="status" className="ff-guide-status">{message}</p>{error && <p className="ff-guide-error" role="alert">{error}</p>}

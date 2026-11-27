@@ -65,7 +65,7 @@ export default function Walkthrough() {
         </p>
         <p>
           You can explore examples of my work in my portfolio, including a
-          business website, a survey dashboard, and a freelancer project hub.
+          business website, a survey dashboard, and a project hub.
         </p>
         <p>
           Just send me a message, tell me what you’re working on, and let’s talk

@@ -70,7 +70,7 @@ The confirmed public email is `uthmansalama@gmail.com`, and LinkedIn and GitHub 
 
 ## Add projects
 
-Project records in `src/content.ts` contain the problem, audience, solution, demo walkthrough, verification evidence, features, contribution, technology, decisions, and optional real demo/source URLs. Update a status only when supported by working evidence. Selected work leads with Survey Insights Studio, Form & Field, and Freelancer Project Hub, followed by the portfolio itself. Each Read case study button opens an accessible dialog with a suggested workflow, design decisions, and honest limitations. Preview panels illustrate the real demonstrations; open a live demo to interact with it. Case studies describe implemented behaviour rather than unmeasured client outcomes, and distinguish controlled AI tests from variable live responses.
+Project records in `src/content.ts` contain the problem, audience, solution, demo walkthrough, verification evidence, features, contribution, technology, decisions, and optional real demo/source URLs. Update a status only when supported by working evidence. Selected work leads with Survey Insights Studio, Form & Field, and Project Hub, followed by the portfolio itself. Each Read case study button opens an accessible dialog with a suggested workflow, design decisions, and honest limitations. Preview panels illustrate the real demonstrations; open a live demo to interact with it. Case studies describe implemented behaviour rather than unmeasured client outcomes, and distinguish controlled AI tests from variable live responses.
 
 ## Form & Field v2: AI service guide
 
@@ -100,7 +100,7 @@ The form submits directly to Formspree using JSON and stays on the portfolio. It
 2. Project previews and titles open accessible native dialog details.
 3. Escape and the close button dismiss details; focus returns to the opener.
 4. Tab stays inside an open dialog.
-5. All three standalone demos — survey, business and freelancer hub — are linked from selected work.
+5. All three standalone demos — survey, business and project hub — are linked from selected work.
 6. On mobile, Menu opens navigation, and selecting a section closes it.
 7. No horizontal overflow at small widths. Reduced-motion preferences disable smooth scrolling and transitions.
 
@@ -125,7 +125,7 @@ The written-feedback section uses the same uploaded CSV and filters as the ratin
 
 See [AI-SETUP.md](AI-SETUP.md) for Cloudflare deployment, the free daily allowance, privacy considerations, and the implementation case study. The public build uses `https://portfolio.uthmansalama.workers.dev/api/feedback`. The Worker calls Cloudflare Workers AI using an `AI` binding and a fixed Llama model covered by the free allowance. No OpenAI key or paid-provider fallback is used. Stay on Workers Free to have requests stop when the daily allowance is exhausted; Workers Paid may bill overages. Wrangler deploys only the backend, not a second portfolio. Run `npm run test:feedback` against a production preview; `npm test` runs mocked integration tests. `npm run worker:check` bundles the Worker and `npm run worker:test` verifies a mocked AI-binding round trip and real Durable Object quotas locally, with no external inference. Live access and model quality require a separate actual request after deployment.
 
-Open `/portfolio/survey/`. This is a separate built page with direct-refresh support on GitHub Pages. It offers two rating questions, combined learning-track and session-format filters, response counts, a rating distribution, a mean, an explicit missing-answer state, a source-row table, and a filtered CSV download. It starts with 12 original fictional responses. Visitors can import a validated CSV or generate 10–1,000 random fictional responses, then filter, calculate, and download them. Rating data is processed locally. The separate feedback workspace sends text only when a backend is configured and the visitor consents and requests AI analysis.
+Open `/portfolio/survey/`. This is a separate built page with direct-refresh support on GitHub Pages. It offers two rating questions, combined learning-track and session-format filters, response counts, a rating distribution, a mean, an explicit missing-answer state, a source-row table, and a filtered CSV download. It starts with 12 original fictional responses. Visitors can import a validated CSV or generate 10–1,000 random fictional responses, then filter, calculate, and download them. These tools sit in a collapsed **Use your own data** panel below the chart and AI analysis, so the results come first. Rating data is processed locally. The separate feedback workspace sends text only when a backend is configured and the visitor consents and requests AI analysis.
 
 - `src/survey/data.ts`: original sample, question definitions, filtering, calculations, and CSV export.
 - `src/survey/csv.ts`: CSV parsing and whole-file validation with physical line numbers.
@@ -163,11 +163,11 @@ The enquiry requires a 2–80-character name, a valid email-shaped address, a 20
 
 `tests/business.test.ts` checks pricing, invalid options, validation boundaries, and the honest download text. `npm run test:business` exercises all pages, quote interactions, errors/focus, sample details, preview/download, direct refresh, mobile navigation, reduced motion, and accessibility.
 
-### Freelancer Project Hub
+### Project Hub
 
 Open `/portfolio/hub/`. This independent application starts with three original fictional projects and clients. Create and edit projects, track USD budgets and spending, add/remove/check tasks, change stages, and filter by client/project text, stage, or overdue status. Summary figures apply to the visible projects; completed projects are excluded from overdue counts. Stages and task completion are independent.
 
-Data is saved under `uthman-freelancer-hub-v1` in this browser’s localStorage when a change is made. There is no backend, account, synchronization, invoice, or payment flow. Browser storage may be cleared or unavailable; save errors are visible and the current tab remains usable. Corrupt saved data is not overwritten on load. Use **Download backup** to retain a versioned JSON copy; **Restore a backup** validates it before asking to replace the workspace. Delete, reset, and restore require explicit confirmation. Invalid imports leave existing projects unchanged.
+Data is saved under `uthman-freelancer-hub-v1` in this browser’s localStorage when a change is made. There is no backend, account, synchronization, invoice, or payment flow. Browser storage may be cleared or unavailable; save errors are visible and the current tab remains usable. Corrupt saved data is not overwritten on load. Use **Download backup** to retain a versioned JSON copy; **Restore a backup** validates it before asking to replace the workspace. Delete, reset, and restore require explicit confirmation. Invalid imports leave existing projects unchanged. The key keeps its original name so existing visitors keep their data after the rename from “Freelancer Project Hub”.
 
 Budgets and spending are integer cents, with a maximum USD 1,000,000 per amount and at most two entered decimal places. The demo supports 50 projects, 100 tasks per project, 80-character project/client names, 120-character tasks, and 1,000-character notes. Backup files are limited to 5 MB. Sample deadlines are generated relative to the visitor’s local date; completed tasks and project stages remain independently editable. Over-budget spending is allowed and clearly shown.
 

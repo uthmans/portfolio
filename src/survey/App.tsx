@@ -152,6 +152,7 @@ export default function SurveyApp() {
             </h1>
             <p>Explore feedback. See the counts. Understand the calculation.</p>
             <p><a href="#written-feedback">Explore written-feedback analysis ↓</a></p>
+            <p>{fictional && "Fictional data. "}Nothing you upload leaves your browser except comments you choose to send for AI analysis.</p>
           </div>
           <span className="sample-badge">
             {dataset.kind === "imported"
@@ -162,36 +163,115 @@ export default function SurveyApp() {
             · {dataset.rows.length} responses
           </span>
         </div>
-        <aside className="dataset-note">
-          <strong>{dataset.name}</strong>
-          <p>
-            {dataset.kind === "sample"
-              ? "The built-in sample is feedback from an imaginary community learning series. Every response is made up."
-              : dataset.kind === "generated"
-                ? `These responses are entirely fictional. Ratings are chosen from 1–5, with about 10% left blank. Every row includes a written comment chosen from fictional templates, matched to its satisfaction rating where present. Comments are not real feedback or AI-generated.`
-                : "Your imported CSV is now used for the charts and calculations. Its responses are not labeled as fictional."}{" "}
-            Include a feedback column in the same CSV to explore written responses below.
-          </p>
-          <p>
-            <strong>Keeping your work:</strong> Imported and generated data, filters,
-            and AI results reset when you reload or close this page. Download your
-            CSV and analysis report to keep a copy. Charts are calculated in your
-            browser; only the written comments you approve are sent for AI analysis.
-          </p>
-        </aside>
+        <section className="studio-controls" aria-labelledby="controls-title">
+          <div className="controls-heading">
+            <h2 id="controls-title">Explore the responses</h2>
+            {filtered && (
+              <button
+                className="reset-filters"
+                onClick={() => {
+                  setTrack("All");
+                  setFormat("All");
+                  setNotice("Filters cleared.");
+                }}
+              >
+                Clear filters
+              </button>
+            )}
+          </div>
+          <div className="select-grid">
+            <label>
+              Question
+              <select
+                value={question}
+                onChange={(event) =>
+                  setQuestion(event.target.value as Question)
+                }
+              >
+                {Object.entries(questions).map(([key, value]) => (
+                  <option value={key} key={key}>
+                    {value.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Learning track
+              <select
+                value={track}
+                onChange={(event) => setTrack(event.target.value)}
+              >
+                <option value="All">All tracks</option>
+                {["Websites", "Automations", "Data"].map((value) => (
+                  <option key={value}>{value}</option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Session format
+              <select
+                value={format}
+                onChange={(event) => setFormat(event.target.value)}
+              >
+                <option value="All">All formats</option>
+                <option>Online</option>
+                <option>In person</option>
+              </select>
+            </label>
+          </div>
+        </section>
 
-        <section
-          className="dataset-panel"
-          aria-labelledby="dataset-title"
-          aria-busy={reading}
-        >
-          <div className="dataset-heading">
+        <p className="results-status" role="status">
+          Showing {rows.length} of {dataset.rows.length} responses ·{" "}
+          {summary.answered} answered this question · {summary.missing} missing
+        </p>
+        <div className="summary-grid">
+          <div>
+            <span>Filtered responses</span>
+            <strong>{summary.total}</strong>
+            <small>Of {dataset.rows.length} in the dataset</small>
+          </div>
+          <div>
+            <span>Answered this question</span>
+            <strong>{summary.answered}</strong>
+            <small>{summary.missing} missing, excluded from calculations</small>
+          </div>
+          <div>
+            <span>Mean rating</span>
+            <strong>
+              {summary.mean === null ? "—" : summary.mean.toFixed(2)}
+              <small> / 5</small>
+            </strong>
+            <small>Based on {summary.answered} answers</small>
+          </div>
+        </div>
+
+        <section className="results-panel" aria-labelledby="chart-title">
+          <div className="results-heading">
             <div>
-              <span className="eyebrow">CHOOSE YOUR DATA</span>
-              <h2 id="dataset-title">
-                Bring a CSV, or make a fictional dataset.
-              </h2>
+              <span className="eyebrow">RATING DISTRIBUTION</span>
+              <h2 id="chart-title">{questions[question].prompt}</h2>
+              <p>1 = lowest rating · 5 = highest rating</p>
             </div>
+            <span className="chart-base">Base: {summary.answered} answers</span>
+          </div>
+          {summary.answered ? (
+            <Chart summary={summary} />
+          ) : (
+            <div className="empty-results">
+              <h3>No answers for this selection</h3>
+              <p>Choose another question or clear the filters.</p>
+            </div>
+          )}
+          <p className="chart-caption">
+            Rounded percentages may not add to exactly 100%.
+          </p>
+        </section>
+        <FeedbackStudio key={`${datasetVersion}-${track}-${format}`} responses={rows} isSample={dataset.kind === "sample"} />
+        <details className="dataset-panel" aria-busy={reading}>
+          <summary>Use your own data</summary>
+          <div className="dataset-heading">
+            <h2>Bring a CSV, or make a fictional dataset.</h2>
             <button
               className="reset-filters"
               disabled={reading}
@@ -307,9 +387,8 @@ export default function SurveyApp() {
               R01,Websites,Online,5,4,"Clear examples, more practice please."{"\n"}R02,Data,In person,,3,
             </pre>
             <p>
-              Blank ratings are excluded from calculations, never treated as
-              zero. Do not use 0, N/A, or text for a missing rating. All rows
-              must pass validation before any data is replaced.
+              Do not use 0, N/A, or text for a missing rating. All rows must
+              pass validation before any data is replaced.
             </p>
             <button
               className="reset-filters"
@@ -342,125 +421,15 @@ export default function SurveyApp() {
           <p role="status" className="data-change-notice">
             {datasetNotice}
           </p>
-        </section>
-
-        <section className="studio-controls" aria-labelledby="controls-title">
-          <div className="controls-heading">
-            <h2 id="controls-title">Explore the responses</h2>
-            {filtered && (
-              <button
-                className="reset-filters"
-                onClick={() => {
-                  setTrack("All");
-                  setFormat("All");
-                  setNotice("Filters cleared.");
-                }}
-              >
-                Clear filters
-              </button>
-            )}
-          </div>
-          <div className="select-grid">
-            <label>
-              Question
-              <select
-                value={question}
-                onChange={(event) =>
-                  setQuestion(event.target.value as Question)
-                }
-              >
-                {Object.entries(questions).map(([key, value]) => (
-                  <option value={key} key={key}>
-                    {value.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label>
-              Learning track
-              <select
-                value={track}
-                onChange={(event) => setTrack(event.target.value)}
-              >
-                <option value="All">All tracks</option>
-                {["Websites", "Automations", "Data"].map((value) => (
-                  <option key={value}>{value}</option>
-                ))}
-              </select>
-            </label>
-            <label>
-              Session format
-              <select
-                value={format}
-                onChange={(event) => setFormat(event.target.value)}
-              >
-                <option value="All">All formats</option>
-                <option>Online</option>
-                <option>In person</option>
-              </select>
-            </label>
-          </div>
-        </section>
-
-        <p className="results-status" role="status">
-          Showing {rows.length} of {dataset.rows.length} responses ·{" "}
-          {summary.answered} answered this question · {summary.missing} missing
-        </p>
-        <div className="summary-grid">
-          <div>
-            <span>Filtered responses</span>
-            <strong>{summary.total}</strong>
-            <small>Of {dataset.rows.length} in the dataset</small>
-          </div>
-          <div>
-            <span>Answered this question</span>
-            <strong>{summary.answered}</strong>
-            <small>{summary.missing} missing, excluded from calculations</small>
-          </div>
-          <div>
-            <span>Mean rating</span>
-            <strong>
-              {summary.mean === null ? "—" : summary.mean.toFixed(2)}
-              <small> / 5</small>
-            </strong>
-            <small>Based on {summary.answered} answers</small>
-          </div>
-        </div>
-
-        <section className="results-panel" aria-labelledby="chart-title">
-          <div className="results-heading">
-            <div>
-              <span className="eyebrow">RATING DISTRIBUTION</span>
-              <h2 id="chart-title">{questions[question].prompt}</h2>
-              <p>1 = lowest rating · 5 = highest rating</p>
-            </div>
-            <span className="chart-base">Base: {summary.answered} answers</span>
-          </div>
-          {summary.answered ? (
-            <Chart summary={summary} />
-          ) : (
-            <div className="empty-results">
-              <h3>No answers for this selection</h3>
-              <p>
-                Choose another question or clear the filters. Missing values are
-                never treated as zero.
-              </p>
-            </div>
-          )}
-          <p className="chart-caption">
-            Percentages use the answered responses for the current question, not
-            all filtered rows. Rounded percentages may not add to exactly 100%.
-          </p>
-        </section>
+        </details>
 
         <div className="studio-bottom">
           <section className="method-panel" aria-labelledby="method-title">
             <h2 id="method-title">Behind the numbers</h2>
             <p>
               The mean is the sum of ratings divided by the number of answered
-              responses. Blank values are excluded from the mean and
-              percentages, and counted separately. Filters combine: a response
-              must match both the track and the format.
+              responses. Filters combine: a response must match both the track
+              and the format.
             </p>
             <p>
               {fictional
@@ -524,7 +493,6 @@ export default function SurveyApp() {
             </table>
           </div>
         </section>
-        <FeedbackStudio key={`${datasetVersion}-${track}-${format}`} responses={rows} isSample={dataset.kind === "sample"} />
       </main>
       <footer className="studio-footer">
         <span>

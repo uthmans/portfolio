@@ -20,7 +20,7 @@ try {
   });
   await page.goto(base);
   await page
-    .getByRole("button", { name: "Read case study: Freelancer Project Hub", exact: true })
+    .getByRole("button", { name: "Read case study: Project Hub", exact: true })
     .click();
   assert.equal(
     await page

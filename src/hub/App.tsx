@@ -473,7 +473,7 @@ export default function HubApp() {
     );
     const a = document.createElement("a");
     a.href = url;
-    a.download = `freelancer-hub-backup-${localDate()}.json`;
+    a.download = `project-hub-backup-${localDate()}.json`;
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
     setNotice(
@@ -508,7 +508,7 @@ export default function HubApp() {
         Skip to workspace
       </a>
       <PortfolioBanner
-        title="Freelancer Project Hub"
+        title="Project Hub"
         context="Independent demo"
       />
       <main id="hub-main" className="hub-main" tabIndex={-1}>
@@ -516,7 +516,7 @@ export default function HubApp() {
           <div>
             <span className="hub-eyebrow">A LITTLE MORE ORGANIZED</span>
             <h1>
-              Freelancer Project <em>Hub.</em>
+              Project <em>Hub.</em>
             </h1>
             <p>Keep projects, next steps, and budgets in one clear view.</p>
           </div>
@@ -528,58 +528,13 @@ export default function HubApp() {
             New project <span aria-hidden="true">+</span>
           </button>
         </header>
-        <aside className="hub-demo-note">
-          <strong>Your browser. Your workspace.</strong>
-          <p>
-            Start with three fictional projects, then try your own. Data stays
-            in this browser’s storage and isn’t synced between devices.
-            The optional AI planner sends only the brief you choose to share.
-            Download a backup to keep a copy. Reloading keeps saved changes;
-            clearing browser data removes them. Restore a downloaded backup
-            to move your workspace to another browser. USD amounts are
-            tracking figures, not invoices.
-          </p>
-          <p>
-            Project stage and task completion are separate; completing tasks
-            doesn’t automatically close a project.
-          </p>
-        </aside>
+        <p className="hub-demo-note">
+          Sample projects. Changes save only in this browser.
+        </p>
         <Planner full={workspace.projects.length >= 50} onAdd={project => {
           commit(replaceProject(workspace, project), "Reviewed AI draft added as a planned project.");
           clearFilters();
         }} />
-        <div className="hub-toolbar">
-          <button className="hub-secondary" onClick={download}>
-            Download backup
-          </button>
-          <label className="hub-secondary hub-file-label" htmlFor="hub-import">
-            Restore a backup
-            <input
-              id="hub-import"
-              className="hub-file-input"
-              type="file"
-              accept=".json,application/json"
-              onChange={(e) => {
-                void restore(e.target.files?.[0]);
-                e.target.value = "";
-              }}
-            />
-          </label>
-          <button
-            className="hub-text-button"
-            onClick={() => setConfirm({ kind: "reset" })}
-          >
-            Reset to fictional sample
-          </button>
-        </div>
-        <p className="hub-notice" role="status">
-          {notice}
-        </p>
-        {warning && (
-          <p className="hub-error hub-warning" role="alert">
-            {warning}
-          </p>
-        )}
         <section className="hub-filters" aria-label="Filter projects">
           <label htmlFor="hub-search">
             Search projects or clients
@@ -688,6 +643,38 @@ export default function HubApp() {
                 : "Create your first project"}
             </button>
           </div>
+        )}
+        <div className="hub-toolbar">
+          <button className="hub-secondary" onClick={download}>
+            Download backup
+          </button>
+          <label className="hub-secondary hub-file-label" htmlFor="hub-import">
+            Restore a backup
+            <input
+              id="hub-import"
+              className="hub-file-input"
+              type="file"
+              accept=".json,application/json"
+              onChange={(e) => {
+                void restore(e.target.files?.[0]);
+                e.target.value = "";
+              }}
+            />
+          </label>
+          <button
+            className="hub-text-button"
+            onClick={() => setConfirm({ kind: "reset" })}
+          >
+            Reset to fictional sample
+          </button>
+        </div>
+        <p className="hub-notice" role="status">
+          {notice}
+        </p>
+        {warning && (
+          <p className="hub-error hub-warning" role="alert">
+            {warning}
+          </p>
         )}
         <footer className="hub-footer">
           Independent portfolio project · Fictional starting data · Built with

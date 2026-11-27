@@ -2,7 +2,7 @@
 
 The portfolio’s AI features use **Cloudflare Workers AI**, not OpenAI. You do not need to buy API credits, add an API key, run Ollama, or keep a computer online.
 
-## Freelancer Project Hub v2
+## Project Hub v2
 
 The same Worker now serves `/api/project-plan`, using the same fixed free-allocation model, AI binding and shared quota object as survey analysis. GitHub Pages supplies `VITE_HUB_PLAN_API_URL=https://portfolio.uthmansalama.workers.dev/api/project-plan` at build time. No additional secret, provider account or paid plan is needed. The health response includes `projectPlanEndpoint` once this route is deployed.
 
@@ -14,7 +14,7 @@ The planner has no paid fallback and shares the 3/hour per IP and 20/day global 
 
 The shared Worker also serves `/api/service-guide`. The frontend build variable is `VITE_SERVICE_GUIDE_API_URL=https://portfolio.uthmansalama.workers.dev/api/service-guide`, supplied by the GitHub Pages workflow. No additional key, binding or paid plan is needed; requests use the same model and shared allowance as survey analysis and Hub planning. Health includes `serviceGuideEndpoint` after the new backend deploys.
 
-On the business homepage, find **Find your starting point** below the service cards. Describe an anonymised space (20–2,000 characters), or use the fictional home-office example, approve sending it and choose **Suggest a service**. Only the description is sent, not enquiry details or calculator values. The AI sees the actual service IDs, descriptions and boundaries; prices are intentionally excluded. The response names one listed service or `none`, explains the fit, lists optional clarification questions, and states a limitation. A `none` result offers no calculator CTA. Unknown service IDs and malformed replies are rejected.
+On the business homepage, find **Ask the AI service guide** below the service cards. Describe an anonymised space (20–2,000 characters), or use the fictional home-office example, approve sending it and choose **Suggest a service**. Only the description is sent, not enquiry details or calculator values. The AI sees the actual service IDs, descriptions and boundaries; prices are intentionally excluded. The response names one listed service or `none`, explains the fit, lists optional clarification questions, and states a limitation. A `none` result offers no calculator CTA. Unknown service IDs and malformed replies are rejected.
 
 Review the suggestion and explicitly choose **Build an estimate for…**. This selects the service and scrolls/focuses the existing calculator, preserving room count and add-ons and clearing any stale enquiry preview. AI-provided price/room overrides are discarded; amounts are rendered and calculated from the fixed catalogue. The guide does not submit an enquiry, book work, prescribe construction or provide professional safety/ergonomic advice. Changing the description clears the previous suggestion and consent. Nothing is saved on the server by this application; Cloudflare processing terms apply. `npm run test:service-guide` checks these behaviours with mocked inference, including the no-match path, fixed pricing, scope boundaries, responsive layout and accessibility. Live model quality still needs a post-deployment check.
 

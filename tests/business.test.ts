@@ -41,7 +41,6 @@ const valid: Enquiry = {
   email: " alex@example.com ",
   brief:
     "An imaginary living room needs a clearer furniture layout and a reading corner.",
-  consent: true,
 };
 test("enquiry validation identifies all required fields and honors boundaries", () => {
   assert.deepEqual(validateEnquiry(valid), {});
@@ -51,10 +50,9 @@ test("enquiry validation identifies all required fields and honors boundaries", 
         name: "",
         email: "not-an-email",
         brief: "Too short",
-        consent: false,
       }),
     ),
-    ["name", "email", "brief", "consent"],
+    ["name", "email", "brief"],
   );
   assert.ok(validateEnquiry({ ...valid, name: "a".repeat(81) }).name);
   assert.ok(validateEnquiry({ ...valid, brief: "x".repeat(1201) }).brief);

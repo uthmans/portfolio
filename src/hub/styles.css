@@ -118,19 +118,10 @@ h1 em {
   background: #e9eddf;
   border: 1px solid #d0d9c3;
   border-radius: 8px;
-  padding: 20px 24px;
+  padding: 12px 24px;
   margin-top: 32px;
-}
-.hub-demo-note strong {
-  font-size: 17px;
-}
-.hub-demo-note p {
   font-size: 14px;
   color: #455440;
-  margin-top: 6px;
-}
-.hub-demo-note p:last-child {
-  margin-top: 8px;
 }
 .hub-toolbar {
   display: flex;
@@ -538,7 +529,7 @@ progress {
     font-size: 17px;
   }
   .hub-demo-note {
-    padding: 18px;
+    padding: 12px 18px;
   }
   .hub-projects {
     grid-template-columns: 1fr;

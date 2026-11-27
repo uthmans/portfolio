@@ -73,7 +73,7 @@ assert.equal(
 );
 await page
   .getByRole("button", {
-    name: "Read case study: Freelancer Project Hub",
+    name: "Read case study: Project Hub",
     exact: true,
   })
   .click();
@@ -96,7 +96,7 @@ await page.keyboard.press("Escape");
 for (const [title, route] of [
   ["Survey Insights Studio", "survey/"],
   ["A small business, online", "business/"],
-  ["Freelancer Project Hub", "hub/"],
+  ["Project Hub", "hub/"],
 ]) {
   await page
     .getByRole("button", { name: `Read case study: ${title}`, exact: true })
@@ -224,7 +224,7 @@ assert.equal(await page.locator("#site-navigation").isVisible(), false);
 assert.equal(new URL(page.url()).hash, "#about");
 await page
   .getByRole("button", {
-    name: "Read case study: Freelancer Project Hub",
+    name: "Read case study: Project Hub",
   })
   .click();
 assert.equal(await page.getByRole("dialog").isVisible(), true);
